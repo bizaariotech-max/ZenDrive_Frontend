@@ -1,24 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { Link, Route, Routes } from "react-router-dom";
+import AdminRoutes from "./routes/AdminRoutes";
+import Errorpage from "./pages/admin/ErrorPage";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Link to="/admin">Go to Admin</Link>} />
+
+      {/* Admin Dashboard */}
+      <Route path="/admin/*" element={<AdminRoutes />} />
+      <Route path="*" element={<Errorpage />} />
+
+    </Routes>
   );
 }
 
