@@ -1,72 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import SectionHeader from '../../../components/common/SectionHeader'
-import { IconButton, Menu, MenuItem, } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import FormInput from '../../../components/common/FormInput'
 import FormButton from '../../../components/common/FormButton'
 import { __getCommenApiDataList } from '../../../utils/api/commonApi';
 import { __postApiData } from '../../../utils/api';
 import { toast } from 'react-toastify';
 import { Popup } from '../../../components/common/Popup';
-const RowActions = ({ row,onEdit, onDelete  }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <>
-      <IconButton
-        aria-controls={open ? "actions-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
-      >
-        <MoreVertIcon sx={{ color: "gray" }} />
-      </IconButton>
-
-      <Menu
-        id="actions-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          sx: {
-
-            borderRadius: "12px",
-            boxShadow:
-              "rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px",
-          },
-        }}
-      >
-        <MenuItem
-          onClick={() => {
-             if (onEdit) onEdit(row);
-            handleClose();
-          }}
-        >
-          Edit
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-           if (onDelete) onDelete(row);
-            handleClose();
-          }}
-        >
-          Delete
-        </MenuItem>
-      </Menu>
-    </>
-  );
-};
+import DatagridRowAction from '../../../components/common/DatagridRowAction';
 
 
 const RoleMaster = () => {
@@ -75,7 +16,7 @@ const RoleMaster = () => {
   const [roleMasterList, setRoleMasterList] = useState([]);
   const [roleMaster, setRoleMaster] = useState("");
   const [editId, setEditId] = useState(null);
- ///========== columns for datagrid table list ============\\
+  ///========== columns for datagrid table list ============\\
   const columns = [
     {
       field: "_id", headerName: "Sr.No", width: 90, headerClassName: "blue-header", headerAlign: "center",
@@ -83,18 +24,19 @@ const RoleMaster = () => {
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
-      renderCell: (params) => <span>{params.row?._id || "N/A"}</span>,
+      // renderCell: (params) => <span>{params.row?._id || "N/A"}</span>,
       renderCell: (params) => {
         const rowIndex = params.api.getSortedRowIds().indexOf(params.id);
         return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
       },
     },
-  
+
     {
       field: "lookup_value",
       headerName: "Role Master",
       headerClassName: "blue-header",
-      width: 200,
+      flex: 1,
+      align: "center", headerAlign: "center",
       renderCell: (params) => <span>{params.row?.lookup_value || "N/A"}</span>,
     },
     {
@@ -108,24 +50,24 @@ const RoleMaster = () => {
       filterable: false,
       disableColumnMenu: true,
       align: "center",
-      renderCell: (params) => <RowActions row={params.row} onEdit={() => handleEdit(params.row)}   // ✅ Pass handler
-          onDelete={() => handleDelete(params.row)} />,
+      renderCell: (params) => <DatagridRowAction row={params.row} onEdit={() => handleEdit(params.row)}   // ✅ Pass handler
+        onDelete={() => handleDelete(params.row)} />,
     }
   ];
 
- ///========== handle edit ============\\
+  ///========== handle edit ============\\
   const handleEdit = (row) => {
     setRoleMaster(row.lookup_value);
     setEditId(row._id);
   };
 
   ///========== handle delete  ============\\
-  const handleDelete = async(row) => {
-     try {
+  const handleDelete = async (row) => {
+    try {
       const result = await Popup("warning", "Are you sure?", "You won't be able to revert this!");
       if (result.isConfirmed) {
-      
-        const res = await __postApiData(`/api/v1/admin/DeleteLookup`,{LookupId:row?._id});
+
+        const res = await __postApiData(`/api/v1/admin/DeleteLookup`, { LookupId: row?._id });
         if (res?.response?.response_code === "200") {
           toast.success("Role Master deleted successfully");
           fetchData(['role_type']);
@@ -135,7 +77,7 @@ const RoleMaster = () => {
       toast.error(error?.response?.data?.message || "An error occurred");
     }
   };
-  
+
   ///========== handle form submit ============\\
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -169,8 +111,8 @@ const RoleMaster = () => {
     }
 
   };
-  
-///========== fetch data from api ============\\
+
+  ///========== fetch data from api ============\\
   const fetchData = async (lookupTypes, stateKey, parent_lookup_id) => {
     try {
       const data = await __getCommenApiDataList({

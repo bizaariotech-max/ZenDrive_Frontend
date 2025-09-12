@@ -63,7 +63,7 @@ const AdminSidebar = ({ show, toggleDrawer }) => {
                         openSubListId === item.id ? null : item.id
                       )
                     }
-                    className={`ms-3 text-primary no-underline py-2 px-2 mx-3 gap-3 hover:bg-primary hover:text-white rounded-md transition-all delay-100 duration-300 ease-in-out  flex ${!show ? "collapsed" : ""
+                    className={`ms-3 text-primary no-underline py-2 px-2 mx-3 mb-2 gap-3 hover:bg-primary hover:text-white rounded-md transition-all delay-100 duration-300 ease-in-out  flex ${!show ? "collapsed" : ""
                       } ${pathname.startsWith(item.link) ? "bg-primary text-white" : ""}`}
                   >
                     <Box className={`flex items-center text-primary ${pathname.startsWith(item.link) ? "text-white" : ""} hover:text-white gap-3`}>
@@ -93,27 +93,21 @@ const AdminSidebar = ({ show, toggleDrawer }) => {
                       {item?.subList?.map((subItem) => (
                         <NavLink
                           key={subItem?.id}
-                          to={subItem.path}
-                          onClick={() => {
-                            setOpenSubListId(null);
-                          }}
-                          className={`mx-4 flex items-center rounded-md text-primary px-2 gap-3 mb-3 no-underline transition-all duration-300 ease-in hover:bg-primary hover:text-white hover:px-2 hover:py-3 ${pathname === subItem.path ? " text-white" : ""
+                          to={subItem?.path}
+                          onClick={() => setOpenSubListId(null)}
+                          className={`mx-4 flex items-center rounded-md text-primary px-2 gap-3 mb-3 no-underline transition-all duration-300 ease-in hover:bg-primary hover:text-white ${pathname === subItem.path ? "bg-primary text-white" : ""
                             }`}
                         >
                           <Box className="sidebar-icon">
-                            <span className="text-md">{subItem.icon}</span>
+                            <span className="text-md">{subItem?.icon}</span>
                           </Box>
                           {show && (
                             <Typography variant="body2">
-                              <span
-                                className={`text-primary hover:text-white transition-all duration-300 ${pathname === subItem.path ? " text-white" : ""
-                                  }`}
-                              >
-                                {subItem.title}
-                              </span>
+                              <span className="transition-all duration-300">{subItem?.title}</span>
                             </Typography>
                           )}
                         </NavLink>
+
                       ))}
                     </div>
                   )}

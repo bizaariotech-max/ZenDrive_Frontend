@@ -1,92 +1,41 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SectionHeader from '../../../components/common/SectionHeader'
-import { IconButton, Menu, MenuItem, } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import FormInput from '../../../components/common/FormInput'
 import FormButton from '../../../components/common/FormButton'
+import { toast } from 'react-toastify';
+import { __postApiData } from '../../../utils/api';
+import { __getCommenApiDataList } from '../../../utils/api/commonApi';
+import { Popup } from '../../../components/common/Popup';
+import DatagridRowAction from '../../../components/common/DatagridRowAction';
 
-const RowActions = ({ row }) => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    return (
-        <>
-            <IconButton
-                aria-controls={open ? "actions-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-            >
-                <MoreVertIcon sx={{ color: "gray" }} />
-            </IconButton>
-
-            <Menu
-                id="actions-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                PaperProps={{
-                    sx: {
-
-                        borderRadius: "12px",
-                        boxShadow:
-                            "rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px",
-                    },
-                }}
-            >
-                <MenuItem
-                    onClick={() => {
-                        alert(`Edit button clicked ${row?._id}`);
-                        handleClose();
-                    }}
-                >
-                    Edit
-                </MenuItem>
-
-                <MenuItem
-                    onClick={() => {
-                        alert(`Delete button clicked ${row?._id}`);
-                        handleClose();
-                    }}
-                >
-                    Delete
-                </MenuItem>
-            </Menu>
-        </>
-    );
-};
 const FuelTypeMaster = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
     const [fuelTypeMaster, setFuelTypeMaster] = useState("");
+    const [editId, setEditId] = useState(null);
+    const [fuelMasterList, setFuelMasterList] = useState([]);
     const columns = [
         {
-            field: "_id", headerName: "ID", width: 90, headerClassName: "blue-header", headerAlign: "center",
+            field: "_id", headerName: "Sr. No", width: 90, headerClassName: "blue-header", headerAlign: "center",
             align: "center",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
-            renderCell: (params) => <span>{params.row?._id || "N/A"}</span>,
-            // renderCell: (params) => {
-            //     const rowIndex = params.api.getSortedRowIds().indexOf(params.id);
-            //     return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
-            // },
+            // renderCell: (params) => <span>{params.row?._id || "N/A"}</span>,
+            renderCell: (params) => {
+                const rowIndex = params.api.getSortedRowIds().indexOf(params.id);
+                return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
+            },
         },
         {
-            field: "LookupTitle",
-            headerName: "Role Master",
+            field: "lookup_value",
+            headerName: "Fuel Master",
             headerClassName: "blue-header",
-            width: 200,
-            renderCell: (params) => <span>{params.row?.LookupTitle || "N/A"}</span>,
+            headerAlign: "center",
+            flex: 1,
+            align: "center",
+            renderCell: (params) => <span>{params.row?.lookup_value || "N/A"}</span>,
         },
         {
             field: "actions",
@@ -99,20 +48,85 @@ const FuelTypeMaster = () => {
             filterable: false,
             disableColumnMenu: true,
             align: "center",
-            renderCell: (params) => <RowActions row={params.row} />,
+            renderCell: (params) => <DatagridRowAction row={params.row} onEdit={() => handleEdit(params.row)}  
+                onDelete={() => handleDelete(params.row)} />,
         }
     ];
 
-    const rows = [
-        { _id: '1', LookupTitle: 'Petrol' },
-        { _id: '2', LookupTitle: 'Diesel' },
-        { _id: '3', LookupTitle: 'Electric' },
-        { _id: '4', LookupTitle: 'LPG' },
-    ];
+    ///========== fetch data from api ============\\
 
-    const handleSubmit = (e) => {
+    const fetchData = async (lookupTypes, stateKey, parent_lookup_id) => {
+        try {
+            const data = await __getCommenApiDataList({
+                lookup_type: lookupTypes,
+                parent_lookup_id: parent_lookup_id || null,
+            })
+            setFuelMasterList(data);
+        } catch (error) {
+            console.error(`Error fetching:`, error);
+        }
+    }
+
+    useEffect(() => {
+        fetchData(['fuel_type'],);
+    }, []);
+
+    ///========== handle form submit ============\\
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert("Form Submitted:" + fuelTypeMaster);
+        if (!fuelTypeMaster.trim() && fuelTypeMaster.length === 0) {
+            toast.error("Please enter a valid Fuel Master");
+            return;
+        }
+        setIsLoading(true);
+
+        try {
+            const payload = {
+                "lookup_id": editId || null,
+                "lookup_value": fuelTypeMaster,
+                "lookup_type": "fuel_type",
+                "parent_lookup_type": "",
+                "parent_lookup_id": null
+            }
+            const res = await __postApiData('/api/v1/admin/SaveLookup', payload);
+            if (res.response && res.response.response_code === "200") {
+                toast.success(editId ? "Fuel Master updated successfully" : "Fuel Master added successfully");
+                setFuelTypeMaster("");
+                setEditId(null);
+                setIsLoading(false);
+                fetchData(['fuel_type']);
+            } else {
+                toast.error(res.response.response_message || "Failed to add Manufacture Master");
+            }
+
+        } catch (error) {
+            setIsLoading(false);
+            console.error("Error submitting form:", error);
+        }
+
+    };
+
+    ///========== handle edit ============\\
+    const handleEdit = (row) => {
+        setFuelTypeMaster(row?.lookup_value);
+        setEditId(row?._id);
+    };
+
+    ///========== handle delete  ============\\
+    const handleDelete = async (row) => {
+        try {
+            const result = await Popup("warning", "Are you sure?", "You won't be able to revert this!");
+            if (result.isConfirmed) {
+
+                const res = await __postApiData(`/api/v1/admin/DeleteLookup`, { LookupId: row?._id });
+                if (res?.response?.response_code === "200") {
+                    toast.success("Fuel Master deleted successfully");
+                    fetchData(['fuel_type']);
+                }
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "An error occurred");
+        }
     };
     return (
         <div className="p-4 bg-white">
@@ -134,12 +148,12 @@ const FuelTypeMaster = () => {
                 </div>
 
                 <div className="mt-4">
-                    <FormButton>Add Fuel</FormButton>
+                    <FormButton disabled={isLoading}>{isLoading ? editId ? " Updating..." : "Adding..." : editId ? "Update Fuel" : "Add Fuel"}</FormButton>
                 </div>
             </form>
             <div className="bg-white pb-2 rounded-xl my-16 ">
                 <DataGrid
-                    rows={rows}
+                    rows={fuelMasterList}
                     columns={columns}
                     loading={isLoading}
                     autoHeight

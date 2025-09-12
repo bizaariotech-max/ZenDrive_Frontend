@@ -1,85 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import SectionHeader from '../../../components/common/SectionHeader'
-import { IconButton, Menu, MenuItem, } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import FormInput from '../../../components/common/FormInput'
 import FormButton from '../../../components/common/FormButton'
 import { __getCommenApiDataList } from '../../../utils/api/commonApi';
 import { __postApiData } from '../../../utils/api';
 import { toast } from 'react-toastify';
 import { Popup } from '../../../components/common/Popup';
-const RowActions = ({ row, onEdit, onDelete }) => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
+import DatagridRowAction from '../../../components/common/DatagridRowAction';
+import { TextField } from '@mui/material'
+import axios from 'axios'
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    return (
-        <>
-            <IconButton
-                aria-controls={open ? "actions-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-            >
-                <MoreVertIcon sx={{ color: "gray" }} />
-            </IconButton>
-
-            <Menu
-                id="actions-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                PaperProps={{
-                    sx: {
-
-                        borderRadius: "12px",
-                        boxShadow:
-                            "rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px",
-                    },
-                }}
-            >
-                <MenuItem
-                    onClick={() => {
-                        if (onEdit) onEdit(row);
-                        handleClose();
-                    }}
-                >
-                    Edit
-                </MenuItem>
-
-                <MenuItem
-                    onClick={() => {
-                        if (onDelete) onDelete(row);
-                        handleClose();
-                    }}
-                >
-                    Delete
-                </MenuItem>
-            </Menu>
-        </>
-    );
-};
-const VehicalModelMaster = () => {
+const AbnormalityMaster = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
     const [dataList, setDataList] = useState({
-        menufactureList: [],
-        vehicalModelList: [],
+        investigationList: [],
+        abnormalityList: [],
     });
     const [formData, setFormData] = useState({
-        vehicleModel: '',
-        manufactureId: '',
+        investigationId: '',
+        abnormality: '',
+        abnormalityImage: null,
+        measuementUnit: '',
+        measuementType: '',
     });
     const [editId, setEditId] = useState(null);
-    const { menufactureList, vehicalModelList } = dataList;
+    const { investigationList, abnormalityList } = dataList;
     ///========== columns for datagrid table list ============\\
     const columns = [
         {
@@ -95,17 +42,31 @@ const VehicalModelMaster = () => {
         },
         {
             field: "parent_lookup_name",
-            headerName: "Manufacture Master",
+            headerName: "Investigation Master",
             headerClassName: "blue-header",
             width: 200,
             renderCell: (params) => <span>{params.row?.parent_lookup_name || "N/A"}</span>,
         },
         {
             field: "lookup_value",
-            headerName: "Vehical Model Master",
+            headerName: "Abnormality Master",
             headerClassName: "blue-header",
             width: 200,
             renderCell: (params) => <span>{params.row?.lookup_value || "N/A"}</span>,
+        },
+        {
+            field: "measurement_unit",
+            headerName: "Measurement Unit",
+            headerClassName: "blue-header",
+            width: 200,
+            renderCell: (params) => <span>{params.row?.other?.measurement_unit || "N/A"}</span>,
+        },
+        {
+            field: "measurement_type",
+            headerName: "Measurement Type",
+            headerClassName: "blue-header",
+            width: 200,
+            renderCell: (params) => <span>{params.row?.other?.measurement_type || "N/A"}</span>,
         },
         {
             field: "actions",
@@ -118,7 +79,7 @@ const VehicalModelMaster = () => {
             filterable: false,
             disableColumnMenu: true,
             align: "center",
-            renderCell: (params) => <RowActions row={params.row} onEdit={() => handleEdit(params.row)} onDelete={() => handleDelete(params.row)} />,
+            renderCell: (params) => <DatagridRowAction row={params.row} onEdit={() => handleEdit(params.row)} onDelete={() => handleDelete(params.row)} />,
         }
     ];
 
@@ -136,7 +97,7 @@ const VehicalModelMaster = () => {
     ///========== handle form submit ============\\
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData?.vehicleModel?.trim() && formData?.vehicleModel?.length === 0) {
+        if (!formData?.abnormality?.trim() && formData?.abnormality?.length === 0) {
             toast.error("Please enter a valid Vehical Model Master");
             return;
         }
@@ -144,21 +105,30 @@ const VehicalModelMaster = () => {
         try {
             const payload = {
                 "lookup_id": editId || null,
-                "lookup_value": formData?.vehicleModel,
-                "lookup_type": "vehicle_model_type",
-                "parent_lookup_type": "",
-                "parent_lookup_id": formData?.manufactureId || null,
+                "lookup_value": formData?.abnormality,
+                "lookup_type": "abnormality",
+                "parent_lookup_type": "investigation_type",
+                "parent_lookup_id": formData?.investigationId || null,
+                "other": {
+                    "abnormality_image": formData?.abnormalityImage || null,
+                    "measurement_unit": formData?.measuementUnit || "",
+                    "measurement_type": formData?.measuementType || "",
+                }
             }
+            console.log("Payload for submission:", payload);
             const res = await __postApiData('/api/v1/admin/SaveLookup', payload);
             if (res.response && res.response.response_code === "200") {
                 toast.success(editId ? "Vehicle Model Master updated successfully" : "Vehicle Model Master added successfully");
                 setFormData({
-                    vehicleModel: '',
-                    manufactureId: '',
+                    investigationId: '',
+                    abnormality: '',
+                    abnormalityImage: null,
+                    measuementUnit: '',
+                    measuementType: '',
                 });
                 setEditId(null);
                 setIsLoading(false);
-                fetchData(['vehicle_model_type'], "vehicalModelList");
+                fetchData(['abnormality'], "abnormalityList");
             } else {
                 toast.error(res.response.response_message || "Failed to add Vehicle Model Master");
             }
@@ -196,8 +166,8 @@ const VehicalModelMaster = () => {
     }
 
     useEffect(() => {
-        fetchData(['manufacturer_type'], "menufactureList");
-        fetchData(['vehicle_model_type'], "vehicalModelList");
+        fetchData(['investigation_type'], "investigationList");
+        fetchData(['abnormality'], "abnormalityList");
     }, []);
 
     ///========== handle edit ============\\
@@ -214,52 +184,117 @@ const VehicalModelMaster = () => {
         try {
             const result = await Popup("warning", "Are you sure?", "You won't be able to revert this!");
             if (result.isConfirmed) {
-
                 const res = await __postApiData(`/api/v1/admin/DeleteLookup`, { LookupId: row?._id });
                 if (res?.response?.response_code === "200") {
-                    toast.success("Vehical Model Master deleted successfully");
-                    fetchData(['vehicle_model_type'],"vehicalModelList");
+                    toast.success("Abnormality Master deleted successfully");
+                    fetchData(['abnormality'], "abnormalityList");
                 }
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || "An error occurred");
         }
     };
+
+    //=======function to upload the file to the server when i change the file========\\
+    const handleFileUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return alert("Please select a file first");
+
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const response = await axios.post(
+                "https://zendrive-backend.onrender.com/api/v1/common/AddImage",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+            if (response?.data && response?.data?.response?.response_code === "200") {
+                setFormData((prev) => ({
+                    ...prev,
+                    abnormalityImage: response.data?.data[0]?.full_URL || "",
+                }));
+            }
+            else {
+                toast.error(response?.data?.response?.response_message || "File upload failed");
+            }
+            return response.data;
+        } catch (error) {
+            console.error("File upload failed:", error);
+            throw error;
+        }
+    };
+
     return (
         <div className="p-4 bg-white">
             <SectionHeader
-                title="Enter Details for Vehical Model Master"
-                description="Add or update the required details for the vehical model master to keep records accurate and complete."
+                title="Enter Details for Abnormality Master"
+                description="Add or update the required details for the abonormality master to keep records accurate and complete."
             />
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-8 shadow-lg  rounded-md p-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormInput
-                        label="Select Manufacturer Master"
-                        name="manufactureId"
-                        placeholder="Select Manufacturer Master"
+                        label="Select Investigation Type"
+                        name="investigationId"
+                        placeholder="Select Investigation Type"
                         type="select"
-                        value={formData?.manufactureId}
+                        value={formData?.investigationId}
                         onChange={handleChange}
-                        options={menufactureList}
+                        options={investigationList}
                     />
 
                     <FormInput
-                        label="Vehical master"
-                        name="vehicleModel"
-                        placeholder="Enter Vehical Model"
-                        value={formData?.vehicleModel}
+                        label="Abnormality"
+                        name="abnormality"
+                        placeholder="Enter Abnormality"
+                        value={formData?.abnormality}
+                        onChange={handleChange}
+                    />
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor={"abnormalityImage"} className="text-base font-semibold">
+                            Abnormality Image
+                        </label>
+                        <TextField
+                            fullWidth
+                            id={"abnormalityImage"}
+                            name={"abnormalityImage"}
+                            placeholder={"Upload Abnormality Image"}
+                            variant="outlined"
+                            size="small"
+                            className="custom-input"
+                            type="file"
+                            inputProps={{ accept: "image/*" }}
+                            onChange={handleFileUpload}
+                        />
+                    </div>
+                    <FormInput
+                        label="Measurement Unit"
+                        name="measuementUnit"
+                        type='number'
+                        placeholder="Enter Measurement Unit"
+                        value={formData?.measuementUnit}
+                        onChange={handleChange}
+                    />
+                    <FormInput
+                        label="Measurement Type"
+                        name="measuementType"
+                        placeholder="Enter Measurement Type"
+                        value={formData?.measuementType}
                         onChange={handleChange}
                     />
 
                 </div>
-
                 <div className="mt-4">
-                    <FormButton disable={isLoading}>{isLoading ? editId ?"Updating..." : "Adding..." : editId ? "Update Vehical" : "Add Vehical"}</FormButton>
+                    <FormButton disable={isLoading}>{isLoading ? editId ? "Updating..." : "Adding..." : editId ? "Update Abnormality" : "Add Abnormality"}</FormButton>
                 </div>
             </form>
             <div className="bg-white pb-2 rounded-xl my-16 ">
                 <DataGrid
-                    rows={vehicalModelList}
+                    rows={abnormalityList}
                     columns={columns}
                     loading={isLoading}
                     autoHeight
@@ -289,4 +324,4 @@ const VehicalModelMaster = () => {
     )
 }
 
-export default VehicalModelMaster
+export default AbnormalityMaster

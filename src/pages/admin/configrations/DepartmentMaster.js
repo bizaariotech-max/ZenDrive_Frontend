@@ -1,23 +1,21 @@
-// src/pages/admin/configrations/ManufactureMaster.js
 import React, { useEffect, useState } from 'react'
 import SectionHeader from '../../../components/common/SectionHeader'
 import { DataGrid } from '@mui/x-data-grid'
-import FormButton from '../../../components/common/FormButton'
 import FormInput from '../../../components/common/FormInput'
-import { __getCommenApiDataList } from '../../../utils/api/commonApi';
+import FormButton from '../../../components/common/FormButton'
 import { toast } from 'react-toastify';
 import { __postApiData } from '../../../utils/api';
+import { __getCommenApiDataList } from '../../../utils/api/commonApi';
 import { Popup } from '../../../components/common/Popup';
 import DatagridRowAction from '../../../components/common/DatagridRowAction';
 
-
-const ManufactureMaster = () => {
+const DepartmentMaster = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
-    const [manufactureMaster, setManufactureMaster] = useState("");
-    const [menufatuctureMasterList, setManufactureMasterList] = useState([]);
+    const [departmentMaster, setDepartmentMaster] = useState("");
     const [editId, setEditId] = useState(null);
-    //====== Define columns for DataGrid table list ======\\
+    const [departmentList, setDepartmentList] = useState([]);
+
     const columns = [
         {
             field: "_id", headerName: "Sr. No", width: 90, headerClassName: "blue-header", headerAlign: "center",
@@ -25,7 +23,6 @@ const ManufactureMaster = () => {
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
-            // renderCell: (params) => <span>{params.row?._id || "N/A"}</span>,
             renderCell: (params) => {
                 const rowIndex = params.api.getSortedRowIds().indexOf(params.id);
                 return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
@@ -33,7 +30,7 @@ const ManufactureMaster = () => {
         },
         {
             field: "lookup_value",
-            headerName: "Manufacture Master",
+            headerName: "Department Master",
             headerClassName: "blue-header",
             flex: 1,
             headerAlign: "center",
@@ -51,16 +48,34 @@ const ManufactureMaster = () => {
             filterable: false,
             disableColumnMenu: true,
             align: "center",
-            renderCell: (params) => <DatagridRowAction row={params.row} onEdit={() => handleEdit(params.row)}
+            renderCell: (params) => <DatagridRowAction row={params.row} onEdit={() => handleEdit(params.row)}  
                 onDelete={() => handleDelete(params.row)} />,
         }
     ];
 
+    ///========== fetch data from api ============\\
+
+    const fetchData = async (lookupTypes, stateKey, parent_lookup_id) => {
+        try {
+            const data = await __getCommenApiDataList({
+                lookup_type: lookupTypes,
+                parent_lookup_id: parent_lookup_id || null,
+            })
+            setDepartmentList(data);
+        } catch (error) {
+            console.error(`Error fetching:`, error);
+        }
+    }
+
+    useEffect(() => {
+        fetchData(['department_type'],);
+    }, []);
+
     ///========== handle form submit ============\\
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!manufactureMaster.trim() && manufactureMaster.length === 0) {
-            toast.error("Please enter a valid Manufacture Master");
+        if (!departmentMaster.trim() && departmentMaster.length === 0) {
+            toast.error("Please enter a valid Department Master");
             return;
         }
         setIsLoading(true);
@@ -68,18 +83,18 @@ const ManufactureMaster = () => {
         try {
             const payload = {
                 "lookup_id": editId || null,
-                "lookup_value": manufactureMaster,
-                "lookup_type": "manufacturer_type",
+                "lookup_value": departmentMaster,
+                "lookup_type": "department_type",
                 "parent_lookup_type": "",
                 "parent_lookup_id": null
             }
             const res = await __postApiData('/api/v1/admin/SaveLookup', payload);
             if (res.response && res.response.response_code === "200") {
-                toast.success(editId ? "Manufacture Master updated successfully" : "Manufacture Master added successfully");
-                setManufactureMaster("");
+                toast.success(editId ? "Department Master updated successfully" : "Department Master added successfully");
+                setDepartmentMaster("");
                 setEditId(null);
                 setIsLoading(false);
-                fetchData(['manufacturer_type'],);
+                fetchData(['department_type']);
             } else {
                 toast.error(res.response.response_message || "Failed to add Manufacture Master");
             }
@@ -91,28 +106,10 @@ const ManufactureMaster = () => {
 
     };
 
-    ///========== fetch data from api ============\\
-
-    const fetchData = async (lookupTypes, stateKey, parent_lookup_id) => {
-        try {
-            const data = await __getCommenApiDataList({
-                lookup_type: lookupTypes,
-                parent_lookup_id: parent_lookup_id || null,
-            })
-            setManufactureMasterList(data);
-        } catch (error) {
-            console.error(`Error fetching:`, error);
-        }
-    }
-
-    useEffect(() => {
-        fetchData(['manufacturer_type'],);
-    }, []);
-
     ///========== handle edit ============\\
     const handleEdit = (row) => {
-        setManufactureMaster(row.lookup_value);
-        setEditId(row._id);
+        setDepartmentMaster(row?.lookup_value);
+        setEditId(row?._id);
     };
 
     ///========== handle delete  ============\\
@@ -123,8 +120,8 @@ const ManufactureMaster = () => {
 
                 const res = await __postApiData(`/api/v1/admin/DeleteLookup`, { LookupId: row?._id });
                 if (res?.response?.response_code === "200") {
-                    toast.success("Manufacture Master deleted successfully");
-                    fetchData(['manufacturer_type']);
+                    toast.success("Department Master deleted successfully");
+                    fetchData(['department_type']);
                 }
             }
         } catch (error) {
@@ -134,28 +131,29 @@ const ManufactureMaster = () => {
     return (
         <div className="p-4 bg-white">
             <SectionHeader
-                title="Enter Details for Manufacture Master"
-                description="Add or update the required details for the manufacture master to keep records accurate and complete."
+                title="Enter Details for Department Master"
+                description="Add or update the required details for the Department master to keep records accurate and complete."
             />
-            <form className='flex flex-col gap-4 mt-8 shadow-lg  rounded-md p-4' onSubmit={handleSubmit}>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-8 shadow-lg  rounded-md p-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
                     <FormInput
-                        label="Manufacture master"
-                        name='manufactureMaster'
-                        placeholder="Enter manufacture master"
-                        value={manufactureMaster}
-                        onChange={(e) => setManufactureMaster(e.target.value)}
+                        label="Department master"
+                        name="departmentMaster"
+                        placeholder="Enter Department master"
+                        value={departmentMaster}
+                        onChange={(e) => setDepartmentMaster(e.target.value)}
                     />
 
                 </div>
+
                 <div className="mt-4">
-                    <FormButton disabled={isLoading}>{isLoading ? (editId ? "Updating..." : "Adding...") : editId ? "Update Manufacture" : "Add Manufacture"}</FormButton>
+                    <FormButton disabled={isLoading}>{isLoading ? editId ? " Updating..." : "Adding..." : editId ? "Update Department" : "Add Department"}</FormButton>
                 </div>
             </form>
-
             <div className="bg-white pb-2 rounded-xl my-16 ">
                 <DataGrid
-                    rows={menufatuctureMasterList}
+                    rows={departmentList}
                     columns={columns}
                     loading={isLoading}
                     autoHeight
@@ -185,4 +183,4 @@ const ManufactureMaster = () => {
     )
 }
 
-export default ManufactureMaster
+export default DepartmentMaster
