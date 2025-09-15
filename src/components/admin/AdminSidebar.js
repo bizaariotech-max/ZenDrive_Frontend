@@ -15,7 +15,7 @@ const AdminSidebar = ({ show, toggleDrawer }) => {
     <aside>
       {/* Logo */}
       <div className="flex items-center justify-center py-14">
-        <Typography variant="h5" className="font-bold my-4">
+        <Typography variant="h5" className="font-bold my-4 text-primary">
           {show ? "Zendrive Admin" : "ZA"}
         </Typography>
       </div>

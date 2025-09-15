@@ -62,4 +62,4 @@ const DatagridRowAction = ({ row, onEdit, onDelete }) => {
     );
 };
 
-export default DatagridRowAction
+export default React.memo(DatagridRowAction);

@@ -98,7 +98,7 @@ const AbnormalityMaster = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData?.abnormality?.trim() && formData?.abnormality?.length === 0) {
-            toast.error("Please enter a valid Vehical Model Master");
+            toast.error("Please enter a valid Abnormality Master");
             return;
         }
         setIsLoading(true);
@@ -118,7 +118,7 @@ const AbnormalityMaster = () => {
             console.log("Payload for submission:", payload);
             const res = await __postApiData('/api/v1/admin/SaveLookup', payload);
             if (res.response && res.response.response_code === "200") {
-                toast.success(editId ? "Vehicle Model Master updated successfully" : "Vehicle Model Master added successfully");
+                toast.success(editId ? "Abnormality Master updated successfully" : "Abnormality Master added successfully");
                 setFormData({
                     investigationId: '',
                     abnormality: '',
@@ -130,7 +130,7 @@ const AbnormalityMaster = () => {
                 setIsLoading(false);
                 fetchData(['abnormality'], "abnormalityList");
             } else {
-                toast.error(res.response.response_message || "Failed to add Vehicle Model Master");
+                toast.error(res.response.response_message || "Failed to add Abnormality Master");
             }
 
         } catch (error) {
