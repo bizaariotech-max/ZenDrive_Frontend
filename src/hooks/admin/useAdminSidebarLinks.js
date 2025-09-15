@@ -1,11 +1,15 @@
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, Settings2 } from "lucide-react";
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
+import MedicalInformationTwoToneIcon from '@mui/icons-material/MedicalInformationTwoTone';
+import HealthAndSafetyTwoToneIcon from '@mui/icons-material/HealthAndSafetyTwoTone';
+import VpnKeyTwoToneIcon from '@mui/icons-material/VpnKeyTwoTone';
+import RouteTwoToneIcon from '@mui/icons-material/RouteTwoTone';
 const useAdminSidebarLinks = () => {
     const links = [
         { id: 1, icon: <LayoutDashboard />, label: "Dashboard", link: "/admin", dock: true },
         {
             id: 2,
-            icon: <LayoutDashboard />,
+            icon: <Settings2 />,
             label: "Configuration",
             link: "/admin/configuration",
             dock: false,
@@ -31,14 +35,14 @@ const useAdminSidebarLinks = () => {
             ],
         },
         { id: 3, icon: <LayoutDashboard />, label: "Station Master", link: "/admin/station-master", dock: true },
-        { id: 4, icon: <LayoutDashboard />, label: "Route Master", link: "/admin/route-master", dock: true },
+        { id: 4, icon: <RouteTwoToneIcon />, label: "Route Master", link: "/admin/route-master", dock: true },
         { id: 5, icon: <LayoutDashboard />, label: "Duty Allocation", link: "/admin/duty-allocation", dock: true },
         { id: 6, icon: <LayoutDashboard />, label: "Asset Master", link: "/admin/asset-master", dock: true },
-        { id: 7, icon: <LayoutDashboard />, label: "Login Master", link: "/admin/login-master", dock: true },
+        { id: 7, icon: <VpnKeyTwoToneIcon />, label: "Login Master", link: "/admin/login-master", dock: true },
         { id: 8, icon: <LayoutDashboard />, label: "Dash Cam Allocation", link: "/admin/dash-cam-allocation", dock: true },
         { id: 9, icon: <LayoutDashboard />, label: "Incident Master", link: "/admin/incident-master", dock: true },
-        { id: 10, icon: <LayoutDashboard />, label: "Health Profiling Questions", link: "/admin/health-profiling-questions", dock: true },
-        { id: 11, icon: <LayoutDashboard />, label: "Health Profiling User Response", link: "/admin/health-profiling-user-response", dock: true },
+        { id: 10, icon: <MedicalInformationTwoToneIcon />, label: "Health Profiling Questions", link: "/admin/health-profiling-questions", dock: true },
+        { id: 11, icon: <HealthAndSafetyTwoToneIcon />, label: "Health Profiling User Response", link: "/admin/health-profiling-user-response", dock: true },
     ];
 
     return links;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import AdminSidebar from '../components/admin/AdminSidebar'
 import AdminTopbar from '../components/admin/AdminTopbar'

@@ -205,7 +205,7 @@ const AbnormalityMaster = () => {
             formData.append("file", file);
 
             const response = await axios.post(
-                "https://zendrive-backend.onrender.com/api/v1/common/AddImage",
+                `${process.env.REACT_APP_API_BASE_URL}/api/v1/common/AddImage`,
                 formData,
                 {
                     headers: {

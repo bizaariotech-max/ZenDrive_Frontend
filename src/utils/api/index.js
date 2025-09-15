@@ -6,7 +6,7 @@ const __LOCAL = process.env.REACT_APP_LOCAL
 
 
 // export const BASE_URL = "https://roadsafety-backend.onrender.com"
-export const BASE_URL = " https://zendrive-backend.onrender.com"
+export const BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3050"
 
 
 const __getApiData = (endpoint, params = {}) => {
