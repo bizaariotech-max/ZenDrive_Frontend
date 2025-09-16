@@ -198,11 +198,11 @@ export default function DriverHealthStatistics() {
 
   return (
     <div className="space">
-      <div className="flex justify-between">
+      <div className="flex flex-col md:flex-row justify-between">
 
         <h2 className="lg:text-[30px] font-bold pb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>Driver's Health Statistics</h2>
 
-        <div className="flex gap-4 mb-4">
+        <div className="flex flex-col md:flex-row gap-4 mb-4">
           <FormControl className="!min-w-[200px]">
             <InputLabel>Health Parameters</InputLabel>
             <Select

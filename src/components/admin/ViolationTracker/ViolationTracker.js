@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ThemeButton from "../InputFields/ThemeButton";
 import {
   MenuItem,
   Select,
@@ -8,11 +7,13 @@ import {
   Button,
   IconButton,
   Chip,
+  useMediaQuery,
 } from "@mui/material";
 import { FiFilter } from "react-icons/fi";
 import CloseIcon from "@mui/icons-material/Close";
 import { Fixedbox } from "../InputFields/Fixedbox";
 import { ThemeColors } from "../../../ThemeColors";
+import { Funnel } from "lucide-react";
 
 const violationTypes = [
   "All",
@@ -28,11 +29,12 @@ const violationTypes = [
 ];
 
 export default function ViolationTracker() {
-const [driver, setDriver] = useState("");
+  const [driver, setDriver] = useState("");
+  const isMobile = useMediaQuery("(max-width:600px)");
   const [vehicle, setVehicle] = useState("");
   const [selectedSort, setSelectedSort] = useState([]);
-    const [hideSidebar, setHideSidebar] = useState('hidden');
-console.log(ThemeColors.PrimaryColor,"Fixedbox")
+  const [hideSidebar, setHideSidebar] = useState('hidden');
+  console.log(ThemeColors.PrimaryColor, "Fixedbox")
   const sortOptions = [
     "Collision",
     "Over-speeding",
@@ -58,33 +60,35 @@ console.log(ThemeColors.PrimaryColor,"Fixedbox")
         : [...prev, option]
     );
   };
-    const clearFilters = () => {
+  const clearFilters = () => {
     setDriver("");
     setVehicle("");
     setSelectedSort([]);
   };
 
   return (
-   <>
-   <div className="space">
+    <>
+      <div className="space">
         <div className="flex justify-between items-center mb-4">
-            <div>
-             <h2 className="lg:text-[30px] font-bold pb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>Violation Tracker</h2>
-        </div>
+          <div>
+            <h2 className="lg:text-[30px] font-bold pb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>Violation Tracker</h2>
+          </div>
 
-          <ThemeButton
-            variant={'contained'}
-            className={"DataFilterBtn"}
-            endIcon={<FiFilter />}
-            value={'Use Filter :'}
+
+          <Button
+            className="DataFilterBtn"
+            variant="contained"
+            endIcon={!isMobile && <Funnel />}
             sx={{
-               bgcolor: '#286578',
-               textTransform: "capitalize",
-               paddingBlock: '8px',
-              fontFamily : "Lato, sans-serif "
+              bgcolor: "#286578",
+              textTransform: "capitalize",
+              paddingBlock: "8px",
+              fontFamily: "Lato, sans-serif",
             }}
-             onClick={()=>  setHideSidebar('block ')}
-          />
+            onClick={() => setHideSidebar('block ')}
+          >
+            {isMobile ? <Funnel /> : "Primary Data Filter :"}
+          </Button>
         </div>
 
         <div>
@@ -113,55 +117,55 @@ console.log(ThemeColors.PrimaryColor,"Fixedbox")
                 </FormControl>
               </div>
 
-            {/* Vehicle No */}
-            <div className="mb-4">
-              <FormControl fullWidth size="small" className="mb-6">
-                <InputLabel>Vehicle No</InputLabel>
-                <Select
-                  value={vehicle}
-                  onChange={(e) => setVehicle(e.target.value)}
-                  label="Vehicle No"
-                  MenuProps={Fixedbox}
-                >
-                  <MenuItem value="UP16AA3456">UP16 AA 3456</MenuItem>
-                  <MenuItem value="DL10BB2345">DL10 BB 2345</MenuItem>
-                  <MenuItem value="UP80CC7890">UP80 CC 7890</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            {/* Data Sort By */}
-            <h3 className="text-gray-800 font-medium mb-3">Data Sort By:</h3>
-            <div className="flex flex-wrap gap-2 mb-6">
-              {sortOptions.map((option, idx) => (
-                <Button
-                  key={idx}
-                  size="small"
-                  variant={selectedSort.includes(option) ? "contained" : "outlined"}
-                  color="primary"
-                  onClick={() => toggleSort(option)}
-                  className="!normal-case"
-                >
-                  {option}
-                </Button>
-              ))}
-            </div>
-
-            {/* Selected Chips (optional preview) */}
-            {selectedSort.length > 0 && (
+              {/* Vehicle No */}
+              <div className="mb-4">
+                <FormControl fullWidth size="small" className="mb-6">
+                  <InputLabel>Vehicle No</InputLabel>
+                  <Select
+                    value={vehicle}
+                    onChange={(e) => setVehicle(e.target.value)}
+                    label="Vehicle No"
+                    MenuProps={Fixedbox}
+                  >
+                    <MenuItem value="UP16AA3456">UP16 AA 3456</MenuItem>
+                    <MenuItem value="DL10BB2345">DL10 BB 2345</MenuItem>
+                    <MenuItem value="UP80CC7890">UP80 CC 7890</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              {/* Data Sort By */}
+              <h3 className="text-gray-800 font-medium mb-3">Data Sort By:</h3>
               <div className="flex flex-wrap gap-2 mb-6">
-                {selectedSort.map((item, idx) => (
-                  <Chip
-                    // sx={{ backgroundColor: `${ThemeColors.PrimaryColor}`}}
+                {sortOptions.map((option, idx) => (
+                  <Button
                     key={idx}
-                    label={item}
-                    color={`${ThemeColors.PrimaryColor}`}
-                    onDelete={() => toggleSort(item)}
-                    bgcolor='orange'
-                  />
+                    size="small"
+                    variant={selectedSort.includes(option) ? "contained" : "outlined"}
+                    color="primary"
+                    onClick={() => toggleSort(option)}
+                    className="!normal-case"
+                  >
+                    {option}
+                  </Button>
                 ))}
               </div>
-            )}
-          </div>
+
+              {/* Selected Chips (optional preview) */}
+              {selectedSort.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {selectedSort.map((item, idx) => (
+                    <Chip
+                      // sx={{ backgroundColor: `${ThemeColors.PrimaryColor}`}}
+                      key={idx}
+                      label={item}
+                      color={`${ThemeColors.PrimaryColor}`}
+                      onDelete={() => toggleSort(item)}
+                      bgcolor='orange'
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
             {/* Buttons */}
             <div className="flex justify-center gap-4 mt-auto">
               <Button
@@ -174,7 +178,7 @@ console.log(ThemeColors.PrimaryColor,"Fixedbox")
               <Button
                 variant="contained"
                 className={`!px-6 !rounded-lg`}
-                sx={{ backgroundColor: `${ThemeColors.PrimaryColor}`}}
+                sx={{ backgroundColor: `${ThemeColors.PrimaryColor}` }}
               >
                 Apply
               </Button>
@@ -188,23 +192,23 @@ console.log(ThemeColors.PrimaryColor,"Fixedbox")
 
 
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
-        {kpis.map((item, idx) => (
-          <div
-            key={idx}
-            className={` text-white rounded-xl p-6 shadow-md `}
-          style={{backgroundColor: `${item.color}`}} >
-            <div className="d-flex justify-content-between mb-4">
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+          {kpis.map((item, idx) => (
+            <div
+              key={idx}
+              className={` text-white rounded-xl p-6 shadow-md `}
+              style={{ backgroundColor: `${item.color}` }} >
+              <div className="d-flex justify-content-between mb-4">
                 <div>
-              <p className="text-xl">{item.label}</p>
+                  <p className="text-xl">{item.label}</p>
+                </div>
+              </div>
+              <h2 className="text-4xl font-bold">{item.value.toLocaleString()}</h2>
             </div>
-            </div>
-            <h2 className="text-4xl font-bold">{item.value.toLocaleString()}</h2>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
     </>
   );
 }

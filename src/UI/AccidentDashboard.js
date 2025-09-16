@@ -40,17 +40,17 @@ const contacts = [
   },
 ];
 
-export default function AccidentDashboard({closeValue}) {
+export default function AccidentDashboard({ closeValue }) {
   const [message, setMessage] = useState("");
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 max-w-[680px] mx-auto">
-        <div className="flex justify-end pb-3 mt-[-10px]">
-           <IconButton size="small" className="x-icon" onClick={()=>closeValue(false)}>
-            <CloseIcon />
-          </IconButton>
-        </div>
-      <div className="grid grid-cols-3 gap-4 mb-2">
+      <div className="flex justify-end pb-3 mt-[-10px]">
+        <IconButton size="small" className="x-icon" onClick={() => closeValue(false)}>
+          <CloseIcon />
+        </IconButton>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 md lg:grid-cols-3 gap-4 mb-2">
         {contacts.map((contact, idx) => (
           <div
             key={idx}

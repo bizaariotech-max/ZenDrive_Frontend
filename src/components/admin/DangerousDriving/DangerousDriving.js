@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 
-import {IconButton,} from "@mui/material";
+import { IconButton, } from "@mui/material";
 
 const DangerousDriving = () => {
   const NextArrow = ({ onClick }) => (
@@ -28,35 +28,32 @@ const DangerousDriving = () => {
     dots: false,
     infinite: true,
     speed: 600,
-    slidesToShow: 3,
+    slidesToShow: 3,   // ✅ default (desktop)
     slidesToScroll: 1,
     autoplay: false,
     autoplaySpeed: 2500,
     arrows: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-    // centerMode: true,
-    //  centerPadding: "70px",
-    // leftPadding: '10px',
     responsive: [
       {
-        breakpoint: 1024, // tablet & below
+        breakpoint: 1024, // below 1024px (tablet)
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 600, // mobile
+        breakpoint: 600, // below 600px (mobile)
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          dots: true,
+          dots: false,
         },
       },
     ],
-
   };
+
   return (
     <>
       <section className={`pt-10 spaceBottom bg-[${ThemeColors.secondColor}] driver-custom-section relative rounded-lg mt-[60px]`}>
@@ -105,42 +102,42 @@ const DangerousDriving = () => {
                         <p className={`p-2 bg-[${ThemeColors.secondColor}] rounded`}>UP16 AA 3456</p>
                       </div>
                     </div>
-                    <div> 
-                    <div className="grid grid-cols-2 gap-3 mb-3 ">
-                      <div>
-                        <p className='mb-1  text-xs text-gray-500'>Duty Conductor</p>
-                        <p className={`p-2 bg-[${ThemeColors.secondColor}] rounded`}>Prince Kumar</p>
-                      </div>
-                      <div className=''>
-                        <p className='mb-1  text-xs text-gray-500'>Live Location</p>
-                        <p className={`p-2 bg-[${ThemeColors.secondColor}] rounded flex justify-between`}>
+                    <div>
+                      <div className="grid grid-cols-2 gap-3 mb-3 ">
+                        <div>
+                          <p className='mb-1  text-xs text-gray-500'>Duty Conductor</p>
+                          <p className={`p-2 bg-[${ThemeColors.secondColor}] rounded`}>Prince Kumar</p>
+                        </div>
+                        <div className=''>
+                          <p className='mb-1  text-xs text-gray-500'>Live Location</p>
+                          <p className={`p-2 bg-[${ThemeColors.secondColor}] rounded flex justify-between`}>
 
-                          <div>Lucknow</div>
-                          <div><CiLocationOn /></div>
-                        </p>
+                            <div>Lucknow</div>
+                            <div><CiLocationOn /></div>
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3 mb-3 ">
-                      <div>
-                        <p className='mb-1  text-xs text-gray-500'>RO/Depot</p>
-                        <p className={`p-2 bg-[${ThemeColors.secondColor}] rounded`}>Ghaziabad/
-                          Lucknow</p>
+                      <div className="grid grid-cols-2 gap-3 mb-3 ">
+                        <div>
+                          <p className='mb-1  text-xs text-gray-500'>RO/Depot</p>
+                          <p className={`p-2 bg-[${ThemeColors.secondColor}] rounded`}>Ghaziabad/
+                            Lucknow</p>
+                        </div>
+                        <div className=''>
+                          <p className='mb-1  text-xs text-gray-500'>Route</p>
+                          <p className={`p-2 bg-[${ThemeColors.secondColor}] rounded`}>
+                            <div className='flex'>
+                              <CiLocationOn />
+                              <div className='ps-2'>Lucknow</div>
+                            </div>
+                            <div className=' border-l-2 border-dotted border-gray-500 p-4 ms-2'></div>
+                            <div className='flex pt-1'>
+                              <CiLocationOn />
+                              <div className='ps-2'>Ghaziabad</div>
+                            </div>
+                          </p>
+                        </div>
                       </div>
-                      <div className=''>
-                        <p className='mb-1  text-xs text-gray-500'>Route</p>
-                        <p className={`p-2 bg-[${ThemeColors.secondColor}] rounded`}>
-                          <div className='flex'>
-                            <CiLocationOn />
-                            <div className='ps-2'>Lucknow</div>
-                          </div>
-                          <div className=' border-l-2 border-dotted border-gray-500 p-4 ms-2'></div>
-                          <div className='flex pt-1'>
-                            <CiLocationOn />
-                            <div className='ps-2'>Ghaziabad</div>
-                          </div>
-                        </p>
-                      </div>
-                    </div>
                     </div>
                   </div>
                 </div>

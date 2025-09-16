@@ -11,12 +11,14 @@ import {
   Button,
   IconButton,
   FormLabel,
+  useMediaQuery,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Funnel } from "lucide-react";
 
 
 export default function FilterSidebar() {
+  const isMobile = useMediaQuery("(max-width:600px)");
   const [fleet, setFleet] = useState("");
   const [year, setYear] = useState("");
   const [staffType, setStaffType] = useState("");
@@ -36,16 +38,19 @@ export default function FilterSidebar() {
           </div>
           <div>
 
-            <Button className="DataFilterBtn" variant="contained" endIcon={<Funnel />}
+            <Button
+              className="DataFilterBtn"
+              variant="contained"
+              endIcon={!isMobile && <Funnel />} // ✅ icon on large, hidden on mobile
               sx={{
-                bgcolor: '#286578',
+                bgcolor: "#286578",
                 textTransform: "capitalize",
-                paddingBlock: '8px',
-                fontFamily: "Lato, sans-serif "
+                paddingBlock: "8px",
+                fontFamily: "Lato, sans-serif",
               }}
-              onClick={() => setHideSidebar('block ')}
+              onClick={() => setHideSidebar("block")}
             >
-              Primary Data Filter :
+              {isMobile ? <Funnel /> : "Primary Data Filter :"}
             </Button>
           </div>
         </div>

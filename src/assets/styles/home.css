@@ -127,12 +127,12 @@
 
 @media screen and (max-width:768px) {
   .driver-custom-section .slick-next-btn {
-    right: 40%;
+    right: 39%;
     bottom: -45px;
   }
 
   .driver-custom-section .slick-prev-btn {
-    left: 40%;
+    left: 39%;
     bottom: -45px;
   }
 }
