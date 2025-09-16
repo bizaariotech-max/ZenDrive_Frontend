@@ -39,9 +39,9 @@ const AdminSidedrawer = ({ show, toggleShow }) => {
                                 onClick={() =>
                                     item?.subList ? handleClick(item.id) : toggleShow(false)
                                 }
-                                className={`w-full flex items-center transition-all duration-300 ease-in rounded 
-                  hover:bg-primary hover:text-white
-                  ${pathname === item.link ? "bg-primary text-white" : "text-primary"}`}
+                                className={`w-full flex items-center text-white transition-all duration-300 ease-in rounded 
+                  hover:bg-sidebar-primary hover:text-white
+                  ${pathname === item.link ? "bg-sidebar-primary text-white" : "text-primary"}`}
                             >
                                 <ListItemButton>
                                     <span className="me-2">{item?.icon} </span>
@@ -59,15 +59,15 @@ const AdminSidedrawer = ({ show, toggleShow }) => {
                         {/* Submenu */}
                         {item?.subList && (
                             <Collapse in={openMenu === item.id} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding>
+                                <List component="div" disablePadding className="bg-sidebar-foreground text-white h-64 max-h-64 overflow-y-auto hide-scrollbar">
                                     {item.subList.map((child) => (
                                         <ListItem key={child.id} disablePadding className="pl-8">
                                             <NavLink
                                                 to={child.path}
                                                 onClick={() => toggleShow(false)}
-                                                className={`w-full flex items-center transition-all duration-300 ease-in rounded 
-                          hover:bg-secondary
-                          ${pathname === child.path ? "bg-primary text-white" : "text-primary"}`}
+                                                className={`w-full text-white flex items-center transition-all duration-300 ease-in rounded 
+                          hover:bg-primary hover:text-white
+                          ${pathname === child.path ? "bg-sidebar-primary text-white" : "text-primary"}`}
                                             >
                                                 <ListItemButton>
                                                     <span className="me-2">{child.icon}</span>
@@ -87,7 +87,7 @@ const AdminSidedrawer = ({ show, toggleShow }) => {
                 <Button
                     variant="contained"
                     sx={{
-                        backgroundColor: "var(--primary)",
+                        backgroundColor: "var(--sidebar-foreground)",
                         color: "white",
                         "&:hover": {
                             backgroundColor: "transparent",

@@ -17,7 +17,7 @@ const FuelTypeMaster = () => {
     const [fuelMasterList, setFuelMasterList] = useState([]);
     const columns = [
         {
-            field: "_id", headerName: "Sr. No", width: 90, headerClassName: "blue-header", headerAlign: "center",
+            field: "_id", headerName: "Sr. No", width: 90, headerClassName: "health-table-header-style", headerAlign: "center",
             align: "center",
             sortable: false,
             filterable: false,
@@ -31,7 +31,7 @@ const FuelTypeMaster = () => {
         {
             field: "lookup_value",
             headerName: "Fuel Master",
-            headerClassName: "blue-header",
+            headerClassName: "health-table-header-style",
             headerAlign: "center",
             flex: 1,
             align: "center",
@@ -42,7 +42,7 @@ const FuelTypeMaster = () => {
             headerName: "Actions",
             flex: 1,
             width: 150,
-            headerClassName: "blue-header",
+            headerClassName: "health-table-header-style",
             headerAlign: "center",
             sortable: false,
             filterable: false,
@@ -157,20 +157,6 @@ const FuelTypeMaster = () => {
                     columns={columns}
                     loading={isLoading}
                     autoHeight
-                    sx={{
-                        // boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
-                        border: "none",
-                        color: "var(--text-secondary)",
-                        fontFamily: "Roboto, sans-serif",
-
-                        "& .blue-header": {
-                            backgroundColor: "var(--accent)",
-                            color: "var(--sidebar-accent-foreground)",
-                        },
-                        "& .blue-header .MuiDataGrid-columnHeaderTitle": {
-                            fontWeight: 600,
-                        },
-                    }}
                     pagination
                     getRowId={(row) => row._id}
                     paginationModel={paginationModel}

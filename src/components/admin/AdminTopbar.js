@@ -9,17 +9,17 @@ import { Avatar } from '@mui/material';
 const AdminTopbar = ({ show, toggleShow }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   return (
-    <header className="app-topbar bg-white border-b border-gray-100 flex items-center py-3 px-4 justify-between shadow-md mb-3">
+    <header className="app-topbar bg-white border-b border-gray-100 flex items-center py-3 px-4 justify-between shadow-md">
       <div className='flex justify-between w-full'>
 
         <div className="hidden md:flex items-center gap-3 w-1/3">
-          <div className="flex items-center w-full max-w-md rounded-[12px] overflow-hidden  bg-[#f0f1fe]">
+          <div className="flex items-center w-full max-w-md rounded-[12px] overflow-hidden  bg-secondary">
             <input
               type="text"
               placeholder="Search..."
               className="flex-grow px-4 py-1  text-primary outline-none bg-transparent"
             />
-            <button className="bg-[#52677D]/70 hover:bg-primary transition-colors  flex items-center justify-center search-btn-style">
+            <button className="bg-[#286578]/70 hover:bg-primary transition-colors  flex items-center justify-center search-btn-style">
               <Search className="text-white" size={25} />
             </button>
           </div>

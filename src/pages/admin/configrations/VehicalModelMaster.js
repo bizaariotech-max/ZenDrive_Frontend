@@ -83,7 +83,7 @@ const VehicalModelMaster = () => {
     ///========== columns for datagrid table list ============\\
     const columns = [
         {
-            field: "_id", headerName: "Sr. No", width: 90, headerClassName: "blue-header", headerAlign: "center",
+            field: "_id", headerName: "Sr. No", width: 90, headerClassName: "health-table-header-style", headerAlign: "center",
             align: "center",
             sortable: false,
             filterable: false,
@@ -96,14 +96,14 @@ const VehicalModelMaster = () => {
         {
             field: "parent_lookup_name",
             headerName: "Manufacture Master",
-            headerClassName: "blue-header",
+            headerClassName: "health-table-header-style",
             width: 200,
             renderCell: (params) => <span>{params.row?.parent_lookup_name || "N/A"}</span>,
         },
         {
             field: "lookup_value",
             headerName: "Vehical Model Master",
-            headerClassName: "blue-header",
+            headerClassName: "health-table-header-style",
             width: 200,
             renderCell: (params) => <span>{params.row?.lookup_value || "N/A"}</span>,
         },
@@ -112,7 +112,7 @@ const VehicalModelMaster = () => {
             headerName: "Actions",
             flex: 1,
             width: 150,
-            headerClassName: "blue-header",
+            headerClassName: "health-table-header-style",
             headerAlign: "center",
             sortable: false,
             filterable: false,
@@ -263,20 +263,6 @@ const VehicalModelMaster = () => {
                     columns={columns}
                     loading={isLoading}
                     autoHeight
-                    sx={{
-                        // boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
-                        border: "none",
-                        color: "var(--text-secondary)",
-                        fontFamily: "Roboto, sans-serif",
-
-                        "& .blue-header": {
-                            backgroundColor: "var(--accent)",
-                            color: "var(--sidebar-accent-foreground)",
-                        },
-                        "& .blue-header .MuiDataGrid-columnHeaderTitle": {
-                            fontWeight: 600,
-                        },
-                    }}
                     pagination
                     getRowId={(row) => row._id}
                     paginationModel={paginationModel}

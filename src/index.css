@@ -1,6 +1,6 @@
 /** @import must precede all other statements */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 @tailwind base;
@@ -11,15 +11,19 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Lato', sans-serif;
   scroll-behavior: smooth;
 }
 
+h1,h2,h3,h4,h5,h6{
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
 @layer base {
 
   :root {
-    --background: #BDC4D480;
-    --foreground: #ffffff;
+    --background: #286578;
+    --foreground: #f6f7ff;
 
     --card: #52677D26;
     --card-foreground: #000000B2;
@@ -27,10 +31,10 @@
     --popover: #ffffff;
     --popover-foreground: #020817;
 
-    --primary: #52677D;
+    --primary: #286578;
     --primary-foreground: #FFFFFF;
 
-    --secondary: #F1F5F9;
+    --secondary: #def7ff;
     --secondary-foreground: #0F172A;
 
     --muted: #BDC4D44D;
@@ -42,7 +46,7 @@
     --destructive: #EF4444;
     --destructive-foreground: #F8FAFC;
 
-    --border: #000000B2;
+    --border: #286578;
     --input: #E2E8F0;
     --ring: #020817;
 
@@ -50,9 +54,9 @@
 
     --sidebar-background: #FAFAFA;
 
-    --sidebar-foreground: #3F3F46;
+    --sidebar-foreground: #4c91acaf;
 
-    --sidebar-primary: #18181B;
+    --sidebar-primary: #ffffff1a;
 
     --sidebar-primary-foreground: #FAFAFA;
 
@@ -145,4 +149,22 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none !important; /* Chrome, Safari */
 }
+
+.filter-sidebar {
+  position: fixed;
+  right: 0;
+  z-index: 9;
+  top: 70px;
+}
+
+.health-table-header-style {
+  background-color: #286578 !important;
+  padding: 4px 8px;
+  color: white;
+  font-weight: 500;
+  width: 100%;
+  text-align: center;
+
+}
+
 

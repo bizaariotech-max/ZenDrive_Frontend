@@ -246,27 +246,27 @@ const HealthProfileQuestion = () => {
     ///========== datagrid columns  for show list ============\\
     const columns = useMemo(() => [
         {
-            field: "id", headerName: "Sr. No", width: 90, headerClassName: "blue-header", headerAlign: "center", align: "center", sortable: false, filterable: false, disableColumnMenu: true, renderCell: (params) => {
+            field: "id", headerName: "Sr. No", width: 90, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", sortable: false, filterable: false, disableColumnMenu: true, renderCell: (params) => {
                 const rowIndex = params.api.getSortedRowIds().indexOf(params.id);
                 return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
             },
         },
-        { field: "questionCategory", headerName: "Category", width: 150, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.HPQuestionCategory || "N/A"}</span>, },
-        { field: "groupId", headerName: "Group ID", width: 120, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.HPGroup || "N/A"}</span>, },
-        { field: "questionOrder", headerName: "Order", width: 100, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.QuestionOrder || "N/A"}</span>, },
-        { field: "logicalGroup", headerName: "Logical Group", width: 150, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.LogicalGroup || "N/A"}</span>, },
-        { field: "investigationTypeId", headerName: "Investigation Type", width: 180, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.InvestigationType || "N/A"}</span>, },
-        { field: "questionType", headerName: "Question Type", width: 150, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.QuestionType || "N/A"}</span>, },
-        { field: "question", headerName: "Question", width: 250, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.HPQuestion || "N/A"}</span>, },
-        { field: "selectionType", headerName: "Selection", width: 130, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.SelectionType || "N/A"}</span>, },
-        { field: "inputType", headerName: "Input Type", width: 150, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.InputType || "N/A"}</span>, },
-        { field: "validityMinMax", headerName: "Validity Min Max", width: 130, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.ValidityMinValue + " - " + params.row?.ValidityMaxValue || "N/A"}</span>, },
-        { field: "responseUnit", headerName: "Response Unit", width: 130, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.ResponseUnit || "N/A"}</span>, },
-        { field: "normalMinMax", headerName: "Normal Min Max", width: 130, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.NormalValueMinimum + " - " + params.row?.NormalValueMaximum || "N/A"}</span>, },
-        { field: "weightageMinMax", headerName: "Weightage Min Max", width: 150, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.WeightageValueMinimum + " - " + params.row?.WeightageValueMaximum || "N/A"}</span>, },
-        { field: "sosMinMax", headerName: "SOS Min Max", width: 130, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.SOSValueMinimum + " - " + params.row?.SOSValueMaximum || "N/A"}</span>, },
-        { feild: "IsActive", headerName: "Status", width: 100, headerClassName: "blue-header", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.IsActive ? "Active" : "Inactive"}</span> },
-        { field: "actions", headerName: "Actions", width: 100, headerClassName: "blue-header", headerAlign: "center", align: "center", sortable: false, filterable: false, disableColumnMenu: true, renderCell: (params) => <DatagridRowAction row={params.row} onEdit={() => handleEdit(params.row)} onDelete={() => handleDelete(params.row)} />, },
+        { field: "questionCategory", headerName: "Category", width: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.HPQuestionCategory || "N/A"}</span>, },
+        { field: "groupId", headerName: "Group ID", width: 120, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.HPGroup || "N/A"}</span>, },
+        { field: "questionOrder", headerName: "Order", width: 100, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.QuestionOrder || "N/A"}</span>, },
+        { field: "logicalGroup", headerName: "Logical Group", width: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.LogicalGroup || "N/A"}</span>, },
+        { field: "investigationTypeId", headerName: "Investigation Type", width: 180, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.InvestigationType || "N/A"}</span>, },
+        { field: "questionType", headerName: "Question Type", width: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.QuestionType || "N/A"}</span>, },
+        { field: "question", headerName: "Question", width: 250, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.HPQuestion || "N/A"}</span>, },
+        { field: "selectionType", headerName: "Selection", width: 130, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.SelectionType || "N/A"}</span>, },
+        { field: "inputType", headerName: "Input Type", width: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.InputType || "N/A"}</span>, },
+        { field: "validityMinMax", headerName: "Validity Min Max", width: 130, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.ValidityMinValue + " - " + params.row?.ValidityMaxValue || "N/A"}</span>, },
+        { field: "responseUnit", headerName: "Response Unit", width: 130, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.ResponseUnit || "N/A"}</span>, },
+        { field: "normalMinMax", headerName: "Normal Min Max", width: 130, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.NormalValueMinimum + " - " + params.row?.NormalValueMaximum || "N/A"}</span>, },
+        { field: "weightageMinMax", headerName: "Weightage Min Max", width: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.WeightageValueMinimum + " - " + params.row?.WeightageValueMaximum || "N/A"}</span>, },
+        { field: "sosMinMax", headerName: "SOS Min Max", width: 130, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.SOSValueMinimum + " - " + params.row?.SOSValueMaximum || "N/A"}</span>, },
+        { feild: "IsActive", headerName: "Status", width: 100, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.IsActive ? "Active" : "Inactive"}</span> },
+        { field: "actions", headerName: "Actions", width: 100, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", sortable: false, filterable: false, disableColumnMenu: true, renderCell: (params) => <DatagridRowAction row={params.row} onEdit={() => handleEdit(params.row)} onDelete={() => handleDelete(params.row)} />, },
     ], [paginationModel, handleEdit, handleDelete]);
     return (
         <div className="p-4 bg-white">
@@ -479,19 +479,7 @@ const HealthProfileQuestion = () => {
                     rowHeight={50}
                     paginationModel={paginationModel}
                     onPaginationModelChange={setPaginationModel}
-                    sx={{
-                        border: "none",
-                        color: "var(--text-secondary)",
-                        fontFamily: "Roboto, sans-serif",
-
-                        "& .blue-header": {
-                            backgroundColor: "var(--accent)",
-                            color: "var(--sidebar-accent-foreground)",
-                        },
-                        "& .blue-header .MuiDataGrid-columnHeaderTitle": {
-                            fontWeight: 600,
-                        },
-                    }}
+                  
                 />
             </div>
         </div>

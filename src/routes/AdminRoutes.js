@@ -22,6 +22,7 @@ import AbnormalityMaster from "../pages/admin/configrations/AbnormalityMaster";
 import StateMaster from "../pages/admin/configrations/StateMaster";
 import CityMaster from "../pages/admin/configrations/CityMaster";
 import HealthProfileQuestion from "../pages/admin/healthProfile/HealthProfileQuestion";
+import StationMaster from "../pages/admin/stationMaster/StationMaster";
 
 const AdminRoutes = () => (
   <Routes>
@@ -49,6 +50,7 @@ const AdminRoutes = () => (
         {/* Catch-all inside configuration */}
         <Route path="*" element={<ErrorPage />} />
       </Route>
+      <Route path="station-master" element={<StationMaster />} />
       <Route path="health-profiling-questions" element={<HealthProfileQuestion />} />
 
       {/* Catch-all inside admin */}

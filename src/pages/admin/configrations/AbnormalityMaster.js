@@ -30,7 +30,7 @@ const AbnormalityMaster = () => {
     ///========== columns for datagrid table list ============\\
     const columns = [
         {
-            field: "_id", headerName: "Sr. No", width: 90, headerClassName: "blue-header", headerAlign: "center",
+            field: "_id", headerName: "Sr. No", width: 90, headerClassName: "health-table-header-style", headerAlign: "center",
             align: "center",
             sortable: false,
             filterable: false,
@@ -43,28 +43,28 @@ const AbnormalityMaster = () => {
         {
             field: "parent_lookup_name",
             headerName: "Investigation Master",
-            headerClassName: "blue-header",
+            headerClassName: "health-table-header-style",
             width: 200,
             renderCell: (params) => <span>{params.row?.parent_lookup_name || "N/A"}</span>,
         },
         {
             field: "lookup_value",
             headerName: "Abnormality Master",
-            headerClassName: "blue-header",
+            headerClassName: "health-table-header-style",
             width: 200,
             renderCell: (params) => <span>{params.row?.lookup_value || "N/A"}</span>,
         },
         {
             field: "measurement_unit",
             headerName: "Measurement Unit",
-            headerClassName: "blue-header",
+            headerClassName: "health-table-header-style",
             width: 200,
             renderCell: (params) => <span>{params.row?.other?.measurement_unit || "N/A"}</span>,
         },
         {
             field: "measurement_type",
             headerName: "Measurement Type",
-            headerClassName: "blue-header",
+            headerClassName: "health-table-header-style",
             width: 200,
             renderCell: (params) => <span>{params.row?.other?.measurement_type || "N/A"}</span>,
         },
@@ -73,7 +73,7 @@ const AbnormalityMaster = () => {
             headerName: "Actions",
             flex: 1,
             width: 150,
-            headerClassName: "blue-header",
+            headerClassName: "health-table-header-style",
             headerAlign: "center",
             sortable: false,
             filterable: false,
@@ -298,20 +298,6 @@ const AbnormalityMaster = () => {
                     columns={columns}
                     loading={isLoading}
                     autoHeight
-                    sx={{
-                        // boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
-                        border: "none",
-                        color: "var(--text-secondary)",
-                        fontFamily: "Roboto, sans-serif",
-
-                        "& .blue-header": {
-                            backgroundColor: "var(--accent)",
-                            color: "var(--sidebar-accent-foreground)",
-                        },
-                        "& .blue-header .MuiDataGrid-columnHeaderTitle": {
-                            fontWeight: 600,
-                        },
-                    }}
                     pagination
                     getRowId={(row) => row._id}
                     paginationModel={paginationModel}
