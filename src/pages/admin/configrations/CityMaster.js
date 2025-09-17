@@ -88,7 +88,7 @@ const CityMaster = () => {
                 "lookup_id": editId || null,
                 "lookup_value": formData?.cityName,
                 "lookup_type": "city",
-                "parent_lookup_type": "",
+                "parent_lookup_type": "state",
                 "parent_lookup_id": formData?.stateId || null,
             }
             const res = await __postApiData('/api/v1/admin/SaveLookup', payload);

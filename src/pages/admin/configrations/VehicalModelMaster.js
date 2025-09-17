@@ -146,7 +146,7 @@ const VehicalModelMaster = () => {
                 "lookup_id": editId || null,
                 "lookup_value": formData?.vehicleModel,
                 "lookup_type": "vehicle_model_type",
-                "parent_lookup_type": "",
+                "parent_lookup_type": "manufacturer_type",
                 "parent_lookup_id": formData?.manufactureId || null,
             }
             const res = await __postApiData('/api/v1/admin/SaveLookup', payload);

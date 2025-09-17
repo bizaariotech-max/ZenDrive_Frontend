@@ -23,6 +23,8 @@ import StateMaster from "../pages/admin/configrations/StateMaster";
 import CityMaster from "../pages/admin/configrations/CityMaster";
 import HealthProfileQuestion from "../pages/admin/healthProfile/HealthProfileQuestion";
 import StationMaster from "../pages/admin/stationMaster/StationMaster";
+import StationTypeMaster from "../pages/admin/configrations/StationTypeMaster";
+import RouteMaster from "../pages/admin/routeMaster/RouteMaster";
 
 const AdminRoutes = () => (
   <Routes>
@@ -30,6 +32,7 @@ const AdminRoutes = () => (
       <Route index element={<Home />} />
       <Route path="configuration" element={<AdminConfigOutlet />}>
         <Route path="role-master" element={<RoleMaster />} />
+        <Route path="station-master" element={<StationTypeMaster />} />
         <Route path="manufacturer-master" element={<ManufactureMaster />} />
         <Route path="vehicle-model-master" element={<VehicalModelMaster />} />
         <Route path="fuel-type-master" element={<FuelTypeMaster />} />
@@ -51,6 +54,7 @@ const AdminRoutes = () => (
         <Route path="*" element={<ErrorPage />} />
       </Route>
       <Route path="station-master" element={<StationMaster />} />
+      <Route path="route-master" element={<RouteMaster />} />
       <Route path="health-profiling-questions" element={<HealthProfileQuestion />} />
 
       {/* Catch-all inside admin */}

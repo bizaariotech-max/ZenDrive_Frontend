@@ -6,10 +6,14 @@ import * as Yup from "yup";
 import { useFormik } from 'formik';
 import { __getCommenApiDataList } from '../../../utils/api/commonApi';
 import { DataGrid } from '@mui/x-data-grid';
+import { __postApiData } from '../../../utils/api';
+import { toast } from 'react-toastify';
+import DatagridRowAction from '../../../components/common/DatagridRowAction';
+import { Popup } from '../../../components/common/Popup';
+import { render } from '@testing-library/react';
 
 const validationSchema = Yup.object({
-    stationType: Yup.string().required("Station Type is required"),
-    parentStationId: Yup.string().required("Parent Station ID is required"),
+    StationTypeId: Yup.string().required("Station Type is required"),
     stationName: Yup.string().required("Station Name is required"),
     addressLine1: Yup.string().required("Address Line 1 is required"),
     addressLine2: Yup.string(),
@@ -30,25 +34,50 @@ const StationMaster = () => {
     });
 
     const columns = [
-        { field: "_id", headerName: "ID", minWidth: 90, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", sortable: false, filterable: false, disableColumnMenu: true },
-        { field: "stationType", headerName: "Station Type", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center",},
-        { field: "parentStationId", headerName: "Parent Station ID", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", },
-        { field: "stationName", headerName: "Station Name", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", },
-        { field: "addressLine1", headerName: "Address Line 1", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", },
-        { field: "addressLine2", headerName: "Address Line 2", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", },
-        { field: "city", headerName: "City", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", },
-        { field: "state", headerName: "State", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", },
-        { field: "pincode", headerName: "Pincode", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", },
-        { field: "geoLocation", headerName: "Geo Location", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", },
+        {
+            field: "_id", headerName: "Sr. No", minWidth: 90, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", sortable: false, filterable: false, disableColumnMenu: true, renderCell: (params) => {
+                const rowIndex = params.api.getSortedRowIds().indexOf(params.id);
+                return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
+            },
+        },
+        { field: "StationTypeId", headerName: "Station Type", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.StationTypeId?.lookup_value || "N/A"}</span>, },
+        { field: "ParentStationId", headerName: "Parent Station", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.ParentStationId?.StationName || "N/A"}</span>, },
+        { field: "StationName", headerName: "Station Name", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.StationName || "N/A"}</span>, },
+        { field: "AddressLine1", headerName: "Address Line 1", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.AddressLine1 || "N/A"}</span>, },
+        { field: "AddressLine2", headerName: "Address Line 2", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.AddressLine2 || "N/A"}</span>, },
+        { field: "state", headerName: "State", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.StateId?.lookup_value || "N/A"}</span>, },
+        { field: "city", headerName: "City", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.CityId?.lookup_value || "N/A"}</span>, },
+        { field: "pincode", headerName: "Pincode", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.PostalCode || "N/A"}</span>, },
+        {
+            field: "geoLocation", headerName: "Geo Location", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.Geolocation?.coordinates
+                ? params.row.Geolocation.coordinates.join(", ")
+                : "N/A"}
+            </span>,
+        },
+        {
+            field: "actions",
+            headerName: "Actions",
+            flex: 1,
+            minWidth: 100,
+            headerClassName: "health-table-header-style",
+            headerAlign: "center",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            align: "center",
+            renderCell: (params) => <DatagridRowAction row={params.row} onEdit={() => handleEdit(params.row)}
+                onDelete={() => handleDelete(params.row)} />,
+        }
 
     ];
     const [dataList, setDataList] = useState({
+        stationTypeList: [],
         stateList: [],
         cityList: [],
     });
 
     ///========== destructuring dataList ============\\
-    const { stateList, cityList } = dataList;
+    const { stationTypeList, stateList, cityList } = dataList;
 
     //========== function to update state dataList ============\\
     const updateState = (data) => setDataList((prevState) => ({ ...prevState, ...data }));
@@ -78,16 +107,34 @@ const StationMaster = () => {
         }
     }
 
+    //============ Function to get the list of station master ============\\
+    const getStationMasterList = async () => {
+        try {
+            setLoading(true);
+            const res = await __postApiData('/api/v1/admin/GetStation');
+            if (res.response && res.response.response_code === "200") {
+                setRows(res?.data || []);
+            } else {
+                toast.error(res.response ? res.response?.response_message : "Failed to fetch data");
+            }
+        } catch (err) {
+            toast.error("Failed to fetch data");
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
+        getStationMasterList();
+        fetchData(['station_type'], "stationTypeList");
         fetchData(['state'], "stateList");
-        fetchData(['city'], "cityList");
     }, []);
 
 
+    //=========== formik for the form data handling ============\\
     const formik = useFormik({
         initialValues: {
-            stationType: "",
-            stationId: "",
+            StationTypeId: "",
             parentStationId: "",
             stationName: "",
             addressLine1: "",
@@ -98,16 +145,84 @@ const StationMaster = () => {
             geoLocation: "",
         },
         validationSchema,
-        onSubmit: (values, { resetForm }) => {
-            console.log("values", values);
-            const newRow = {
-                _id: rows.length + 1, // Auto-generate ID
-                ...values,
-            };
-            setRows((prev) => [...prev, newRow]);
-            resetForm();
+        onSubmit: async (values, { resetForm }) => {
+            try {
+                setLoading(true);
+                const payload = {
+                    "StationId": editId || null,
+                    "StationTypeId": values?.StationTypeId || null,
+                    "ParentStationId": values?.parentStationId || null,
+                    "StationName": values?.stationName || "",
+                    "AddressLine1": values?.addressLine1 || "",
+                    "AddressLine2": values?.addressLine2 || "",
+                    "PostalCode": values?.postalCode || "",
+                    "StateId": values?.state || null,
+                    "CityId": values?.city || null,
+                    "Geolocation": {
+                        "type": "Point",
+                        "coordinates": [
+                            values?.geoLocation?.split(",")[0] || 0,//lat
+                            values?.geoLocation?.split(",")[1] || 0//long
+                        ]
+                    },
+                    "IsActive": true
+                }
+                const res = await __postApiData('/api/v1/admin/AddEditStation', payload);
+                if (res.response && res.response.response_code === "200") {
+                    toast.success(editId ? "Station Master updated successfully" : "Station Master added successfully");
+                    resetForm();
+                    setEditId(null);
+                    setLoading(false);
+                    getStationMasterList();
+                } else {
+                    toast.error(res.response.response_message || "Failed to add Station Master");
+                }
+
+            } catch (error) {
+                setLoading(false);
+                console.error("Error submitting form:", error);
+            }
         },
     });
+
+    useEffect(() => {
+        if (formik.values?.state) {
+            fetchData(['city'], "cityList", formik.values?.state);
+        }
+    }, [formik.values?.state])
+
+
+    ///========== handle edit ============\\
+    const handleEdit = (row) => {
+        formik.setValues({
+            StationTypeId: row?.StationTypeId?._id || "",
+            parentStationId: row?.ParentStationId?._id || "",
+            stationName: row?.StationName || "",
+            addressLine1: row?.AddressLine1 || "",
+            addressLine2: row?.AddressLine2 || "",
+            postalCode: row?.PostalCode || "",
+            state: row?.StateId?._id || "",
+            city: row?.CityId?._id || "",
+            geoLocation: row?.Geolocation.coordinates.join(", ") || "",
+        })
+        setEditId(row._id);
+    };
+
+    ///========== handle delete  ============\\
+    const handleDelete = async (row) => {
+        try {
+            const result = await Popup("warning", "Are you sure?", "You won't be able to revert this!");
+            if (result.isConfirmed) {
+                const res = await __postApiData(`/api/v1/admin/DeleteStation`, { StationId: row?._id });
+                if (res?.response?.response_code === "200") {
+                    toast.success("Station Master deleted successfully");
+                    getStationMasterList();
+                }
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "An error occurred");
+        }
+    };
     return (
         <div className="p-4 bg-white">
             <SectionHeader
@@ -120,13 +235,15 @@ const StationMaster = () => {
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormInput
-                        id="stationType"
-                        name="stationType"
-                        label="Station Type"
-                        value={formik.values.stationType}
+                        id="StationTypeId"
+                        name="StationTypeId"
+                        label="Select Station Type"
+                        type="select"
+                        value={formik.values.StationTypeId}
                         onChange={formik.handleChange}
-                        error={formik.touched.stationType && Boolean(formik.errors.stationType)}
-                        helperText={formik.touched.stationType && formik.errors.stationType}
+                        error={formik.touched.StationTypeId && Boolean(formik.errors.StationTypeId)}
+                        helperText={formik.touched.StationTypeId && formik.errors.StationTypeId}
+                        options={stationTypeList}
                     />
                     <FormInput
                         id="parentStationId"
@@ -137,7 +254,7 @@ const StationMaster = () => {
                         onChange={formik.handleChange}
                         error={formik.touched.parentStationId && Boolean(formik.errors.parentStationId)}
                         helperText={formik.touched.parentStationId && formik.errors.parentStationId}
-                        options={[{ _id: 1, lookup_value: "station 1" }, { _id: 2, lookup_value: "station 2" }]}
+                        options={rows?.map((row) => ({ _id: row._id, lookup_value: row?.StationName }))}
                     />
                     <FormInput
                         id="stationName"
@@ -203,7 +320,7 @@ const StationMaster = () => {
                         id="geoLocation"
                         name="geoLocation"
                         label="GeoLocation"
-                        placeholder={"Enter GeoLocation Ex:28.7041, 77.1025"}
+                        placeholder={"Enter GeoLocation Ex:28.7041,77.1025"}
                         value={formik.values.geoLocation}
                         onChange={formik.handleChange}
                         error={formik.touched.geoLocation && Boolean(formik.errors.geoLocation)}
@@ -223,7 +340,7 @@ const StationMaster = () => {
                     loading={loading}
                     autoHeight
                     pagination
-                    getRowId={(row) => row._id}
+                    getRowId={(row) => row?._id}
                     paginationModel={paginationModel}
                     onPaginationModelChange={setPaginationModel}
                     pageSizeOptions={[]}

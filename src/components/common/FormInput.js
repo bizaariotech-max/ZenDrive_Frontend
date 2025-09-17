@@ -50,6 +50,36 @@ const FormInput = ({
           />
         );
 
+      case "date":
+        return (
+          <TextField
+            type="date"
+            fullWidth
+            id={name}
+            name={name}
+            variant="outlined"
+            size="small"
+            className="custom-input"
+            InputLabelProps={{ shrink: true }}
+            {...props}
+          />
+        );
+
+      case "time":
+        return (
+          <TextField
+            type="time"
+            fullWidth
+            id={name}
+            name={name}
+            variant="outlined"
+            size="small"
+            className="custom-input"
+            InputLabelProps={{ shrink: true }}
+            {...props}
+          />
+        );
+
       case "text":
       default:
         return (
@@ -81,3 +111,4 @@ const FormInput = ({
 };
 
 export default FormInput;
+
