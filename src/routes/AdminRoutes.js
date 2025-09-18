@@ -25,6 +25,7 @@ import HealthProfileQuestion from "../pages/admin/healthProfile/HealthProfileQue
 import StationMaster from "../pages/admin/stationMaster/StationMaster";
 import StationTypeMaster from "../pages/admin/configrations/StationTypeMaster";
 import RouteMaster from "../pages/admin/routeMaster/RouteMaster";
+import AssetTypeMaster from "../pages/admin/configrations/AssetTypeMaster";
 
 const AdminRoutes = () => (
   <Routes>
@@ -33,6 +34,7 @@ const AdminRoutes = () => (
       <Route path="configuration" element={<AdminConfigOutlet />}>
         <Route path="role-master" element={<RoleMaster />} />
         <Route path="station-master" element={<StationTypeMaster />} />
+        <Route path="asset-type-master" element={<AssetTypeMaster />} />
         <Route path="manufacturer-master" element={<ManufactureMaster />} />
         <Route path="vehicle-model-master" element={<VehicalModelMaster />} />
         <Route path="fuel-type-master" element={<FuelTypeMaster />} />

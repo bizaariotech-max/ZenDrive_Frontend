@@ -10,7 +10,6 @@ import { __postApiData } from '../../../utils/api';
 import { toast } from 'react-toastify';
 import DatagridRowAction from '../../../components/common/DatagridRowAction';
 import { Popup } from '../../../components/common/Popup';
-import { render } from '@testing-library/react';
 
 const validationSchema = Yup.object({
     StationTypeId: Yup.string().required("Station Type is required"),
