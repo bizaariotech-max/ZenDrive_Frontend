@@ -26,12 +26,14 @@ import StationMaster from "../pages/admin/stationMaster/StationMaster";
 import StationTypeMaster from "../pages/admin/configrations/StationTypeMaster";
 import RouteMaster from "../pages/admin/routeMaster/RouteMaster";
 import AssetTypeMaster from "../pages/admin/configrations/AssetTypeMaster";
+import AssetMasterOutlet from "../pages/admin/assetMaster/AssetMasterOutlet";
+import Individual from "../pages/admin/assetMaster/Individual";
 
 const AdminRoutes = () => (
   <Routes>
     <Route path="/" element={<AdminLayout />}>
       <Route index element={<Home />} />
-      <Route path="configuration" element={<AdminConfigOutlet />}>
+      <Route path="configuration/" element={<AdminConfigOutlet />}>
         <Route path="role-master" element={<RoleMaster />} />
         <Route path="station-master" element={<StationTypeMaster />} />
         <Route path="asset-type-master" element={<AssetTypeMaster />} />
@@ -57,6 +59,9 @@ const AdminRoutes = () => (
       </Route>
       <Route path="station-master" element={<StationMaster />} />
       <Route path="route-master" element={<RouteMaster />} />
+      <Route path="asset-master/" element={<AssetMasterOutlet />} >
+      <Route path="individual" element={<Individual />} />
+      </Route>
       <Route path="health-profiling-questions" element={<HealthProfileQuestion />} />
 
       {/* Catch-all inside admin */}

@@ -38,7 +38,13 @@ const useAdminSidebarLinks = () => {
             ],
         },
         { id: 3, icon: <ApartmentIcon />, label: "Station Master", link: "/admin/station-master", dock: true },
-        { id: 4, icon: <LayoutDashboard />, label: "Asset Master", link: "/admin/asset-master", dock: true },
+        {
+            id: 4, icon: <LayoutDashboard />, label: "Asset Master", link: "/admin/asset-master", dock: false,
+            subList: [
+                { id: "4-1", icon: <SubdirectoryArrowRightIcon />, path: "/admin/asset-master/individual", title: "Individual" },
+                { id: "4-2", icon: <SubdirectoryArrowRightIcon />, path: "/admin/asset-master/vehicle", title: "Vehicle" },
+            ]
+        },
         { id: 5, icon: <RouteTwoToneIcon />, label: "Route Master", link: "/admin/route-master", dock: true },
         { id: 6, icon: <LayoutDashboard />, label: "Duty Allocation", link: "/admin/duty-allocation", dock: true },
         { id: 7, icon: <VpnKeyTwoToneIcon />, label: "Login Master", link: "/admin/login-master", dock: true },

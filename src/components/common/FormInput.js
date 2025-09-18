@@ -27,7 +27,7 @@ const FormInput = ({
             <MenuItem value="" disabled>
               {placeholder || "Select an option"}
             </MenuItem>
-            {options.map((opt) => (
+            {options?.length > 0 && options?.map((opt) => (
               <MenuItem key={opt?._id} value={opt?._id}>
                 {opt?.lookup_value}
               </MenuItem>
