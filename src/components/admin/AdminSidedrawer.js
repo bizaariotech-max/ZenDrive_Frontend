@@ -59,7 +59,7 @@ const AdminSidedrawer = ({ show, toggleShow }) => {
                         {/* Submenu */}
                         {item?.subList && (
                             <Collapse in={openMenu === item.id} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding className="bg-sidebar-foreground text-white h-64 max-h-64 overflow-y-auto hide-scrollbar">
+                                <List component="div" disablePadding className="bg-sidebar-foreground text-white max-h-64 overflow-y-auto hide-scrollbar">
                                     {item.subList.map((child) => (
                                         <ListItem key={child.id} disablePadding className="pl-8">
                                             <NavLink

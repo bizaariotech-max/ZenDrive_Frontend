@@ -7,7 +7,7 @@ const FormButton = ({ children, ...props }) => {
     <Button
       variant="contained"
       type="submit"
-      className="w-full md:w-[250px]"
+      className="w-full md:max-w-[280px]"
       sx={{
         borderRadius: "4px",
         backgroundColor: "var(--primary)",

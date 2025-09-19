@@ -89,7 +89,7 @@ const AdminSidebar = ({ show, toggleDrawer }) => {
 
                   {/* Sub menu */}
                   {show && openSubListId === item.id && (
-                    <div className=" max-h-64 py-4 overflow-y-auto hide-scrollbar bg-sidebar-foreground rounded-md mx-3">
+                    <div className=" max-h-64 py-2 overflow-y-auto hide-scrollbar bg-sidebar-foreground rounded-md mx-3">
                       {item?.subList?.map((subItem) => (
                         <NavLink
                           key={subItem?.id}

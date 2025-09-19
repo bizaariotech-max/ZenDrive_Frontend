@@ -10,7 +10,7 @@ import { Popup } from '../../../components/common/Popup';
 import DatagridRowAction from '../../../components/common/DatagridRowAction';
 
 
-const IncidentMaster = () => {
+const IncidentTypeMaster = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
     const [incidentMaster, setIncidentMaster] = useState("");
@@ -170,4 +170,4 @@ const IncidentMaster = () => {
     )
 }
 
-export default IncidentMaster
+export default IncidentTypeMaster

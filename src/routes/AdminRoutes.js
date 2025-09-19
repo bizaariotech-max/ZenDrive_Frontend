@@ -10,7 +10,7 @@ import FuelTypeMaster from "../pages/admin/configrations/FuelTypeMaster";
 import DepartmentMaster from "../pages/admin/configrations/DepartmentMaster";
 import DesignationMaster from "../pages/admin/configrations/DesignationMaster";
 import ColorMaster from "../pages/admin/configrations/ColorMaster";
-import IncidentMaster from "../pages/admin/configrations/IncidentMaster";
+import IncidentTypeMaster from "../pages/admin/configrations/IncidentTypeMaster";
 import ViolationMaster from "../pages/admin/configrations/ViolationMaster";
 import CauseAccidentMaster from "../pages/admin/configrations/CauseAccidentMaster";
 import HealthProfilingMaster from "../pages/admin/configrations/HealthProfilingMaster";
@@ -28,6 +28,12 @@ import RouteMaster from "../pages/admin/routeMaster/RouteMaster";
 import AssetTypeMaster from "../pages/admin/configrations/AssetTypeMaster";
 import AssetMasterOutlet from "../pages/admin/assetMaster/AssetMasterOutlet";
 import Individual from "../pages/admin/assetMaster/Individual";
+import Vehicle from "../pages/admin/assetMaster/Vehicle";
+import LoginMaster from "../pages/admin/loginMaster/LoginMaster";
+import DutyAllocation from "../pages/admin/dutyAllocation/DutyAllocation";
+import DashCamAllocate from "../pages/admin/dashCamAllocation/DashCamAllocate";
+import IncidentMaster from "../pages/admin/incidentMaster/IncidentMaster";
+import HealthProfileUserAnswer from "../pages/admin/healthProfile/HealthProfileUserAnswer";
 
 const AdminRoutes = () => (
   <Routes>
@@ -43,7 +49,7 @@ const AdminRoutes = () => (
         <Route path="department-master" element={<DepartmentMaster />} />
         <Route path="designation-master" element={<DesignationMaster />} />
         <Route path="color-master" element={<ColorMaster />} />
-        <Route path="incident-type" element={<IncidentMaster />} />
+        <Route path="incident-type" element={<IncidentTypeMaster />} />
         <Route path="violation-type" element={<ViolationMaster />} />
         <Route path="cause-of-accident" element={<CauseAccidentMaster />} />
         <Route path="health-profiling-group" element={<HealthProfilingMaster />} />
@@ -57,12 +63,22 @@ const AdminRoutes = () => (
         {/* Catch-all inside configuration */}
         <Route path="*" element={<ErrorPage />} />
       </Route>
+
       <Route path="station-master" element={<StationMaster />} />
       <Route path="route-master" element={<RouteMaster />} />
+
+      {/*========== Asset Master ==============*/}
       <Route path="asset-master/" element={<AssetMasterOutlet />} >
       <Route path="individual" element={<Individual />} />
+      <Route path="vehicle" element={<Vehicle />} />
       </Route>
+
+      <Route path="duty-allocation" element={<DutyAllocation />} />
+      <Route path="login-master" element={<LoginMaster />} />
+      <Route path="dash-cam-allocation" element={<DashCamAllocate />} />
+      <Route path="incident-master" element={<IncidentMaster />} />
       <Route path="health-profiling-questions" element={<HealthProfileQuestion />} />
+      <Route path="health-profiling-user-response" element={<HealthProfileUserAnswer />} />
 
       {/* Catch-all inside admin */}
       <Route path="*" element={<ErrorPage />} />

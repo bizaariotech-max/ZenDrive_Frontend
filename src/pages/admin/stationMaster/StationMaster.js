@@ -39,16 +39,16 @@ const StationMaster = () => {
                 return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
             },
         },
-        { field: "StationTypeId", headerName: "Station Type", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.StationTypeId?.lookup_value || "N/A"}</span>, },
-        { field: "ParentStationId", headerName: "Parent Station", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.ParentStationId?.StationName || "N/A"}</span>, },
-        { field: "StationName", headerName: "Station Name", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.StationName || "N/A"}</span>, },
-        { field: "AddressLine1", headerName: "Address Line 1", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.AddressLine1 || "N/A"}</span>, },
-        { field: "AddressLine2", headerName: "Address Line 2", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.AddressLine2 || "N/A"}</span>, },
-        { field: "state", headerName: "State", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.StateId?.lookup_value || "N/A"}</span>, },
-        { field: "city", headerName: "City", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.CityId?.lookup_value || "N/A"}</span>, },
-        { field: "pincode", headerName: "Pincode", minWidth: 150, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.PostalCode || "N/A"}</span>, },
+        { field: "StationTypeId", headerName: "Station Type", minWidth: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.StationTypeId?.lookup_value || "N/A"}</span>, },
+        { field: "ParentStationId", headerName: "Parent Station", minWidth: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.ParentStationId?.StationName || "N/A"}</span>, },
+        { field: "StationName", headerName: "Station Name", minWidth: 200, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.StationName || "N/A"}</span>, },
+        { field: "AddressLine1", headerName: "Address Line 1", minWidth: 200, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.AddressLine1 || "N/A"}</span>, },
+        { field: "AddressLine2", headerName: "Address Line 2", minWidth: 200, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.AddressLine2 || "N/A"}</span>, },
+        { field: "state", headerName: "State", minWidth: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.StateId?.lookup_value || "N/A"}</span>, },
+        { field: "city", headerName: "City", minWidth: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.CityId?.lookup_value || "N/A"}</span>, },
+        { field: "pincode", headerName: "Pincode", minWidth: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.PostalCode || "N/A"}</span>, },
         {
-            field: "geoLocation", headerName: "Geo Location", minWidth: 200, headerClassName: "health-table-header-style", headerAlign: "center", align: "center", renderCell: (params) => <span>{params.row?.Geolocation?.coordinates
+            field: "geoLocation", headerName: "Geo Location", minWidth: 200, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.Geolocation?.coordinates
                 ? params.row.Geolocation.coordinates.join(", ")
                 : "N/A"}
             </span>,

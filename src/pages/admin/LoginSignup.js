@@ -20,12 +20,13 @@ const LoginSignup = () => {
 
     return (
         <div className='h-screen overflow-auto grid  grid-cols-1 lg:grid-cols-2 gap-3 p-4'>
-            <div className='flex items-center justify-center p-4'>
-                <img src="/LoginSide.png" alt="Signup Image" className='w-full max-h-[600px] h-full object-cover rounded-lg' />
+            <div className='flex items-center justify-center xs:px-2 sm:px-4 py-4'>
+                <img src="/LoginSide.png" alt="Signupbg" className='w-full max-h-[600px] h-full object-cover rounded-lg' />
             </div>
-            <div className='flex w-full justify-center flex-col py-8 md:py-14 px-10 md:px-20'>
+            {/*==========  Login Form  start here ==========*/}
+            <div className='flex w-full justify-center flex-col py-8 md:py-14 xs:px-4 sm:px-6 md:px-20'>
                 <div className='flex items-center justify-center mb-8'>
-                    <img src="/logo.png" alt="Logo Image" className='w-32' />
+                    <img src="/logo.png" alt="productLogo" className='w-32' />
                 </div>
                 <Typography variant='h5' sx={{ mb: 1, fontWeight: 'bold' }}>Welcome Back</Typography>
                 <Typography variant='body1' sx={{ fontWeight: 'bold' }}>Need an account? <Link to="/signup" className='text-primary underline'>Sign Up </Link></Typography>
@@ -48,7 +49,7 @@ const LoginSignup = () => {
                         />
                     </div>
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
                             <Checkbox
                                 id="remember"
                                 sx={{
@@ -70,6 +71,7 @@ const LoginSignup = () => {
                     </div>
                 </form>
             </div>
+            {/*==========  Login Form  End here ==========*/}
 
         </div>
     )

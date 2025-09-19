@@ -1,10 +1,15 @@
-import { LayoutDashboard, Settings2 } from "lucide-react";
+import { LayoutDashboard, Settings2, Siren } from "lucide-react";
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import MedicalInformationTwoToneIcon from '@mui/icons-material/MedicalInformationTwoTone';
 import HealthAndSafetyTwoToneIcon from '@mui/icons-material/HealthAndSafetyTwoTone';
 import VpnKeyTwoToneIcon from '@mui/icons-material/VpnKeyTwoTone';
 import RouteTwoToneIcon from '@mui/icons-material/RouteTwoTone';
 import ApartmentIcon from '@mui/icons-material/Apartment';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import DatasetTwoToneIcon from '@mui/icons-material/DatasetTwoTone';
+import DepartureBoardTwoToneIcon from '@mui/icons-material/DepartureBoardTwoTone';
+import LocalShippingTwoToneIcon from '@mui/icons-material/LocalShippingTwoTone';
+import BoyTwoToneIcon from '@mui/icons-material/BoyTwoTone';
 const useAdminSidebarLinks = () => {
     const links = [
         { id: 1, icon: <LayoutDashboard />, label: "Dashboard", link: "/admin", dock: true },
@@ -39,17 +44,17 @@ const useAdminSidebarLinks = () => {
         },
         { id: 3, icon: <ApartmentIcon />, label: "Station Master", link: "/admin/station-master", dock: true },
         {
-            id: 4, icon: <LayoutDashboard />, label: "Asset Master", link: "/admin/asset-master", dock: false,
+            id: 4, icon: <DatasetTwoToneIcon />, label: "Asset Master", link: "/admin/asset-master", dock: false,
             subList: [
-                { id: "4-1", icon: <SubdirectoryArrowRightIcon />, path: "/admin/asset-master/individual", title: "Individual" },
-                { id: "4-2", icon: <SubdirectoryArrowRightIcon />, path: "/admin/asset-master/vehicle", title: "Vehicle" },
+                { id: "4-1", icon: <BoyTwoToneIcon />, path: "/admin/asset-master/individual", title: "Individual" },
+                { id: "4-2", icon: <LocalShippingTwoToneIcon />, path: "/admin/asset-master/vehicle", title: "Vehicle" },
             ]
         },
         { id: 5, icon: <RouteTwoToneIcon />, label: "Route Master", link: "/admin/route-master", dock: true },
-        { id: 6, icon: <LayoutDashboard />, label: "Duty Allocation", link: "/admin/duty-allocation", dock: true },
+        { id: 6, icon: <DepartureBoardTwoToneIcon />, label: "Duty Allocation", link: "/admin/duty-allocation", dock: true },
         { id: 7, icon: <VpnKeyTwoToneIcon />, label: "Login Master", link: "/admin/login-master", dock: true },
-        { id: 8, icon: <LayoutDashboard />, label: "Dash Cam Allocation", link: "/admin/dash-cam-allocation", dock: true },
-        { id: 9, icon: <LayoutDashboard />, label: "Incident Master", link: "/admin/incident-master", dock: true },
+        { id: 8, icon: <PhotoCameraIcon />, label: "Dash Cam Allocation", link: "/admin/dash-cam-allocation", dock: true },
+        { id: 9, icon: <Siren />, label: "Incident Master", link: "/admin/incident-master", dock: true },
         { id: 10, icon: <MedicalInformationTwoToneIcon />, label: "Health Profiling Questions", link: "/admin/health-profiling-questions", dock: true },
         { id: 11, icon: <HealthAndSafetyTwoToneIcon />, label: "Health Profiling User Response", link: "/admin/health-profiling-user-response", dock: true },
     ];

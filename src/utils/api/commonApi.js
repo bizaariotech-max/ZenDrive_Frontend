@@ -27,6 +27,26 @@ const __getCommenApiDataList = async ({
         })
 }
 
+const __getStationMasterList = async () => {
+    return __postApiData(`/api/v1/admin/GetStation`)
+        .then(res => {
+            if (res.response && res.response.response_code == "200") {
+                const list = res.data.map(item => ({
+                    id: item._id,
+                    lookup_value: item?.StationName,
+                    ...item,
+                }))
+                return list
+            }
+            console.log("No valid response, returning empty array");
+            return []
+        })
+        .catch(error => {
+            console.error("Error in __getCommonStationApiDataList:", error);
+            return []
+        })
+}
 export { 
   __getCommenApiDataList, 
+  __getStationMasterList
 }
