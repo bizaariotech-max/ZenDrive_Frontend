@@ -152,6 +152,7 @@ const DashCamAllocate = () => {
                 if (res.response && res.response.response_code === "200") {
                     toast.success(editId ? "Dash cam allocation updated successfully" : "Dash cam allocation added successfully");
                     resetForm();
+                    setEditId(null);
                     getDashCamAllocationList();
                 } else {
                     toast.error(res.response.response_message || "Failed to add dash cam allocation");
