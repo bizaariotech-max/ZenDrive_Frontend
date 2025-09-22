@@ -70,23 +70,37 @@ const Individual = () => {
                 return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
             },
         },
-        { field: "AssetType", headerName: "Asset Type", minWidth: 150, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.AssetTypeId?.lookup_value || "N/A"}</span>, },
-        { field: "StationId", headerName: "Station name", minWidth: 150, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.StationId?.StationName || "N/A"}</span>, },
-        { field: "ReportingTo", headerName: "Reporting To", minWidth: 200, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.ReportingTo || "N/A"}</span>, },
-        { field: "Full Name", headerName: "Full Name", minWidth: 200, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{`${params.row?.Individual?.FirstName} ${params.row?.Individual?.LastName} ` || "N/A"}</span>, },
-        { field: "Gender", headerName: "Gender", minWidth: 200, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.Gender || "N/A"}</span>, },
-        { field: "DateOfBirth", headerName: "Date Of Birth", minWidth: 200, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{__formatDate2(params.row?.Individual?.DateOfBirth) || "N/A"}</span>, },
-        { field: "DateOfJoining", headerName: "Date Of Joining", minWidth: 200, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{__formatDate2(params.row?.Individual?.DateOfBirth) || "N/A"}</span>, },
-        { field: "DLNumber", headerName: "DL Number", minWidth: 200, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.DLNumber || "N/A"}</span>, },
-        { field: "IssuingAuthority", headerName: "Issuing Authority", minWidth: 200, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.IssuingAuthority || "N/A"}</span>, },
-        { field: "DLValidUpTo", headerName: "DL Valid Upto", minWidth: 150, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{__formatDate2(params.row?.Individual?.DLValidUpTo) || "N/A"}</span>, },
-        { field: "Department", headerName: "Department", minWidth: 150, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.DepartmentId?.lookup_value || "N/A"}</span>, },
-        { field: "DesignationId", headerName: "Designation", minWidth: 150, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.DesignationId?.lookup_value || "N/A"}</span>, },
-        { field: "BloodGroup", headerName: "Blood Group", minWidth: 150, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.BloodGroup || "N/A"}</span>, },
-        { field: "PhoneNumber", headerName: "Phone Number", minWidth: 150, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.PhoneNumber || "N/A"}</span>, },
-        { field: "EmailAddress", headerName: "Email", minWidth: 150, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.EmailAddress || "N/A"}</span>, },
-        { field: "EmergencyContact1", headerName: "Emergency Contact 1", minWidth: 150, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.EmergencyContact1 || "N/A"}</span>, },
-        { field: "EmergencyContact2", headerName: "Emergency Contact 2", minWidth: 150, headerClassName: "health-table-header-style", flex: 1,  renderCell: (params) => <span>{params.row?.Individual?.EmergencyContact2 || "N/A"}</span>, },
+        { field: "AssetType", headerName: "Asset Type", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.AssetTypeId?.lookup_value || "N/A"}</span>, },
+        { field: "StationId", headerName: "Station name", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.StationId?.StationName || "N/A"}</span>, },
+        {
+            field: "ReportingTo",
+            headerName: "Reporting To",
+            minWidth: 200,
+            headerClassName: "health-table-header-style",
+            flex: 1,
+            renderCell: (params) => {
+                const reporting = params.row?.Individual?.ReportingTo?.Individual;
+                const fullName = reporting?.FirstName && reporting?.LastName
+                    ? `${reporting.FirstName} ${reporting.LastName}`
+                    : reporting?.FirstName || reporting?.LastName;
+
+                return <span>{fullName || "N/A"}</span>;
+            },
+        },
+        { field: "Full Name", headerName: "Full Name", minWidth: 200, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{`${params.row?.Individual?.FirstName} ${params.row?.Individual?.LastName} ` || "N/A"}</span>, },
+        { field: "Gender", headerName: "Gender", minWidth: 200, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Individual?.Gender || "N/A"}</span>, },
+        { field: "DateOfBirth", headerName: "Date Of Birth", minWidth: 200, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{__formatDate2(params.row?.Individual?.DateOfBirth) || "N/A"}</span>, },
+        { field: "DateOfJoining", headerName: "Date Of Joining", minWidth: 200, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{__formatDate2(params.row?.Individual?.DateOfJoining) || "N/A"}</span>, },
+        { field: "DLNumber", headerName: "DL Number", minWidth: 200, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Individual?.DLNumber || "N/A"}</span>, },
+        { field: "IssuingAuthority", headerName: "Issuing Authority", minWidth: 200, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Individual?.IssuingAuthority || "N/A"}</span>, },
+        { field: "DLValidUpTo", headerName: "DL Valid Upto", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{__formatDate2(params.row?.Individual?.DLValidUpTo) || "N/A"}</span>, },
+        { field: "Department", headerName: "Department", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Individual?.DepartmentId?.lookup_value || "N/A"}</span>, },
+        { field: "DesignationId", headerName: "Designation", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Individual?.DesignationId?.lookup_value || "N/A"}</span>, },
+        { field: "BloodGroup", headerName: "Blood Group", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Individual?.BloodGroup || "N/A"}</span>, },
+        { field: "PhoneNumber", headerName: "Phone Number", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Individual?.PhoneNumber || "N/A"}</span>, },
+        { field: "EmailAddress", headerName: "Email", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Individual?.EmailAddress || "N/A"}</span>, },
+        { field: "EmergencyContact1", headerName: "Emergency Contact 1", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Individual?.EmergencyContact1 || "N/A"}</span>, },
+        { field: "EmergencyContact2", headerName: "Emergency Contact 2", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Individual?.EmergencyContact2 || "N/A"}</span>, },
         {
             field: "actions",
             headerName: "Actions",

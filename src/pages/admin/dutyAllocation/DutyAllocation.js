@@ -8,6 +8,7 @@ import { __postApiData } from '../../../utils/api'
 import { toast } from 'react-toastify'
 import { DataGrid } from '@mui/x-data-grid'
 import DatagridRowAction from '../../../components/common/DatagridRowAction'
+import { Popup } from '../../../components/common/Popup'
 
 
 const validationSchema = Yup.object({
@@ -16,7 +17,7 @@ const validationSchema = Yup.object({
     StartTimeOfTrip: Yup.string().required("Start time is required"),
     VehicleId: Yup.string().required("Vehicle is required"),
     DriverId: Yup.string().required("Driver is required"),
-    ConductorId: Yup.string().required("Conductor is required"),
+    ConductorId: Yup.string(),
 })
 
 const DutyAllocation = () => {
@@ -31,7 +32,15 @@ const DutyAllocation = () => {
         loading: false,
         dutyAllocationList: [],
     })
+    const [dataList, setDataList] = useState({
+        loading: false,
+        vehicleTypeList: [],
+        vehicleList: [],
+        driverList: [],
+        conductorList: [],
+    })
 
+    const { vehicleTypeList, vehicleList, driverList, conductorList } = dataList;
     const columns = [
         {
             field: "_id",
@@ -39,17 +48,12 @@ const DutyAllocation = () => {
             minWidth: 90,
             align: "center",
             headerClassName: "health-table-header-style",
-            align: "center",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
             renderCell: (params) => {
                 const rowIndex = params.api.getSortedRowIds().indexOf(params.id);
-                return (
-                    paginationModel.page * paginationModel.pageSize +
-                    (rowIndex % paginationModel.pageSize) +
-                    1
-                );
+                return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
             },
         },
         {
@@ -58,44 +62,55 @@ const DutyAllocation = () => {
             flex: 1,
             headerClassName: "health-table-header-style",
             align: "center",
+            minWidth: 160,
             renderCell: (params) => (
-                <span>{params.row?.RouteId || "N/A"}</span>
+                <span>{params.row?.RouteId?.StationId?.StationName || "N/A"}</span>
             ),
         },
         {
             field: "DateOfTrip",
             headerName: "Date of Trip",
             flex: 1,
+            minWidth: 160,
             headerClassName: "health-table-header-style",
             align: "center",
+            renderCell: (params) => <span>{params.row?.DateOfTrip || "N/A"}</span>,
         },
         {
             field: "StartTimeOfTrip",
             headerName: "Start Time",
             flex: 1,
+            minWidth: 130,
             headerClassName: "health-table-header-style",
             align: "center",
+            renderCell: (params) => <span>{params.row?.StartTimeOfTrip || "N/A"}</span>,
         },
         {
             field: "VehicleId",
             headerName: "Vehicle",
             headerClassName: "health-table-header-style",
             align: "center",
+            minWidth: 160,
             flex: 1,
+            renderCell: (params) => <span>{params.row?.VehicleId?.Vehicle?.RegistrationNumber || "N/A"}</span>,
         },
         {
             field: "DriverId",
             headerName: "Driver",
             headerClassName: "health-table-header-style",
             align: "center",
+            minWidth: 160,
             flex: 1,
+            renderCell: (params) => <span>{params.row?.DriverId?.Individual?.FirstName + " " + params.row?.DriverId?.Individual?.LastName || "N/A" || "N/A"}</span>,
         },
         {
             field: "ConductorId",
             headerName: "Conductor",
             headerClassName: "health-table-header-style",
             align: "center",
+            minWidth: 160,
             flex: 1,
+            renderCell: (params) => <span>{params.row?.ConductorId?.Individual?.FirstName + " " + params.row?.ConductorId?.Individual?.LastName || "N/A" || "N/A"}</span>,
         },
         {
             field: "actions",
@@ -122,32 +137,52 @@ const DutyAllocation = () => {
             ConductorId: "",
         },
         validationSchema: validationSchema,
-        onSubmit: (values, { resetForm }) => {
-            if (editId) {
-                // update existing row
-                setDuty((prev) => ({
-                    ...prev,
-                    dutyAllocationList: prev.dutyAllocationList.map((item) =>
-                        item._id === editId ? { ...item, ...values } : item
-                    ),
-                }));
-                toast.success("Duty allocation updated successfully");
-                setEditId(null);
-            } else {
-                // add new row
-                const newRow = {
-                    ...values,
-                    _id: Date.now().toString(),
+        onSubmit: async (values, { resetForm }) => {
+            try {
+                const payload = {
+                    DutyAllocationId: editId || null,
+                    RouteId: values?.RouteId || null,
+                    DateOfTrip: values?.DateOfTrip || "",
+                    StartTimeOfTrip: values?.StartTimeOfTrip || "",
+                    VehicleId: values?.VehicleId || null,
+                    DriverId: values?.DriverId || null,
+                    ConductorId:values?.ConductorId || null,
                 };
-                setDuty((prev) => ({
-                    ...prev,
-                    dutyAllocationList: [...prev.dutyAllocationList, newRow],
-                }));
-                toast.success("Duty allocation added successfully");
+                const result = await __postApiData('/api/v1/admin/AddEditDutyAllocation', payload);
+                if (result?.response?.response_code === "200") {
+                    toast.success(editId ? "Duty allocation updated successfully" : "Duty allocation added successfully");
+                    resetForm();
+                    setEditId(null);
+                    getDutyAllocationList();
+                } else {
+                    toast.error(result?.response ? result?.response?.response_message : "Failed to add/update duty allocation");
+                }
+            } catch (error) {
+                console.error("Error in adding/updating duty allocation:", error);
+                toast.error("Failed to add/update duty allocation");
             }
-            resetForm();
+
         },
     });
+
+    const getDutyAllocationList = async () => {
+        try {
+            setDuty((prev) => ({ ...prev, loading: true }));
+            const res = await __postApiData('/api/v1/admin/GetDutyAllocation');
+            if (res.response && res.response.response_code === "200") {
+                setDuty((prev) => ({
+                    ...prev,
+                    dutyAllocationList: res?.data || [],
+                }));
+            } else {
+                toast.error(res.response ? res.response?.response_message : "Failed to fetch data");
+            }
+        } catch (err) {
+            toast.error("Failed to fetch data");
+        } finally {
+            setDuty((prev) => ({ ...prev, loading: false }));
+        }
+    }
 
     //============== Function to get the list of route master ============\\
     const getRouteMasterList = async () => {
@@ -168,33 +203,68 @@ const DutyAllocation = () => {
             setRouteData((prevData) => ({ ...prevData, loading: false }));
         }
     }
+
+    //========== function to update state dataList ============\\
+    const updateState = (data) => setDataList((prevState) => ({ ...prevState, ...data }));
+
+    ///========== fetch data from api ============\\
+    const fetchData = async (AssetType, stateKey, StationId) => {
+        try {
+            const data = await __postApiData('/api/v1/admin/GetAssetsDropDown', { AssetType: AssetType, StationId: StationId || "" });
+
+            if (data && Array.isArray(data) && data.length > 0) {
+                updateState({ [stateKey]: data, });
+            }
+            else if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {
+                updateState({ [stateKey]: data.data, });
+            } else if (data && data.list && Array.isArray(data.list) && data.list.length > 0) {
+                updateState({ [stateKey]: data.list, });
+            }
+            else {
+                // console.warn(`No data found for ${stateKey}:`, data);
+                updateState({ [stateKey]: [], });
+            }
+        } catch (error) {
+            console.error(`Error fetching ${stateKey}:`, error);
+        }
+    }
     useEffect(() => {
+        fetchData(["Vehicle"], "vehicleTypeList", "68cb9812d425cf3422d58d1d");
+        fetchData(["Driver"], "driverList");
+        fetchData(["Conductor"], "conductorList");
+        fetchData(["Vehicle"], "vehicleList",);
         getRouteMasterList();
+        getDutyAllocationList();
     }, []);
 
     // ======== Edit handler =========
     const handleEdit = (row) => {
         setEditId(row._id);
         formik.setValues({
-            RouteId: row.RouteId,
+            RouteId: row.RouteId?._id,
             DateOfTrip: row.DateOfTrip,
             StartTimeOfTrip: row.StartTimeOfTrip,
-            VehicleId: row.VehicleId,
-            DriverId: row.DriverId,
-            ConductorId: row.ConductorId,
+            VehicleId: row.VehicleId?._id,
+            DriverId: row?.DriverId?._id,
+            ConductorId: row?.ConductorId?._id,
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    // ======== Delete handler =========
-    const handleDelete = (row) => {
-        setDuty((prev) => ({
-            ...prev,
-            dutyAllocationList: prev?.dutyAllocationList.filter(
-                (item) => item._id !== row._id
-            ),
-        }));
-        toast.success("Deleted successfully");
+    ///========== handle delete  ============\\
+    const handleDelete = async (row) => {
+        try {
+            const result = await Popup("warning", "Are you sure?", "You won't be able to revert this!");
+            if (result.isConfirmed) {
+                const res = await __postApiData(`/api/v1/admin/DeleteDutyAllocation`, { DutyAllocationId: row?._id });
+                if (res?.response?.response_code === "200") {
+                    toast.success("Duty Allocation deleted successfully");
+                    getDutyAllocationList();
+                }
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "An error occurred");
+        }
     };
     return (
         <div className="p-4 bg-white">
@@ -253,10 +323,7 @@ const DutyAllocation = () => {
                         onBlur={formik.handleBlur}
                         error={formik.touched.VehicleId && Boolean(formik.errors.VehicleId)}
                         helperText={formik.touched.VehicleId && formik.errors.VehicleId}
-                        options={[
-                            { _id: "1", lookup_value: "Vehicle A" },
-                            { _id: "2", lookup_value: "Vehicle B" },
-                        ]}
+                        options={vehicleList?.length > 0 ? vehicleList?.map((item) => ({ _id: item?._id, lookup_value: item?.Vehicle?.RegistrationNumber })) : []}
                     />
 
                     {/* Selection a Driver */}
@@ -269,10 +336,7 @@ const DutyAllocation = () => {
                         onBlur={formik.handleBlur}
                         error={formik.touched.DriverId && Boolean(formik.errors.DriverId)}
                         helperText={formik.touched.DriverId && formik.errors.DriverId}
-                        options={[
-                            { _id: "1", lookup_value: "Driver A" },
-                            { _id: "2", lookup_value: "Driver B" },
-                        ]}
+                        options={driverList?.length > 0 ? driverList?.map((item) => ({ _id: item?._id, lookup_value: item?.Individual?.FirstName + " " + item?.Individual?.LastName })) : []}
                     />
 
                     {/* Selection a Conductor */}
@@ -285,10 +349,7 @@ const DutyAllocation = () => {
                         onBlur={formik.handleBlur}
                         error={formik.touched.ConductorId && Boolean(formik.errors.ConductorId)}
                         helperText={formik.touched.ConductorId && formik.errors.ConductorId}
-                        options={[
-                            { _id: "1", lookup_value: "conductor A" },
-                            { _id: "2", lookup_value: "conductor B" },
-                        ]}
+                        options={conductorList?.length > 0 ? conductorList?.map((item) => ({ _id: item?._id, lookup_value: item?.Individual?.FirstName + " " + item?.Individual?.LastName })) : []}
                     />
 
                 </div>

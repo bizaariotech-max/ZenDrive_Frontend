@@ -7,12 +7,13 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { DataGrid } from "@mui/x-data-grid";
 import DatagridRowAction from "../../../components/common/DatagridRowAction";
-import { __getStationMasterList } from "../../../utils/api/commonApi";
+import { __getCommenApiDataList, __getStationMasterList } from "../../../utils/api/commonApi";
+import { __postApiData } from "../../../utils/api";
+import { Popup } from "../../../components/common/Popup";
 
 // ✅ Validation schema
 const validationSchema = Yup.object({
     StationId: Yup.string().required("Station is required"),
-    DashCamId: Yup.string().required("Dash Cam is required"),
     VehicleId: Yup.string().required("Vehicle is required"),
     SimCardNumber: Yup.string().required("SIM Card Number is required"),
 });
@@ -24,13 +25,14 @@ const DashCamAllocate = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [editId, setEditId] = useState(null);
+    const [vehicleList, setVehicleList] = useState([]);
     const [allocation, setAllocation] = useState({
         loading: false,
         allocationList: [],
     });
-    const [station,setStation] = useState({
-        loading:false,
-        stationList:[]
+    const [station, setStation] = useState({
+        loading: false,
+        stationList: []
     })
 
     // ✅ DataGrid Columns
@@ -47,43 +49,35 @@ const DashCamAllocate = () => {
             disableColumnMenu: true,
             renderCell: (params) => {
                 const rowIndex = params.api.getSortedRowIds().indexOf(params.id);
-                return (
-                    paginationModel.page * paginationModel.pageSize +
-                    (rowIndex % paginationModel.pageSize) +
-                    1
-                );
+                return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
             },
         },
         {
             field: "StationId",
             headerName: "Station",
             flex: 1,
+            minWidth: 150,
             align: "center",
             headerClassName: "health-table-header-style",
-            renderCell: (params) => <span>{params.row?.StationId || "N/A"}</span>,
-        },
-        {
-            field: "DashCamId",
-            headerName: "Dash Cam",
-            flex: 1,
-            align: "center",
-            headerClassName: "health-table-header-style",
-            renderCell: (params) => <span>{params.row?.DashCamId || "N/A"}</span>,
+            renderCell: (params) => <span>{params.row?.StationId?.StationName || "N/A"}</span>,
         },
         {
             field: "VehicleId",
             headerName: "Vehicle",
             flex: 1,
             align: "center",
+            minWidth: 150,
             headerClassName: "health-table-header-style",
-            renderCell: (params) => <span>{params.row?.VehicleId || "N/A"}</span>,
+            renderCell: (params) => <span>{params.row?.VehicleId?.Vehicle?.RegistrationNumber || "N/A"}</span>,
         },
         {
             field: "SimCardNumber",
             headerName: "SIM Card Number",
             flex: 1,
+            minWidth: 150,
             align: "center",
             headerClassName: "health-table-header-style",
+            renderCell: (params) => <span>{params.row?.SimCardNumber || "N/A"}</span>,
         },
         {
             field: "actions",
@@ -106,20 +100,33 @@ const DashCamAllocate = () => {
         },
     ];
 
-      //====== function to get the station master list ======\\
+    //====== function to get the station master list ======\\
     const getStationMasterList = async () => {
         try {
-            setStation((prev)=>({...prev,loading:true}))
+            setStation((prev) => ({ ...prev, loading: true }))
             const response = await __getStationMasterList();
-            setStation((prev)=>({...prev,stationList:response,loading:false}))
+            setStation((prev) => ({ ...prev, stationList: response, loading: false }))
         } catch (error) {
             console.error("Error fetching station master list:", error);
-            setStation((prev)=>({...prev,loading:false}))
+            setStation((prev) => ({ ...prev, loading: false }))
             return [];
+        }
+    }
+
+    ///========== fetch data from api ============\\
+    const fetchData = async (AssetType, stateKey, StationId) => {
+        try {
+            const data = await __postApiData('/api/v1/admin/GetAssetsDropDown', { AssetType, StationId: StationId || "" });
+            console.log(`Fetched :`, data);
+            if (data && Array.isArray(data?.data) && data?.data.length > 0) { setVehicleList(data?.data); } else { setVehicleList([]); }
+        } catch (error) {
+            console.error(`Error fetching ${stateKey}:`, error);
         }
     }
     useEffect(() => {
         getStationMasterList();
+        getDashCamAllocationList();
+        fetchData(["Vehicle"]);
     }, []);
 
 
@@ -132,51 +139,77 @@ const DashCamAllocate = () => {
             SimCardNumber: "",
         },
         validationSchema: validationSchema,
-        onSubmit: (values, { resetForm }) => {
-            if (editId) {
-                // update
-                setAllocation((prev) => ({
-                    ...prev,
-                    allocationList: prev.allocationList.map((item) =>
-                        item._id === editId ? { ...item, ...values } : item
-                    ),
-                }));
-                toast.success("Dash Cam allocation updated successfully");
-                setEditId(null);
-            } else {
-                // add
-                const newRow = { ...values, _id: Date.now().toString() };
-                setAllocation((prev) => ({
-                    ...prev,
-                    allocationList: [...prev.allocationList, newRow],
-                }));
-                toast.success("Dash Cam allocation added successfully");
+        onSubmit: async (values, { resetForm }) => {
+            try {
+                setIsLoading(true);
+                const payload = {
+                    DashCamId: editId ? editId : null,
+                    StationId: values?.StationId,
+                    VehicleId: values?.VehicleId,
+                    SimCardNumber: values?.SimCardNumber,
+                };
+                const res = await __postApiData('/api/v1/admin/AddEditDashCam', payload);
+                if (res.response && res.response.response_code === "200") {
+                    toast.success(editId ? "Dash cam allocation updated successfully" : "Dash cam allocation added successfully");
+                    resetForm();
+                    getDashCamAllocationList();
+                } else {
+                    toast.error(res.response.response_message || "Failed to add dash cam allocation");
+                }
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Error in adding dash cam allocation:", error);
+                toast.error("Failed to add dash cam allocation");
+                setIsLoading(false);
             }
-            resetForm();
-        },
+        }
     });
-
+    // ✅ Fetch Dash Cam Allocation List
+    const getDashCamAllocationList = async () => {
+        try {
+            setAllocation((prev) => ({ ...prev, loading: true }));
+            const response = await __postApiData('/api/v1/admin/GetDashCam')
+            if (response?.response && response?.response?.response_code === "200") {
+                setAllocation((prev) => ({
+                    ...prev,
+                    allocationList: response.data || [],
+                }));
+            } else {
+                toast.error(response?.response?.response_message || "Failed to fetch dash cam allocations");
+            }
+        } catch (error) {
+            console.error("Error fetching dash cam allocations:", error);
+            toast.error("Failed to fetch dash cam allocations");
+        } finally {
+            setAllocation((prev) => ({ ...prev, loading: false }));
+        }
+    }
     // ✅ Edit handler
     const handleEdit = (row) => {
         setEditId(row._id);
         formik.setValues({
-            StationId: row.StationId,
-            DashCamId: row.DashCamId,
-            VehicleId: row.VehicleId,
-            SimCardNumber: row.SimCardNumber,
+            StationId: row.StationId?._id || null,
+            VehicleId: row.VehicleId?._id || null,
+            SimCardNumber: row.SimCardNumber || "",
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    // ✅ Delete handler
-    const handleDelete = (row) => {
-        setAllocation((prev) => ({
-            ...prev,
-            allocationList: prev.allocationList.filter(
-                (item) => item._id !== row._id
-            ),
-        }));
-        toast.success("Deleted successfully");
+
+    ///========== handle delete  ============\\
+    const handleDelete = async (row) => {
+        try {
+            const result = await Popup("warning", "Are you sure?", "You won't be able to revert this!");
+            if (result.isConfirmed) {
+                const res = await __postApiData(`/api/v1/admin/DeleteDashCam`, { DashCamId: row?._id });
+                if (res?.response?.response_code === "200") {
+                    toast.success("Dash Cam deleted successfully");
+                    getDashCamAllocationList();
+                }
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "An error occurred");
+        }
     };
 
     return (
@@ -196,26 +229,9 @@ const DashCamAllocate = () => {
                         type="select"
                         value={formik.values.StationId}
                         onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
                         error={formik.touched.StationId && Boolean(formik.errors.StationId)}
                         helperText={formik.touched.StationId && formik.errors.StationId}
                         options={station?.stationList}
-                    />
-
-                    {/* Dash Cam */}
-                    <FormInput
-                        label="Select a Dash Cam"
-                        name="DashCamId"
-                        type="select"
-                        value={formik.values.DashCamId}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.DashCamId && Boolean(formik.errors.DashCamId)}
-                        helperText={formik.touched.DashCamId && formik.errors.DashCamId}
-                        options={[
-                            { _id: "1", lookup_value: "Dash Cam A" },
-                            { _id: "2", lookup_value: "Dash Cam B" },
-                        ]}
                     />
 
                     {/* Vehicle */}
@@ -225,13 +241,9 @@ const DashCamAllocate = () => {
                         type="select"
                         value={formik.values.VehicleId}
                         onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
                         error={formik.touched.VehicleId && Boolean(formik.errors.VehicleId)}
                         helperText={formik.touched.VehicleId && formik.errors.VehicleId}
-                        options={[
-                            { _id: "1", lookup_value: "Vehicle A" },
-                            { _id: "2", lookup_value: "Vehicle B" },
-                        ]}
+                        options={vehicleList?.length > 0 ? vehicleList?.map((item) => ({ _id: item?._id, lookup_value: item?.Vehicle?.RegistrationNumber })) : []}
                     />
 
                     {/* SIM Card Number */}
@@ -241,7 +253,6 @@ const DashCamAllocate = () => {
                         type="text"
                         value={formik.values.SimCardNumber}
                         onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
                         error={
                             formik.touched.SimCardNumber &&
                             Boolean(formik.errors.SimCardNumber)
