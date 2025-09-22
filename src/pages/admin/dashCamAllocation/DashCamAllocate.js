@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { DataGrid } from "@mui/x-data-grid";
 import DatagridRowAction from "../../../components/common/DatagridRowAction";
-import { __getCommenApiDataList, __getStationMasterList } from "../../../utils/api/commonApi";
+import { __getStationMasterList } from "../../../utils/api/commonApi";
 import { __postApiData } from "../../../utils/api";
 import { Popup } from "../../../components/common/Popup";
 

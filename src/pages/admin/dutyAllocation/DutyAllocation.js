@@ -34,13 +34,13 @@ const DutyAllocation = () => {
     })
     const [dataList, setDataList] = useState({
         loading: false,
-        vehicleTypeList: [],
+       
         vehicleList: [],
         driverList: [],
         conductorList: [],
     })
 
-    const { vehicleTypeList, vehicleList, driverList, conductorList } = dataList;
+    const { vehicleList, driverList, conductorList } = dataList;
     const columns = [
         {
             field: "_id",
@@ -139,6 +139,7 @@ const DutyAllocation = () => {
         validationSchema: validationSchema,
         onSubmit: async (values, { resetForm }) => {
             try {
+                setIsLoading(true);
                 const payload = {
                     DutyAllocationId: editId || null,
                     RouteId: values?.RouteId || null,
@@ -154,12 +155,14 @@ const DutyAllocation = () => {
                     resetForm();
                     setEditId(null);
                     getDutyAllocationList();
+                    setIsLoading(false);
                 } else {
                     toast.error(result?.response ? result?.response?.response_message : "Failed to add/update duty allocation");
                 }
             } catch (error) {
                 console.error("Error in adding/updating duty allocation:", error);
                 toast.error("Failed to add/update duty allocation");
+                setIsLoading(false);
             }
 
         },
@@ -229,7 +232,6 @@ const DutyAllocation = () => {
         }
     }
     useEffect(() => {
-        fetchData(["Vehicle"], "vehicleTypeList", "68cb9812d425cf3422d58d1d");
         fetchData(["Driver"], "driverList");
         fetchData(["Conductor"], "conductorList");
         fetchData(["Vehicle"], "vehicleList",);

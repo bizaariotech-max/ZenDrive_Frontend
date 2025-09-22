@@ -34,6 +34,7 @@ import DutyAllocation from "../pages/admin/dutyAllocation/DutyAllocation";
 import DashCamAllocate from "../pages/admin/dashCamAllocation/DashCamAllocate";
 import IncidentMaster from "../pages/admin/incidentMaster/IncidentMaster";
 import HealthProfileUserAnswer from "../pages/admin/healthProfile/HealthProfileUserAnswer";
+import InvestigationMaster from "../pages/admin/configrations/InvestigationMaster";
 
 const AdminRoutes = () => (
   <Routes>
@@ -57,6 +58,7 @@ const AdminRoutes = () => (
         <Route path="question-type" element={<QuestionTypeMaster />} />
         <Route path="input-type" element={<InputTypeMaster />} />
         <Route path="investigation-type" element={<InvestigationTypeMaster />} />
+        <Route path="investigation-master" element={<InvestigationMaster />} />
         <Route path="abnormality-master" element={<AbnormalityMaster />} />
         <Route path="state-master" element={<StateMaster />} />
         <Route path="city-master" element={<CityMaster />} />

@@ -62,12 +62,13 @@ const RouteMaster = () => {
                 return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
             },
         },
-        { field: "belongsToStationId", headerName: "Station Type", minWidth: 150, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.StationId?.StationName || "N/A"}</span>, },
-        { field: "StartingStationId", headerName: "Starting Station", minWidth: 150, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.StartingStationId?.StationName || "N/A"}</span>, },
-        { field: "TerminalStationId", headerName: "Terminal Station", minWidth: 200, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.TerminalStationId?.StationName || "N/A"}</span>, },
-        { field: "EnrouteStation", headerName: "En route Station", minWidth: 200, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.EnrouteStation?.map((item) => item?.StationName).join(", ") || "N/A"}</span>, },
-        { field: "DistanceInKMs", headerName: "Distance (in kms)", minWidth: 200, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.DistanceInKMs || "N/A"}</span>, },
-        { field: "DurationInHrsMins", headerName: "Duration (hh:mm)", minWidth: 150, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.DurationInHrsMins || "N/A"}</span>, },
+        { field: "belongsToStationId", headerName: "Station Type", minWidth: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.StationId?.StationName || "N/A"}</span>, },
+        { field: "StartingStationId", headerName: "Starting Station", minWidth: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.StartingStationId?.StationName || "N/A"}</span>, },
+        { field: "RouteNumber", headerName: "Route Number", minWidth: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.RouteNumber || "N/A"}</span>, },
+        { field: "TerminalStationId", headerName: "Terminal Station", minWidth: 200, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.TerminalStationId?.StationName || "N/A"}</span>, },
+        { field: "EnrouteStation", headerName: "En route Station", minWidth: 200, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.EnrouteStation?.map((item) => item?.StationName).join(", ") || "N/A"}</span>, },
+        { field: "DistanceInKMs", headerName: "Distance (in kms)", minWidth: 200, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.DistanceInKMs || "N/A"}</span>, },
+        { field: "DurationInHrsMins", headerName: "Duration (hh:mm)", minWidth: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.DurationInHrsMins || "N/A"}</span>, },
         {
             field: "actions",
             headerName: "Actions",
@@ -128,8 +129,9 @@ const RouteMaster = () => {
             StationId: "",
             StartingStationId: "",
             TerminalStationId: "",
+            RouteNumber:"",
             EnrouteStation: [],
-            DurationInHrsMins: "",
+            DurationInHrsMins: "00:00",
             DistanceInKMs: "",
             Schedules: [{ Weekday: "", StartTime: "", EndTime: "", }]
         },
@@ -141,6 +143,7 @@ const RouteMaster = () => {
                     "RouteId": editId || null,
                     "StationId": values?.StationId || null,
                     "StartingStationId": values?.StartingStationId || null,
+                    "RouteNumber": values?.RouteNumber || null,
                     "TerminalStationId": values?.TerminalStationId || null,
                     "EnrouteStation": values?.EnrouteStation || [],
                     "DurationInHrsMins": values?.DurationInHrsMins || "",
@@ -174,8 +177,9 @@ const RouteMaster = () => {
             StationId: row?.StationId?._id || "",
             StartingStationId: row?.StartingStationId?._id || "",
             TerminalStationId: row?.TerminalStationId?._id || "",
-            EnrouteStation: row?.EnrouteStation || [],
+            EnrouteStation: row?.EnrouteStation?.map(item => item?._id) || [],
             DurationInHrsMins: row?.DurationInHrsMins || "",
+            RouteNumber: row?.RouteNumber || "",
             DistanceInKMs: row?.DistanceInKMs || "",
             Schedules: row?.Schedules || [],
         })
@@ -211,7 +215,7 @@ const RouteMaster = () => {
                     <FormInput
                         id="StationId"
                         name="StationId"
-                        label="Station Name"
+                        label="Fleet Owner Stations Name (RO/Depot)"
                         placeholder={"Select a station"}
                         type="select"
                         value={formik.values?.StationId}
@@ -230,6 +234,18 @@ const RouteMaster = () => {
                         onChange={formik.handleChange}
                         error={formik.touched?.StartingStationId && Boolean(formik.errors?.StartingStationId)}
                         helperText={formik.touched?.StartingStationId && formik.errors?.StartingStationId}
+                        options={rows || []}
+                    />
+                      <FormInput
+                        id="RouteNumber"
+                        name="RouteNumber"
+                        placeholder={"Enter Route Number"}
+                        label="Rounte Number"
+                        type="number"
+                        value={formik.values?.RouteNumber}
+                        onChange={formik.handleChange}
+                        error={formik.touched?.RouteNumber && Boolean(formik.errors?.RouteNumber)}
+                        helperText={formik.touched?.RouteNumber && formik.errors?.RouteNumber}
                         options={rows || []}
                     />
                     <FormInput
@@ -268,17 +284,32 @@ const RouteMaster = () => {
                         id="DurationInHrsMins"
                         name="DurationInHrsMins"
                         label="Duration(Hrs:Mins)"
-                        placeholder={"Enter duration in hours and minutes"}
+                        placeholder="Enter duration in hours and minutes"
                         value={formik.values?.DurationInHrsMins}
-                        onChange={formik.handleChange}
-                        error={formik.touched?.DurationInHrsMins && Boolean(formik.errors?.DurationInHrsMins)}
-                        helperText={formik.touched?.DurationInHrsMins && formik.errors?.DurationInHrsMins}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (!value.includes(":")) return;
+                            const splitValues = value.split(":");
+
+                            if (splitValues[0].length > 3) return;
+                            if (splitValues[1] && splitValues[1].length > 2) return;
+
+                            formik.setFieldValue("DurationInHrsMins", value);
+                        }}
+                        error={
+                            formik.touched?.DurationInHrsMins &&
+                            Boolean(formik.errors?.DurationInHrsMins)
+                        }
+                        helperText={
+                            formik.touched?.DurationInHrsMins && formik.errors?.DurationInHrsMins
+                        }
                     />
+
 
 
                 </div>
                 <div className="col-span-2 md:col-span-4">
-                    <label className="font-semibold mb-2 block">Schedules</label>
+                    <label className="font-semibold mb-2 block">Schedule</label>
 
                     <div className="flex flex-col gap-6">
                         {formik.values.Schedules.map((schedule, index) => (

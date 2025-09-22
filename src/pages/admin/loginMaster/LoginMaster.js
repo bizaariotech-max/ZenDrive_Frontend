@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SectionHeader from '../../../components/common/SectionHeader'
 import { DataGrid } from '@mui/x-data-grid'
 import FormInput from '../../../components/common/FormInput'
@@ -10,7 +10,6 @@ import { Popup } from '../../../components/common/Popup';
 import DatagridRowAction from '../../../components/common/DatagridRowAction';
 import { useFormik } from 'formik'
 import * as Yup from "yup";
-import { __formatDate2 } from '../../../utils/api/constantfun'
 
 
 const validationSchema = Yup.object({
@@ -21,11 +20,11 @@ const validationSchema = Yup.object({
         .matches(/^[6-9]\d{9}$/, "Enter valid 10-digit phone number")
         .required("Phone number is required"),
     Password: Yup.string()
-        .min(8, "Password must be at least 8 characters")
-        .matches(
-            /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
-            "Must include uppercase, lowercase, number, and special character"
-        )
+        // .min(8, "Password must be at least 8 characters")
+        // .matches(
+        //     /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+        //     "Must include uppercase, lowercase, number, and special character"
+        // )
         .required("Password is required"),
 })
 const LoginMaster = () => {

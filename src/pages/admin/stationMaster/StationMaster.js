@@ -19,7 +19,7 @@ const validationSchema = Yup.object({
     postalCode: Yup.string().required("Postal Code is required").matches(/^[0-9]{6}$/, "Postal Code must be 6 digits"),
     state: Yup.string().required("State is required"),
     city: Yup.string().required("City is required"),
-    geoLocation: Yup.string().required("GeoLocation is required"),
+    geoLocation: Yup.string(),
 });
 
 

@@ -54,7 +54,7 @@ export default function FilterSidebar() {
             </Button>
           </div>
         </div>
-        <div className={`w-[410px] bg-white shadow-md h-screen p-[30px] pt-5 filter-sidebar ${hideSidebar}`}>
+        <div className={`max-w-[410px] bg-white shadow-md h-screen p-[30px] pt-5 filter-sidebar ${hideSidebar}`}>
           {/* Header */}
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-gray-800 text-[18px]">Use Filter :</h2>
