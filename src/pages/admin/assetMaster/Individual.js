@@ -447,7 +447,7 @@ const Individual = () => {
                     />
                     <div className="flex flex-col gap-2">
                         <label htmlFor={"abnormalityImage"} className="text-base font-semibold">
-                            DL Uploaded Copy
+                           Uploaded DL Copy
                         </label>
                         <TextField
                             fullWidth

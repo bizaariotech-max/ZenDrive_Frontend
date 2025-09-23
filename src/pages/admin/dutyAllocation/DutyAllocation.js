@@ -195,7 +195,7 @@ const DutyAllocation = () => {
             if (res.response && res.response.response_code === "200") {
                 setRouteData((prevData) => ({
                     ...prevData,
-                    routeList: res?.data?.map(item => ({ lookup_value: item?.StationId?.StationName, ...item })) || [],
+                    routeList: res?.data?.map(item => ({ lookup_value: item?.RouteNumber+" - "+item?.StationId?.StationName, ...item })) || [],
                 }));
             } else {
                 toast.error(res.response ? res.response?.response_message : "Failed to fetch data");
@@ -338,7 +338,7 @@ const DutyAllocation = () => {
                         onBlur={formik.handleBlur}
                         error={formik.touched.DriverId && Boolean(formik.errors.DriverId)}
                         helperText={formik.touched.DriverId && formik.errors.DriverId}
-                        options={driverList?.length > 0 ? driverList?.map((item) => ({ _id: item?._id, lookup_value: item?.Individual?.FirstName + " " + item?.Individual?.LastName })) : []}
+                        options={driverList?.length > 0 ? driverList?.map((item) => ({ _id: item?._id, lookup_value: item?.Individual?.FirstName + " " + item?.Individual?.LastName + " - " + item?.Individual?.DLNumber })) : []}
                     />
 
                     {/* Selection a Conductor */}

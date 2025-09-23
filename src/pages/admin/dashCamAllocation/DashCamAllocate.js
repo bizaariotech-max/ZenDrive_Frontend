@@ -117,7 +117,6 @@ const DashCamAllocate = () => {
     const fetchData = async (AssetType, stateKey, StationId) => {
         try {
             const data = await __postApiData('/api/v1/admin/GetAssetsDropDown', { AssetType, StationId: StationId || "" });
-            console.log(`Fetched :`, data);
             if (data && Array.isArray(data?.data) && data?.data.length > 0) { setVehicleList(data?.data); } else { setVehicleList([]); }
         } catch (error) {
             console.error(`Error fetching ${stateKey}:`, error);
@@ -126,7 +125,6 @@ const DashCamAllocate = () => {
     useEffect(() => {
         getStationMasterList();
         getDashCamAllocationList();
-        fetchData(["Vehicle"]);
     }, []);
 
 
@@ -185,6 +183,10 @@ const DashCamAllocate = () => {
             setAllocation((prev) => ({ ...prev, loading: false }));
         }
     }
+
+    useEffect(() => {
+        fetchData(["Vehicle"], "vehicleList", formik.values?.StationId);
+    }, [formik.values?.StationId]);
     // ✅ Edit handler
     const handleEdit = (row) => {
         setEditId(row._id);
