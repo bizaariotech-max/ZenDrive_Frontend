@@ -6,10 +6,17 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import useAdminSidebarLinks from "../../hooks/admin/useAdminSidebarLinks";
 import LogoutIcon from '@mui/icons-material/Logout';
+import { toast } from "react-toastify";
 const AdminSidebar = ({ show, toggleDrawer }) => {
   const links = useAdminSidebarLinks();
   const { pathname } = useLocation();
   const [openSubListId, setOpenSubListId] = useState(null);
+  //=========== function to handle logout ===========\\
+  const handleLogout = () => {
+    localStorage.clear();
+    toast.success("Logout successfully");
+    window.location.href = "/";
+  }
 
   return (
     <aside>
@@ -94,7 +101,7 @@ const AdminSidebar = ({ show, toggleDrawer }) => {
                         <NavLink
                           key={subItem?.id}
                           to={subItem?.path}
-                          
+
                           className={`mx-4 flex items-center rounded-md text-primary-foreground px-2 gap-3 mb-3 no-underline transition-all duration-300 ease-in hover:bg-sidebar-primary hover:text-white ${pathname === subItem.path ? "bg-sidebar-primary text-white" : ""
                             }`}
                         >
@@ -134,17 +141,18 @@ const AdminSidebar = ({ show, toggleDrawer }) => {
             },
           }}
           className="w-full transition-all duration-300  ease-in"
+          onClick={handleLogout}
         >
           Logout
         </Button> : <IconButton
           className="text-primary-foreground transition-all duration-300 ease-in"
           aria-label="toggle sidebar"
           variant="contained"
-
+          onClick={handleLogout}
           sx={{
             borderRadius: "4px",
             backgroundColor: "transparent",
-             color: "white",
+            color: "white",
             border: "1px solid var(--foreground)",
             "&:hover": {
               backgroundColor: "white",
@@ -153,7 +161,7 @@ const AdminSidebar = ({ show, toggleDrawer }) => {
             },
           }}
         >
-          <LogoutIcon  />
+          <LogoutIcon />
         </IconButton>}
 
       </div>

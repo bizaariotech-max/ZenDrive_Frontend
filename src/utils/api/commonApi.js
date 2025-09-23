@@ -46,7 +46,17 @@ const __getStationMasterList = async () => {
             return []
         })
 }
-export { 
-  __getCommenApiDataList, 
-  __getStationMasterList
+const __commonLogin = async (payload) => {
+    return __postApiData(`/api/v1/common/Login`, payload)
+        .then(res => {
+            return res
+        })
+        .catch(error => {
+            console.error("Error in __getCommonLogin:", error);
+        })
+}
+export {
+    __getCommenApiDataList,
+    __getStationMasterList,
+    __commonLogin
 }

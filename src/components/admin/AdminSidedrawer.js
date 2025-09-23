@@ -13,6 +13,7 @@ import {
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { NavLink, useLocation } from "react-router-dom";
 import useAdminSidebarLinks from "../../hooks/admin/useAdminSidebarLinks";
+import { toast } from "react-toastify";
 
 const AdminSidedrawer = ({ show, toggleShow }) => {
     const link = useAdminSidebarLinks();
@@ -23,6 +24,12 @@ const AdminSidedrawer = ({ show, toggleShow }) => {
         setOpenMenu(openMenu === id ? null : id);
     };
 
+     //=========== function to handle logout ===========\\
+      const handleLogout = () => {
+        localStorage.clear();
+        toast.success("Logout successfully");
+        window.location.href = "/";
+      }
     const DrawerList = (
         <Box
             className="bg-background pt-8 text-white h-full overflow-auto"
@@ -95,6 +102,7 @@ const AdminSidedrawer = ({ show, toggleShow }) => {
                             border: "1px solid var(--primary)"
                         },
                     }}
+                    onClick={handleLogout}
                     className="w-full transition-all duration-300  ease-in"
                 >
                     Logout

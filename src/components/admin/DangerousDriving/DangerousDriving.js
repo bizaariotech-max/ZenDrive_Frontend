@@ -31,27 +31,27 @@ const DangerousDriving = () => {
 
   // Custom button group
 
-const CustomButtonGroup = ({ next, previous }) => {
-  return (
-    <div className="flex justify-center gap-2 mt-6">
-      {/* Prev Button */}
-      <button
-        onClick={previous}
-        className="flex items-center justify-center w-9 h-9 rounded-full  text-primary transition-colors duration-300 hover:bg-primary hover:text-white"
-      >
-        <IoArrowBackCircleOutline size={28} />
-      </button>
+  const CustomButtonGroup = ({ next, previous }) => {
+    return (
+      <div className="flex justify-center gap-2 mt-6">
+        {/* Prev Button */}
+        <button
+          onClick={previous}
+          className="flex items-center justify-center w-9 h-9 rounded-full  text-primary transition-colors duration-300 hover:bg-primary hover:text-white"
+        >
+          <IoArrowBackCircleOutline size={28} />
+        </button>
 
-      {/* Next Button */}
-      <button
-        onClick={next}
-        className="flex items-center justify-center w-9 h-9 rounded-full  text-primary transition-colors duration-300 hover:bg-primary hover:text-white"
-      >
-        <IoArrowForwardCircleOutline size={28} />
-      </button>
-    </div>
-  );
-};
+        {/* Next Button */}
+        <button
+          onClick={next}
+          className="flex items-center justify-center w-9 h-9 rounded-full  text-primary transition-colors duration-300 hover:bg-primary hover:text-white"
+        >
+          <IoArrowForwardCircleOutline size={28} />
+        </button>
+      </div>
+    );
+  };
 
 
 
@@ -153,14 +153,14 @@ const CustomButtonGroup = ({ next, previous }) => {
                             <p className="mb-1 text-xs text-gray-500">
                               Live Location
                             </p>
-                            <p
+                            <div
                               className={`p-2 bg-[${ThemeColors.secondColor}] rounded flex justify-between`}
                             >
-                              <div>Lucknow</div>
-                              <div>
+                              <span>Lucknow</span>
+                              <span>
                                 <CiLocationOn />
-                              </div>
-                            </p>
+                              </span>
+                            </div>
                           </div>
                         </div>
 
@@ -177,19 +177,20 @@ const CustomButtonGroup = ({ next, previous }) => {
                           </div>
                           <div>
                             <p className="mb-1 text-xs text-gray-500">Route</p>
-                            <p
+                            <div
                               className={`p-2 bg-[${ThemeColors.secondColor}] rounded`}
                             >
                               <div className="flex">
                                 <CiLocationOn />
-                                <div className="ps-2">Lucknow</div>
+                                <span className="ps-2">Lucknow</span>
                               </div>
                               <div className="border-l-2 border-dotted border-gray-500 p-4 ms-2"></div>
                               <div className="flex pt-1">
                                 <CiLocationOn />
-                                <div className="ps-2">Ghaziabad</div>
+                                <span className="ps-2">Ghaziabad</span>
                               </div>
-                            </p>
+                            </div>
+
                           </div>
                         </div>
                       </div>
