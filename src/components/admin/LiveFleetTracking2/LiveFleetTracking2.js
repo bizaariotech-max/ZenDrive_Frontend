@@ -163,7 +163,7 @@ export default function LiveFleetTracking2() {
   ];
 
   return (
-    <div className="space">
+    <div className="pt-5">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="lg:text-[30px] font-bold" style={{ fontFamily: 'Poppins, sans-serif' }}>Live Fleet Tracking</h2>

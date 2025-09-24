@@ -38,7 +38,7 @@ const FitnessAssessment = () => {
   };
 
   return (
-    <div className="space">
+    <div className="pt-3">
       {/* Tabs */}
       <div className="grid grid-cols md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {tabs.map((tab) => (

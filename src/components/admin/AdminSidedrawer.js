@@ -14,22 +14,24 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { NavLink, useLocation } from "react-router-dom";
 import useAdminSidebarLinks from "../../hooks/admin/useAdminSidebarLinks";
 import { toast } from "react-toastify";
+import { useAuth } from "../../context/AuthContext";
 
 const AdminSidedrawer = ({ show, toggleShow }) => {
-    const link = useAdminSidebarLinks();
     const [openMenu, setOpenMenu] = React.useState(null);
     const { pathname } = useLocation();
+    const { userDetails, logout } = useAuth();
+    const links = useAdminSidebarLinks(userDetails?.Role);
 
     const handleClick = (id) => {
         setOpenMenu(openMenu === id ? null : id);
     };
 
-     //=========== function to handle logout ===========\\
-      const handleLogout = () => {
-        localStorage.clear();
+    //=========== function to handle logout ===========\\
+    const handleLogout = () => {
+        logout();
         toast.success("Logout successfully");
         window.location.href = "/";
-      }
+    }
     const DrawerList = (
         <Box
             className="bg-background pt-8 text-white h-full overflow-auto"
@@ -37,7 +39,7 @@ const AdminSidedrawer = ({ show, toggleShow }) => {
             role="presentation"
         >
             <List>
-                {link.map((item) => (
+                {links.map((item) => (
                     <React.Fragment key={item?.id}>
                         {/* Top level item */}
                         <ListItem disablePadding>

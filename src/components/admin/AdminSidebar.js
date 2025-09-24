@@ -7,13 +7,15 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import useAdminSidebarLinks from "../../hooks/admin/useAdminSidebarLinks";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { toast } from "react-toastify";
+import { useAuth } from "../../context/AuthContext";
 const AdminSidebar = ({ show, toggleDrawer }) => {
-  const links = useAdminSidebarLinks();
   const { pathname } = useLocation();
+  const { userDetails, logout } = useAuth();
+  const links = useAdminSidebarLinks(userDetails?.Role);
   const [openSubListId, setOpenSubListId] = useState(null);
   //=========== function to handle logout ===========\\
   const handleLogout = () => {
-    localStorage.clear();
+    logout();
     toast.success("Logout successfully");
     window.location.href = "/";
   }

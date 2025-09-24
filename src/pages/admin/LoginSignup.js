@@ -36,7 +36,12 @@ const LoginSignup = () => {
                 if (res.response && res.response.response_code === "200") {
                     login(res.data?.AuthToken, res.data?.UserDetails);
                     toast.success(res.response.response_message || "Login successfully");
-                    navigate("/admin");
+                    if (res.data?.UserDetails?.Role === "Super Admin") {
+                      navigate("/admin/login-master")
+                    }else{
+                      navigate("/dashboard")
+                    }
+             
                 } else {
                     toast.error(res.response.response_message || "Failed to Login");
                 }

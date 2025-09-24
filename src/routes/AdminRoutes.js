@@ -30,9 +30,7 @@ import AssetMasterOutlet from "../pages/admin/assetMaster/AssetMasterOutlet";
 import Individual from "../pages/admin/assetMaster/Individual";
 import Vehicle from "../pages/admin/assetMaster/Vehicle";
 import LoginMaster from "../pages/admin/loginMaster/LoginMaster";
-import DutyAllocation from "../pages/admin/dutyAllocation/DutyAllocation";
 import DashCamAllocate from "../pages/admin/dashCamAllocation/DashCamAllocate";
-import IncidentMaster from "../pages/admin/incidentMaster/IncidentMaster";
 import HealthProfileUserAnswer from "../pages/admin/healthProfile/HealthProfileUserAnswer";
 import InvestigationMaster from "../pages/admin/configrations/InvestigationMaster";
 
@@ -75,10 +73,8 @@ const AdminRoutes = () => (
       <Route path="vehicle" element={<Vehicle />} />
       </Route>
 
-      <Route path="duty-allocation" element={<DutyAllocation />} />
       <Route path="login-master" element={<LoginMaster />} />
       <Route path="dash-cam-allocation" element={<DashCamAllocate />} />
-      <Route path="incident-master" element={<IncidentMaster />} />
       <Route path="health-profiling-questions" element={<HealthProfileQuestion />} />
       <Route path="health-profiling-user-response" element={<HealthProfileUserAnswer />} />
 
