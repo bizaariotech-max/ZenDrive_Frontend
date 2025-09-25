@@ -1,18 +1,26 @@
 import { Checkbox, Typography } from '@mui/material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import FormInput from '../../components/common/FormInput'
-import FormButton from '../../components/common/FormButton'
+import FormInput from '../components/common/FormInput'
+import FormButton from '../components/common/FormButton'
 import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as Yup from "yup";
-import { __commonLogin } from '../../utils/api/commonApi'
-import { useAuth } from '../../context/AuthContext'
+import { __commonLogin } from '../utils/api/commonApi'
+import { useAuth } from '../context/AuthContext'
+import { IconButton, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Popup } from '../components/common/Popup'
 
-const LoginSignup = () => {
+const Login = () => {
     const [isLoading, setIsLoading] = React.useState(false);
     const navigate = useNavigate();
     const { login } = useAuth();
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => {
+        setShowPassword((prev) => !prev);
+    };
 
     const validationSchema = Yup.object().shape({
         PhoneNumber: Yup.number().required("PhoneNumber is required"),
@@ -26,7 +34,6 @@ const LoginSignup = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            console.log(values);
             try {
                 setIsLoading(true);
                 const payload = {
@@ -37,7 +44,7 @@ const LoginSignup = () => {
                 const res = await __commonLogin(payload);
                 if (res.response && res.response.response_code === "200") {
                     login(res.data?.AuthToken, res.data?.UserDetails);
-                    toast.success(res.response.response_message || "Login successfully");
+              
                     if (res.data?.UserDetails?.Role === "Super Admin") {
                         navigate("/admin/login-master")
                     } else {
@@ -45,11 +52,13 @@ const LoginSignup = () => {
                     }
 
                 } else {
-                    toast.error(res.response.response_message || "Failed to Login");
+                  Popup("error", res?.response.response_message || "Failed to login");
                 }
                 setIsLoading(false);
             } catch (error) {
                 console.error("Error in  Login :", error);
+                  Popup("error", error?.response?.response_message || "Failed to login");
+
             } finally {
                 setIsLoading(false);
             }
@@ -58,7 +67,7 @@ const LoginSignup = () => {
 
 
     return (
-        <div className='h-screen overflow-auto grid  grid-cols-1 lg:grid-cols-2 gap-3 p-4'>
+        <div className='h-screen overflow-auto grid  grid-cols-1 md:grid-cols-2 gap-3 p-4'>
             <div className='flex items-center justify-center xs:px-2 sm:px-4 py-4'>
                 <img src="/LoginSide2.png" alt="Signupbg" className='w-full max-h-[600px] h-full object-cover rounded-lg' />
             </div>
@@ -83,10 +92,22 @@ const LoginSignup = () => {
                         <FormInput
                             label="Password"
                             name="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder="Enter your password"
-                            type="password"
                             value={formik.values.password}
                             onChange={formik.handleChange}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </div>
                     <div className="flex items-center justify-between">
@@ -112,15 +133,16 @@ const LoginSignup = () => {
                     <div className="mt-2">
                         <FormButton
                             className="w-full"
-                            disable={
-                               
-                                (!formik.values.PhoneNumber &&
-                                !formik.values.password &&
-                                !formik.values.checked)
+                            disabled={
+                                isLoading ||
+                                !formik.values.PhoneNumber ||
+                                !formik.values.password ||
+                                !formik.values.checked
                             }
                         >
                             {isLoading ? "Logging in..." : "Login"}
                         </FormButton>
+
 
                     </div>
                 </form>
@@ -131,4 +153,4 @@ const LoginSignup = () => {
     )
 }
 
-export default LoginSignup
+export default Login

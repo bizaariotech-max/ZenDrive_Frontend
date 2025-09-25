@@ -79,6 +79,20 @@ const FormInput = ({
             {...props}
           />
         );
+      case "password":
+        return (
+          <TextField
+            type="password"
+            fullWidth
+            id={name}
+            name={name}
+            variant="outlined"
+            size="small"
+            className="custom-input"
+            InputLabelProps={{ shrink: true }}
+            {...props}
+          />
+        );
 
       case "text":
       default:
