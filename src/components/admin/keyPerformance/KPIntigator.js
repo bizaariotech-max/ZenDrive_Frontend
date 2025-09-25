@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import KPICard from '../../common/KPICard'
 import StatusPieChart from '../../common/StatusPieChart'
+import RiskLevel from '../riskLevel/RiskLevel'
 
 const KPIntigator = () => {
     const [selectedPeriod, setSelectedPeriod] = useState("This Week")
@@ -126,6 +127,9 @@ const KPIntigator = () => {
                         />
                     ))}
                 </div>
+            </div>
+            <div className="space">
+                <RiskLevel />
             </div>
             <div className="space">
                 <h2 className="text-2xl font-bold mb-6">Current Status</h2>

@@ -1,6 +1,6 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts"
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts"
 
-const StatusPieChart = ({title, totalCount, data,}) => {
+const StatusPieChart = ({ title, totalCount, data, }) => {
     const CustomLegend = ({ payload }) => {
         return (
             <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center mt-4">
@@ -19,21 +19,36 @@ const StatusPieChart = ({title, totalCount, data,}) => {
                 <h3 className="text-lg font-semibold">{title}  <span className="text-sm text-muted-foreground">
                     (Total no {title.split(" ")[0].toLowerCase()}: {totalCount})
                 </span></h3>
-               
+
             </div>
 
             <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <PieChart width={350} height={350}>
-                        <Pie data={data} cx="50%" cy="45%" labelLine={false} outerRadius={100} fill="#8884d8" dataKey="value">
+                    <PieChart>
+                        <Pie
+                            data={data}
+                            cx="50%"
+                            cy="45%"
+                            labelLine={false}
+                            outerRadius={100}
+                            fill="#8884d8"
+                            dataKey="value"
+                        >
                             {data.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color}  />
+                                <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
                         </Pie>
+
+                        {/* 👇 Add this */}
+                        <Tooltip
+                            formatter={(value, name, props) => [`${value}`, props.payload?.name]}
+                        />
+
                         <Legend content={<CustomLegend />} />
                     </PieChart>
                 </ResponsiveContainer>
             </div>
+
         </div>
     )
 }

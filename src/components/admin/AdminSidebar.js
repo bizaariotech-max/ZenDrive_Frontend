@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, IconButton, Typography, Divider, Button } from "@mui/material";
+import { Box, IconButton, Typography, Divider, Button, Avatar } from "@mui/material";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ChevronDown, ChevronUp, } from "lucide-react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -23,11 +23,12 @@ const AdminSidebar = ({ show, toggleDrawer }) => {
   return (
     <aside>
       {/* Logo */}
-      <div className="flex items-center justify-center py-14">
+      <div className="flex items-center justify-center pt-14 pb-10">
         <Typography variant="h5" className="font-bold my-4 text-primary-foreground">
-          {show ? "Zendrive Admin" : "ZA"}
+          {show ? <Avatar variant="rounded" alt="brand" src="/logo.png" sx={{ width: 64, height: 64,objectFit: "contain" }}/> : "ZA"}
         </Typography>
       </div>
+      <Divider />
       <IconButton
         className="relative top-2 left-2 text-primary-foreground hidden md:block"
         id="toggle-icon-style"
