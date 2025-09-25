@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import VehicleRiskCard from '../../VehicleRiskCard'
+import Carousel from "react-multi-carousel";
 
 const RiskLevel = () => {
     const [selectedRiskLevel, setSelectedRiskLevel] = useState("High-risk")
@@ -11,13 +12,24 @@ const RiskLevel = () => {
             {
                 vehicleNumber: "UP 54 H 0354",
                 accidents: 20,
-                violations: 25,
-                challans: 220,
+                violations: 45,
+                challans: 215,
                 age: 20,
                 kmTravelled: "5.6",
                 depot: "Lucknow",
                 dlNumber: "DL54H546D",
                 fitnessScore: 65,
+            },
+            {
+                vehicleNumber: "UP 54 H 0354",
+                accidents: 30,
+                violations: 25,
+                challans: 150,
+                age: 20,
+                kmTravelled: "5.6",
+                depot: "Lucknow",
+                dlNumber: "DL54H546D",
+                fitnessScore: 73,
             },
             {
                 vehicleNumber: "UP 54 H 0354",
@@ -28,18 +40,7 @@ const RiskLevel = () => {
                 kmTravelled: "5.6",
                 depot: "Lucknow",
                 dlNumber: "DL54H546D",
-                fitnessScore: 65,
-            },
-            {
-                vehicleNumber: "UP 54 H 0354",
-                accidents: 20,
-                violations: 25,
-                challans: 220,
-                age: 20,
-                kmTravelled: "5.6",
-                depot: "Lucknow",
-                dlNumber: "DL54H546D",
-                fitnessScore: 65,
+                fitnessScore: 45,
             },
         ],
         "Medium-risk": [
@@ -83,10 +84,30 @@ const RiskLevel = () => {
 
     const riskLevels = ["High-risk", "Medium-risk", "Low-risk"]
     const currentRiskData = vehicleRiskData[selectedRiskLevel]
+    const responsive = {
+        superLargeDesktop: {
+            breakpoint: { max: 4000, min: 3000 },
+            items: 4
+        },
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 3,
+            partialVisibilityGutter: 20
+        },
+        tablet: {
+            breakpoint: { max: 1024, min: 767 },
+            items: 2
+        },
+        mobile: {
+            breakpoint: { max: 767, min: 0 },
+            items: 1,
+
+        }
+    };
     return (
-        <div className="mb-8">
+        <>
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
-                <h2 className="text-2xl font-bold">Risk Level</h2>
+                <h2 className="text-3xl font-semibold">Risk Level</h2>
 
                 <div className="flex flex-col sm:flex-row gap-4">
                     {/* Risk Level Filter */}
@@ -103,8 +124,8 @@ const RiskLevel = () => {
                                 />
                                 <div
                                     className={`flex items-center gap-2 rounded-lg transition-all ${selectedRiskLevel === level
-                                            ? "text-primary border-primary"
-                                            : "text-muted-foreground border-border "
+                                        ? "text-primary border-primary"
+                                        : "text-muted-foreground border-border "
                                         }`}
                                 >
                                     <div
@@ -126,7 +147,7 @@ const RiskLevel = () => {
                         <select
                             value={selectedCategory}
                             onChange={(e) => setSelectedCategory(e.target.value)}
-                            className="px-4 py-2 bg-card border border-border rounded-lg text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                            className="px-4 py-2  border border-gray-300 rounded-lg text-muted-foreground text-base focus:outline-none focus:ring-2 focus:ring-primary"
                         >
                             <option value="Driver">Driver</option>
                             <option value="All Drivers">All Drivers</option>
@@ -134,7 +155,7 @@ const RiskLevel = () => {
                         <select
                             value={selectedVehicleType}
                             onChange={(e) => setSelectedVehicleType(e.target.value)}
-                            className="px-4 py-2 bg-card border border-border rounded-lg text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                            className="px-4 py-2  border border-gray-300 rounded-lg text-muted-foreground text-base focus:outline-none focus:ring-2 focus:ring-primary"
                         >
                             <option value="Vehicle">Vehicle</option>
                             <option value="All Vehicles">All Vehicles</option>
@@ -144,12 +165,31 @@ const RiskLevel = () => {
             </div>
 
             {/* Vehicle Risk Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {currentRiskData.map((vehicle, index) => (
-                    <VehicleRiskCard key={index} vehicleData={vehicle} />
-                ))}
+            <div className="">
+                <Carousel
+                    //   removeArrowOnDeviceType={["tablet", "mobile"]}
+                    arrows={false}
+                    responsive={responsive}
+                    // autoPlay={false}
+                    // autoPlaySpeed={3000}
+                    // transitionDuration={2000}
+                    //additionalTransfrom={-20}
+                    //  pauseOnHover={false}
+                    //  centerMode={false}
+                    containerClass=""
+                    itemClass="pe-md-3 px-1"
+                    showDots={false}
+                    infinite={true}
+                    renderDotsOutside={true}
+                    partialVisible={true}
+
+                >
+                    {currentRiskData.map((vehicle, index) => (
+                        <VehicleRiskCard key={index} vehicleData={vehicle} />
+                    ))}
+                </Carousel>
             </div>
-        </div>
+        </>
     )
 }
 

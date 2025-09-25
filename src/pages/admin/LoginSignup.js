@@ -12,7 +12,7 @@ import { useAuth } from '../../context/AuthContext'
 const LoginSignup = () => {
     const [isLoading, setIsLoading] = React.useState(false);
     const navigate = useNavigate();
-     const { login } = useAuth();
+    const { login } = useAuth();
 
     const validationSchema = Yup.object().shape({
         PhoneNumber: Yup.number().required("PhoneNumber is required"),
@@ -22,9 +22,11 @@ const LoginSignup = () => {
         initialValues: {
             PhoneNumber: "",
             password: "",
+            checked: false
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            console.log(values);
             try {
                 setIsLoading(true);
                 const payload = {
@@ -37,11 +39,11 @@ const LoginSignup = () => {
                     login(res.data?.AuthToken, res.data?.UserDetails);
                     toast.success(res.response.response_message || "Login successfully");
                     if (res.data?.UserDetails?.Role === "Super Admin") {
-                      navigate("/admin/login-master")
-                    }else{
-                      navigate("/dashboard")
+                        navigate("/admin/login-master")
+                    } else {
+                        navigate("/dashboard")
                     }
-             
+
                 } else {
                     toast.error(res.response.response_message || "Failed to Login");
                 }
@@ -58,7 +60,7 @@ const LoginSignup = () => {
     return (
         <div className='h-screen overflow-auto grid  grid-cols-1 lg:grid-cols-2 gap-3 p-4'>
             <div className='flex items-center justify-center xs:px-2 sm:px-4 py-4'>
-                <img src="/LoginSide.png" alt="Signupbg" className='w-full max-h-[600px] h-full object-cover rounded-lg' />
+                <img src="/LoginSide2.png" alt="Signupbg" className='w-full max-h-[600px] h-full object-cover rounded-lg' />
             </div>
             {/*==========  Login Form  start here ==========*/}
             <div className='flex w-full justify-center flex-col py-8 md:py-14 xs:px-4 sm:px-6 md:px-20'>
@@ -97,6 +99,8 @@ const LoginSignup = () => {
                                         color: "var(--primary)",
                                     },
                                 }}
+                                checked={formik.values.checked}
+                                onChange={(e) => formik.setFieldValue("checked", e.target.checked)}
                             />
                             <label htmlFor="remember" className="text-primary cursor-pointer">
                                 Remember me
@@ -105,8 +109,19 @@ const LoginSignup = () => {
                         <Link to="/forgot-password" className='text-primary underline'>Forgot Password?</Link>
                     </div>
 
-                    <div className="mt-3">
-                        <FormButton fullWidth disable={isLoading}> {isLoading ? "Logging in..." : "Login"}</FormButton>
+                    <div className="mt-2">
+                        <FormButton
+                            className="w-full"
+                            disable={
+                               
+                                (!formik.values.PhoneNumber &&
+                                !formik.values.password &&
+                                !formik.values.checked)
+                            }
+                        >
+                            {isLoading ? "Logging in..." : "Login"}
+                        </FormButton>
+
                     </div>
                 </form>
             </div>

@@ -29,13 +29,8 @@ export default function FilterSidebar() {
   return (
     <>
       <div>
-        <div className='flex justify-between'>
-          <div
-            className="text-[30px] font-semibold mb-3"
-            style={{ fontFamily: 'Poppins-Medium,  sans-serif', fontWeight: 500 }}
-          >
-            Overview
-          </div>
+        <div className='flex justify-between mt-4'>
+             <h2 className="text-3xl font-semibold mb-3">Overview</h2>
           <div>
 
             <Button

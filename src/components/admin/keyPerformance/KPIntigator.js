@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import KPICard from '../../common/KPICard'
-import StatusPieChart from '../../common/StatusPieChart'
-import RiskLevel from '../riskLevel/RiskLevel'
 
 const KPIntigator = () => {
     const [selectedPeriod, setSelectedPeriod] = useState("This Week")
@@ -53,23 +51,6 @@ const KPIntigator = () => {
             { title: "Vehicle Seizers", value: 90, oldValue: 80, newValue: 90 },
         ],
     }
-    const driverStatusData = [
-        { name: "On Duty", value: 35, color: "#FCD34D" },
-        { name: "Undergoing Training", value: 20, color: "#3B82F6" },
-        { name: "Undergoing Medical Treatments", value: 15, color: "#EF4444" },
-        { name: "Recommended Only Day Duty", value: 12, color: "#8B5CF6" },
-        { name: "Recommended Only Short Trips", value: 10, color: "#8B5CF6" },
-        { name: "Recommended Off Road Duty", value: 8, color: "#6B7280" },
-    ]
-
-    const vehicleStatusData = [
-        { name: "On Duty", value: 40, color: "#FCD34D" },
-        { name: "Undergoing Maintenance", value: 18, color: "#3B82F6" },
-        { name: "Critical Issues", value: 12, color: "#EF4444" },
-        { name: "Recommended Only Day Duty", value: 15, color: "#8B5CF6" },
-        { name: "Recommended Only Short Trips", value: 0, color: "#8B5CF6" },
-        { name: "Recommended Off Road Duty", value: 5, color: "#6B7280" },
-    ]
 
     const periods = ["This Week", "This Month", "This Quarter", "This Year"]
     const currentData = kpiData[selectedPeriod]
@@ -79,7 +60,7 @@ const KPIntigator = () => {
             <div className="space">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-                    <h1 className="text-2xl font-bold">Key Performance Indicators (KPIs)</h1>
+                    <h1 className="text-3xl font-semibold">Key Performance Indicators (KPIs)</h1>
 
                     {/* Period Filter */}
                     <div className="flex flex-wrap gap-2">
@@ -95,8 +76,8 @@ const KPIntigator = () => {
                                 />
                                 <div
                                     className={`flex items-center gap-2 rounded-lg  transition-all ${selectedPeriod === period
-                                            ? "text-primary border-primary"
-                                            : "text-muted-foreground border-border "
+                                        ? "text-primary border-primary"
+                                        : "text-muted-foreground border-border "
                                         }`}
                                 >
                                     <div
@@ -126,16 +107,6 @@ const KPIntigator = () => {
                             period={selectedPeriod}
                         />
                     ))}
-                </div>
-            </div>
-            <div className="space">
-                <RiskLevel />
-            </div>
-            <div className="space">
-                <h2 className="text-2xl font-bold mb-6">Current Status</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <StatusPieChart title="Driver Status" totalCount={1200} data={driverStatusData} />
-                    <StatusPieChart title="Vehicle Status" totalCount={1200} data={vehicleStatusData} />
                 </div>
             </div>
         </>
