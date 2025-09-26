@@ -22,7 +22,11 @@ const filter = createFilterOptions();
 
 const HealthProfileQuestion = () => {
     const [selectedRiskLevel, setSelectedRiskLevel] = useState("68cb9d1f07f450963b4cbd22")
-
+    const [value, setValue] = React.useState(null);
+    const [open, toggleOpen] = React.useState(false);
+    const [dialogValue, setDialogValue] = React.useState({
+        lookup_value: '',
+    });
     const [dataList, setDataList] = useState({
         healthProfileList: [],
         investigationList: [],
@@ -162,6 +166,8 @@ const HealthProfileQuestion = () => {
                 });
                 getHealthProfilingQuestionList();
                 setEditId(null);
+                setValue(null);
+                setSelectedRiskLevel('68cb9d1f07f450963b4cbd22');
             } else {
                 toast.error(res.response ? res.response?.response_message : "Failed to add");
             }
@@ -193,7 +199,7 @@ const HealthProfileQuestion = () => {
             }
 
             updateState({ [stateKey]: list });
-            return list; 
+            return list;
         } catch (error) {
             console.error(`Error fetching ${stateKey}:`, error);
             updateState({ [stateKey]: [] });
@@ -305,12 +311,7 @@ const HealthProfileQuestion = () => {
 
 
 
-    const [value, setValue] = React.useState(null);
-    const [open, toggleOpen] = React.useState(false);
 
-    const [dialogValue, setDialogValue] = React.useState({
-        lookup_value: '',
-    });
 
     const handleClose = () => {
         setDialogValue({ lookup_value: '' });
@@ -450,7 +451,8 @@ const HealthProfileQuestion = () => {
                                         setFormData((prev) => ({ ...prev, logicalGroup: newValue?._id || "" }));
                                     }
                                 }}
-
+                               className='custom-input'
+                              
                                 filterOptions={(options, params) => {
                                     const filtered = filter(options, params);
 
