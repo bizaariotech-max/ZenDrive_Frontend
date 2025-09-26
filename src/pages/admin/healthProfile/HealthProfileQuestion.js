@@ -181,24 +181,26 @@ const HealthProfileQuestion = () => {
             const data = await __getCommenApiDataList({
                 lookup_type: lookupTypes,
                 parent_lookup_id: parent_lookup_id || null,
-            })
+            });
 
-            if (data && Array.isArray(data) && data.length > 0) {
-                updateState({ [stateKey]: data, });
+            let list = [];
+            if (Array.isArray(data) && data.length > 0) {
+                list = data;
+            } else if (data?.data && Array.isArray(data.data) && data.data.length > 0) {
+                list = data.data;
+            } else if (data?.list && Array.isArray(data.list) && data.list.length > 0) {
+                list = data.list;
             }
-            else if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {
-                updateState({ [stateKey]: data.data, });
-            } else if (data && data.list && Array.isArray(data.list) && data.list.length > 0) {
-                updateState({ [stateKey]: data.list, });
-            }
-            else {
-                // console.warn(`No data found for ${stateKey}:`, data);
-                updateState({ [stateKey]: [], });
-            }
+
+            updateState({ [stateKey]: list });
+            return list; 
         } catch (error) {
             console.error(`Error fetching ${stateKey}:`, error);
+            updateState({ [stateKey]: [] });
+            return [];
         }
-    }
+    };
+
 
     useEffect(() => {
         fetchData(['health_profiling_group'], "healthProfileList");
@@ -213,12 +215,24 @@ const HealthProfileQuestion = () => {
 
 
     ///========== handle edit ============\\
-    const handleEdit = useCallback((row) => {
+    const handleEdit = useCallback(async (row) => {
         setEditId(row._id);
-        const foundLogicalGroup = logicalGroupList.find(
+
+        // now fetchData actually returns a list
+        const updatedLogicalGroups = await fetchData(
+            ["logical_group"],
+            "logicalGroupList",
+            row?.AssetType?._id
+        );
+
+        // find in freshly fetched list
+        const foundLogicalGroup = updatedLogicalGroups.find(
             (l) => l._id === row?.LogicalGroup?._id
         );
+
         setValue(foundLogicalGroup || null);
+        setSelectedRiskLevel(row?.AssetType?._id || "");
+
         setFormData({
             questionCategory: row?.HPQuestionCategory || "",
             groupId: row?.HPGroup?._id || "",
@@ -227,7 +241,7 @@ const HealthProfileQuestion = () => {
             question: row?.HPQuestion || "",
             investigationTypeId: row?.InvestigationType?._id || "",
             questionType: row?.QuestionType?._id || "",
-            optionValues: row?.OptionValues && row?.OptionValues.length > 0 ? row?.OptionValues : [""],
+            optionValues: row?.OptionValues?.length > 0 ? row.OptionValues : [""],
             selectionType: row?.SelectionType || "Single",
             inputType: row?.InputType || "",
             validityMin: row?.ValidityMinValue || "",
@@ -241,8 +255,9 @@ const HealthProfileQuestion = () => {
             sosMax: row?.SOSValueMaximum || "",
             isActive: row?.IsActive || false,
         });
+    }, []);
 
-    }, [logicalGroupList]);
+
     ///========== handle delete ============\\
     const handleDelete = useCallback(async (row) => {
         try {
@@ -675,7 +690,7 @@ const HealthProfileQuestion = () => {
                             }
                             label="Logical Group Name"
                             type="text"
-                            // variant="standard"
+                        // variant="standard"
                         />
                     </DialogContent>
 
