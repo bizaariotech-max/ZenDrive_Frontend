@@ -10,15 +10,27 @@ import { IconButton, TextField } from '@mui/material';
 import { __postApiData } from '../../../utils/api';
 import DatagridRowAction from '../../../components/common/DatagridRowAction';
 import { Popup } from '../../../components/common/Popup';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
+const filter = createFilterOptions();
 
 const HealthProfileQuestion = () => {
+    const [selectedRiskLevel, setSelectedRiskLevel] = useState("68cb9d1f07f450963b4cbd22")
+
     const [dataList, setDataList] = useState({
         healthProfileList: [],
         investigationList: [],
         questionCategoryList: [],
         inputTypeList: [],
+        logicalGroupList: []
     });
+
 
     const [formData, setFormData] = useState({
         questionCategory: "",
@@ -43,7 +55,7 @@ const HealthProfileQuestion = () => {
         sosMax: "",
     });
     ///========== destructuring dataList ============\\
-    const { healthProfileList, investigationList, questionCategoryList, inputTypeList } = dataList;
+    const { healthProfileList, investigationList, questionCategoryList, inputTypeList, logicalGroupList } = dataList;
 
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -55,9 +67,7 @@ const HealthProfileQuestion = () => {
         try {
             setLoading(true);
             const res = await __postApiData('/api/v1/admin/GetHpQuestion');
-            console.log("API Response:", res);
             if (res.response && res.response.response_code === "200") {
-                console.log("Health Profiling Question List:", res.data);
                 setRows(res?.data || []);
 
             } else {
@@ -106,6 +116,7 @@ const HealthProfileQuestion = () => {
                 "HPQuestionCategory": formData.questionCategory || "",
                 "HPGroup": formData.groupId || null,
                 "QuestionOrder": formData.questionOrder || "",
+                "AssetType": selectedRiskLevel,
                 "LogicalGroup": formData.logicalGroup || "",
                 "InvestigationType": formData.investigationTypeId || null,
                 "QuestionType": formData.questionType || null,
@@ -196,18 +207,25 @@ const HealthProfileQuestion = () => {
         fetchData(['input_type'], "inputTypeList");
         getHealthProfilingQuestionList();
     }, []);
+    useEffect(() => {
+        fetchData(['logical_group'], 'logicalGroupList', selectedRiskLevel);
+    }, [selectedRiskLevel]);
 
 
     ///========== handle edit ============\\
     const handleEdit = useCallback((row) => {
         setEditId(row._id);
+        const foundLogicalGroup = logicalGroupList.find(
+            (l) => l._id === row?.LogicalGroup?._id
+        );
+        setValue(foundLogicalGroup || null);
         setFormData({
             questionCategory: row?.HPQuestionCategory || "",
-            groupId: row?.HPGroup || "",
-            questionOrder: row?.HPQuestionOrder || "",
-            logicalGroup: row?.LogicalGroup || "",
-            question: row?.HPQuestion?._id || "",
-            investigationTypeId: row?.InvestigationType || "",
+            groupId: row?.HPGroup?._id || "",
+            questionOrder: row?.QuestionOrder || "",
+            logicalGroup: row?.LogicalGroup?._id || "",
+            question: row?.HPQuestion || "",
+            investigationTypeId: row?.InvestigationType?._id || "",
             questionType: row?.QuestionType?._id || "",
             optionValues: row?.OptionValues && row?.OptionValues.length > 0 ? row?.OptionValues : [""],
             selectionType: row?.SelectionType || "Single",
@@ -224,9 +242,9 @@ const HealthProfileQuestion = () => {
             isActive: row?.IsActive || false,
         });
 
-    }, []);
+    }, [logicalGroupList]);
     ///========== handle delete ============\\
-    const handleDelete = useCallback(async(row) => {
+    const handleDelete = useCallback(async (row) => {
         try {
             const result = await Popup("warning", "Are you sure?", "You won't be able to revert this!");
             if (result.isConfirmed) {
@@ -251,23 +269,70 @@ const HealthProfileQuestion = () => {
                 return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
             },
         },
-        { field: "questionCategory", headerName: "Category", width: 150, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.HPQuestionCategory || "N/A"}</span>, },
-        { field: "HPGroup", headerName: "Group Name", width: 120, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.HPGroup?.lookup_value || "N/A"}</span>, },
-        { field: "questionOrder", headerName: "Order", width: 100, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.QuestionOrder || "N/A"}</span>, },
-        { field: "logicalGroup", headerName: "Logical Group", width: 150, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.LogicalGroup || "N/A"}</span>, },
-        { field: "investigationTypeId", headerName: "Investigation Type", width: 180, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.InvestigationType || "N/A"}</span>, },
-        { field: "questionType", headerName: "Question Type", width: 150, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.QuestionType?.lookup_value || "N/A"}</span>, },
-        { field: "question", headerName: "Question", width: 250, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.HPQuestion || "N/A"}</span>, },
-        { field: "selectionType", headerName: "Selection", width: 130, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.SelectionType || "N/A"}</span>, },
-        { field: "inputType", headerName: "Input Type", width: 150, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.InputType || "N/A"}</span>, },
-        { field: "validityMinMax", headerName: "Validity Min Max", width: 130, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.ValidityMinValue + " - " + params.row?.ValidityMaxValue || "N/A"}</span>, },
-        { field: "responseUnit", headerName: "Response Unit", width: 130, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.ResponseUnit || "N/A"}</span>, },
-        { field: "normalMinMax", headerName: "Normal Min Max", width: 130, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.NormalValueMinimum + " - " + params.row?.NormalValueMaximum || "N/A"}</span>, },
-        { field: "weightageMinMax", headerName: "Weightage Min Max", width: 150, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.WeightageValueMinimum + " - " + params.row?.WeightageValueMaximum || "N/A"}</span>, },
-        { field: "sosMinMax", headerName: "SOS Min Max", width: 130, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.SOSValueMinimum + " - " + params.row?.SOSValueMaximum || "N/A"}</span>, },
-        { feild: "IsActive", headerName: "Status", width: 100, headerClassName: "health-table-header-style",  align: "center", renderCell: (params) => <span>{params.row?.IsActive ? "Active" : "Inactive"}</span> },
-        { field: "actions", headerName: "Actions", width: 100, headerClassName: "health-table-header-style",  align: "center", sortable: false, filterable: false, disableColumnMenu: true, renderCell: (params) => <DatagridRowAction row={params.row} onEdit={() => handleEdit(params.row)} onDelete={() => handleDelete(params.row)} />, },
+        { field: "questionCategory", headerName: "Category", width: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.HPQuestionCategory || "N/A"}</span>, },
+        { field: "HPGroup", headerName: "Group Name", width: 120, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.HPGroup?.lookup_value || "N/A"}</span>, },
+        { field: "questionOrder", headerName: "Order", width: 100, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.QuestionOrder || "N/A"}</span>, },
+        { field: "AssetType", headerName: "Asset Type", width: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.AssetType?.lookup_value || "N/A"}</span>, },
+        { field: "logicalGroup", headerName: "Logical Group", width: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.LogicalGroup?.lookup_value || "N/A"}</span>, },
+        { field: "investigationTypeId", headerName: "Investigation Type", width: 180, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.InvestigationType?.lookup_value || "N/A"}</span>, },
+        { field: "questionType", headerName: "Question Type", width: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.QuestionType?.lookup_value || "N/A"}</span>, },
+        { field: "question", headerName: "Question", width: 250, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.HPQuestion || "N/A"}</span>, },
+        { field: "selectionType", headerName: "Selection", width: 130, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.SelectionType || "N/A"}</span>, },
+        { field: "inputType", headerName: "Input Type", width: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.InputType || "N/A"}</span>, },
+        { field: "validityMinMax", headerName: "Validity Min Max", width: 130, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.ValidityMinValue + " - " + params.row?.ValidityMaxValue || "N/A"}</span>, },
+        { field: "responseUnit", headerName: "Response Unit", width: 130, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.ResponseUnit || "N/A"}</span>, },
+        { field: "normalMinMax", headerName: "Normal Min Max", width: 130, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.NormalValueMinimum + " - " + params.row?.NormalValueMaximum || "N/A"}</span>, },
+        { field: "weightageMinMax", headerName: "Weightage Min Max", width: 150, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.WeightageValueMinimum + " - " + params.row?.WeightageValueMaximum || "N/A"}</span>, },
+        { field: "sosMinMax", headerName: "SOS Min Max", width: 130, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.SOSValueMinimum + " - " + params.row?.SOSValueMaximum || "N/A"}</span>, },
+        { field: "IsActive", headerName: "Status", width: 100, headerClassName: "health-table-header-style", align: "center", renderCell: (params) => <span>{params.row?.IsActive ? "Active" : "Inactive"}</span> },
+        { field: "actions", headerName: "Actions", width: 100, headerClassName: "health-table-header-style", align: "center", sortable: false, filterable: false, disableColumnMenu: true, renderCell: (params) => <DatagridRowAction row={params.row} onEdit={() => handleEdit(params.row)} onDelete={() => handleDelete(params.row)} />, },
     ], [paginationModel, handleEdit, handleDelete]);
+
+
+
+    const [value, setValue] = React.useState(null);
+    const [open, toggleOpen] = React.useState(false);
+
+    const [dialogValue, setDialogValue] = React.useState({
+        lookup_value: '',
+    });
+
+    const handleClose = () => {
+        setDialogValue({ lookup_value: '' });
+        toggleOpen(false);
+    };
+    /// ======== Function for add new logical group ======== \\
+    const handleSubmit1 = async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        try {
+            const payload = {
+                "lookup_id": null,
+                "lookup_value": dialogValue.lookup_value,
+                "lookup_type": "logical_group",
+                "parent_lookup_type": "asset_type",
+                "parent_lookup_id": selectedRiskLevel || null,
+            }
+            const res = await __postApiData('/api/v1/admin/SaveLookup', payload);
+            if (res.response && res.response.response_code === "200") {
+                setValue({ _id: res?.data?._id, lookup_value: res?.data?.lookup_value });
+                fetchData(['logical_group'], 'logicalGroupList', selectedRiskLevel);
+                setFormData((prev) => ({ ...prev, logicalGroup: res?.data?._id }));
+                handleClose();
+            } else {
+                toast.error(res.response.response_message || "Failed to add Logical Group Master");
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error);
+        }
+        // const newFilm = {
+        //     _id: logicalGroupList.length + 1, // simple incremental id
+        //     lookup_value: dialogValue.lookup_value,
+        // };
+        // setFilms((prev) => [...prev, newFilm]);
+        // setValue(newFilm);
+
+    };
     return (
         <div className="p-4 bg-white">
             <SectionHeader
@@ -304,12 +369,148 @@ const HealthProfileQuestion = () => {
                         value={formData.questionOrder}
                         onChange={handleChange}
                     />
-                    <FormInput
+                    <div className="flex gap-2 flex-col">
+                        <label className="text-base font-semibold">
+                            Asset Type
+                        </label>
+                        <div className="flex gap-2">
+                            {[{
+                                "_id": "68cb9d1f07f450963b4cbd22",
+                                "lookup_type": "asset_type",
+                                "lookup_value": "Driver",
+                            },
+                            {
+                                "_id": "68cb9d3b07f450963b4cbd3a",
+                                "lookup_type": "asset_type",
+                                "lookup_value": "Vehicle",
+                            }].map((level) => (
+                                <label key={level?._id} className="flex items-center cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="riskLevel"
+                                        value={level?._id}
+                                        checked={selectedRiskLevel === level?._id}
+                                        onChange={(e) => setSelectedRiskLevel(e.target.value)}
+                                        className="hidden"
+                                    />
+                                    <div
+                                        className={`flex items-center gap-2 rounded-lg transition-all ${selectedRiskLevel === level
+                                            ? "text-primary border-primary"
+                                            : "text-muted-foreground border-border "
+                                            }`}
+                                    >
+                                        <div
+                                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${selectedRiskLevel === level?._id ? "border-primary" : "border-muted-foreground"
+                                                }`}
+                                        >
+                                            {selectedRiskLevel === level?._id && (
+                                                <div className="w-3 h-3 rounded-full bg-primary"></div>
+                                            )}
+                                        </div>
+                                        <span className="text-base font-medium">{level?.lookup_value}</span>
+                                    </div>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                    <React.Fragment>
+                        <div className="flex gap-2 flex-col">
+                            <label className="text-base font-semibold">
+                                Logical Group
+                            </label>
+                            <Autocomplete
+                                value={value}
+                                onChange={(event, newValue) => {
+                                    if (typeof newValue === "string") {
+                                        setTimeout(() => {
+                                            toggleOpen(true);
+                                            setDialogValue({ lookup_value: newValue });
+                                        });
+                                    } else if (newValue && newValue.inputValue) {
+                                        toggleOpen(true);
+                                        setDialogValue({ lookup_value: newValue.inputValue });
+                                    } else {
+                                        setValue(newValue);
+                                        console.log("newValue", newValue);
+                                        setFormData((prev) => ({ ...prev, logicalGroup: newValue?._id || "" }));
+                                    }
+                                }}
+
+                                filterOptions={(options, params) => {
+                                    const filtered = filter(options, params);
+
+                                    if (params.inputValue !== '') {
+                                        filtered.push({
+                                            inputValue: params.inputValue,
+                                            lookup_value: `Add "${params.inputValue}"`,
+                                        });
+                                    }
+
+                                    return filtered;
+                                }}
+                                id="free-solo-dialog-demo"
+                                options={logicalGroupList}
+                                getOptionLabel={(option) => {
+                                    if (typeof option === 'string') {
+                                        return option;
+                                    }
+                                    if (option.inputValue) {
+                                        return option.inputValue;
+                                    }
+                                    return option.lookup_value;
+                                }}
+                                renderOption={(props, option) => {
+                                    const { key, ...optionProps } = props;
+                                    return (
+                                        <li key={key} {...optionProps}>
+                                            {option.lookup_value}
+                                        </li>
+                                    );
+                                }}
+                                selectOnFocus
+                                clearOnBlur
+                                handleHomeEndKeys
+                                size='small'
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                            <Dialog open={open} onClose={handleClose}>
+                                <form onSubmit={handleSubmit1}>
+                                    <DialogTitle>Add Logical Group</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText>
+                                            Add a new logical group under selected category.
+                                        </DialogContentText>
+                                        <TextField
+                                            autoFocus
+                                            margin="dense"
+                                            id="logical-group"
+                                            value={dialogValue.lookup_value}
+                                            onChange={(event) =>
+                                                setDialogValue({
+                                                    ...dialogValue,
+                                                    lookup_value: event.target.value,
+                                                })
+                                            }
+                                            label="Logical Group Name"
+                                            type="text"
+                                            variant="standard"
+                                        />
+                                    </DialogContent>
+
+                                    <DialogActions>
+                                        <Button onClick={handleClose}>Cancel</Button>
+                                        <Button type="submit">Add</Button>
+                                    </DialogActions>
+                                </form>
+                            </Dialog>
+                        </div>
+                    </React.Fragment>
+                    {/* <FormInput
                         label="Logical Group"
                         name="logicalGroup"
                         value={formData.logicalGroup}
                         onChange={handleChange}
-                    />
+                    /> */}
                     <FormInput
                         label="Investigation Type ID"
                         name="investigationTypeId"
@@ -460,7 +661,7 @@ const HealthProfileQuestion = () => {
 
                 <div className="mt-4">
                     <FormButton disable={loading}>
-                        {loading ? editId ? "Updating...":"Saving..." : editId ? "Update Question":"Add Question"}
+                        {loading ? editId ? "Updating..." : "Saving..." : editId ? "Update Question" : "Add Question"}
                     </FormButton>
                 </div>
             </form>
@@ -479,7 +680,7 @@ const HealthProfileQuestion = () => {
                     rowHeight={50}
                     paginationModel={paginationModel}
                     onPaginationModelChange={setPaginationModel}
-                  
+
                 />
             </div>
         </div>

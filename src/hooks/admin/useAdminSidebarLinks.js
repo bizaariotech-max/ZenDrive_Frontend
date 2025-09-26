@@ -64,6 +64,7 @@ const useAdminSidebarLinks = (role) => {
                 { id: "1-19", icon: <SubdirectoryArrowRightIcon />, path: "/admin/configuration/abnormality-master", title: "Abnormality Master" },
                 { id: "1-20", icon: <LocationCityTwoToneIcon />, path: "/admin/configuration/state-master", title: "State Master" },
                 { id: "1-21", icon: <LocationCityTwoToneIcon />, path: "/admin/configuration/city-master", title: "City Master" },
+                { id: "1-22", icon: <LocationCityTwoToneIcon />, path: "/admin/configuration/logical-group", title: "Logical Group" },
             ],
         },
         { id: "2", icon: <ApartmentIcon />, label: "Station Master", link: "/admin/station-master", dock: true },

@@ -37,11 +37,6 @@ const Signup = () => {
         onSubmit: (values) => {
             try {
                 setIsLoading(true);
-                const payload = {
-                    LoginFrom: "Admin",
-                    PhoneNumber: values.PhoneNumber,
-                    Password: values.password,
-                };
                 console.log("values", values);
 
                 // reset after 3 seconds

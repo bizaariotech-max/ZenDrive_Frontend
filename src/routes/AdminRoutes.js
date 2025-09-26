@@ -33,6 +33,7 @@ import LoginMaster from "../pages/admin/loginMaster/LoginMaster";
 import DashCamAllocate from "../pages/admin/dashCamAllocation/DashCamAllocate";
 import HealthProfileUserAnswer from "../pages/admin/healthProfile/HealthProfileUserAnswer";
 import InvestigationMaster from "../pages/admin/configrations/InvestigationMaster";
+import LogicalGroup from "../pages/admin/configrations/LogicalGroup";
 
 const AdminRoutes = () => (
   <Routes>
@@ -60,6 +61,8 @@ const AdminRoutes = () => (
         <Route path="abnormality-master" element={<AbnormalityMaster />} />
         <Route path="state-master" element={<StateMaster />} />
         <Route path="city-master" element={<CityMaster />} />
+        <Route path="logical-group" element={<LogicalGroup />} />
+
         {/* Catch-all inside configuration */}
         <Route path="*" element={<ErrorPage />} />
       </Route>
