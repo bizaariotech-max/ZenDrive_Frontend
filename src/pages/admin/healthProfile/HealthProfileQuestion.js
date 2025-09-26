@@ -355,7 +355,7 @@ const HealthProfileQuestion = () => {
                         options={[{ _id: "Survey", lookup_value: "Survey" }, { _id: "Investigation", lookup_value: "Investigation" }]}
                     />
                     <FormInput
-                        label="Health Profiling Group ID"
+                        label="Health Profiling Primary Group"
                         name="groupId"
                         type="select"
                         value={formData.groupId}
@@ -473,36 +473,7 @@ const HealthProfileQuestion = () => {
                                 size='small'
                                 renderInput={(params) => <TextField {...params} />}
                             />
-                            <Dialog open={open} onClose={handleClose}>
-                                <form onSubmit={handleSubmit1}>
-                                    <DialogTitle>Add Logical Group</DialogTitle>
-                                    <DialogContent>
-                                        <DialogContentText>
-                                            Add a new logical group under selected category.
-                                        </DialogContentText>
-                                        <TextField
-                                            autoFocus
-                                            margin="dense"
-                                            id="logical-group"
-                                            value={dialogValue.lookup_value}
-                                            onChange={(event) =>
-                                                setDialogValue({
-                                                    ...dialogValue,
-                                                    lookup_value: event.target.value,
-                                                })
-                                            }
-                                            label="Logical Group Name"
-                                            type="text"
-                                            variant="standard"
-                                        />
-                                    </DialogContent>
 
-                                    <DialogActions>
-                                        <Button onClick={handleClose}>Cancel</Button>
-                                        <Button type="submit">Add</Button>
-                                    </DialogActions>
-                                </form>
-                            </Dialog>
                         </div>
                     </React.Fragment>
                     {/* <FormInput
@@ -512,7 +483,7 @@ const HealthProfileQuestion = () => {
                         onChange={handleChange}
                     /> */}
                     <FormInput
-                        label="Investigation Type ID"
+                        label="Investigation Type"
                         name="investigationTypeId"
                         type="select"
                         value={formData.investigationTypeId}
@@ -683,6 +654,41 @@ const HealthProfileQuestion = () => {
 
                 />
             </div>
+
+            <Dialog open={open} onClose={handleClose}>
+                <form onSubmit={handleSubmit1}>
+                    <DialogTitle>Add Logical Group</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Add a new logical group under selected category.
+                        </DialogContentText>
+                        <FormInput
+                            autoFocus
+                            // margin="dense"
+                            id="logical-group"
+                            value={dialogValue.lookup_value}
+                            onChange={(event) =>
+                                setDialogValue({
+                                    ...dialogValue,
+                                    lookup_value: event.target.value,
+                                })
+                            }
+                            label="Logical Group Name"
+                            type="text"
+                            // variant="standard"
+                        />
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleClose()
+                        }}>Cancel</Button>
+                        <Button type="submit">Add</Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
         </div>
 
     )

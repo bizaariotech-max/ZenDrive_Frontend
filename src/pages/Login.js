@@ -135,8 +135,7 @@ const Login = () => {
                             disabled={
                                 isLoading ||
                                 !formik.values.PhoneNumber ||
-                                !formik.values.password ||
-                                !formik.values.checked
+                                !formik.values.password 
                             }
                         >
                             {isLoading ? "Logging in..." : "Login"}
