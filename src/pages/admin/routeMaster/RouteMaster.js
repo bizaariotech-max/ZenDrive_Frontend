@@ -129,7 +129,7 @@ const RouteMaster = () => {
             StationId: "",
             StartingStationId: "",
             TerminalStationId: "",
-            RouteNumber:"",
+            RouteNumber: "",
             EnrouteStation: [],
             DurationInHrsMins: "00:00",
             DistanceInKMs: "",
@@ -236,7 +236,7 @@ const RouteMaster = () => {
                         helperText={formik.touched?.StartingStationId && formik.errors?.StartingStationId}
                         options={rows || []}
                     />
-                      <FormInput
+                    <FormInput
                         id="RouteNumber"
                         name="RouteNumber"
                         placeholder={"Enter Route Number"}

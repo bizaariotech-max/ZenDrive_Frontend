@@ -51,7 +51,7 @@ const Signup = () => {
 
     })
     return (
-        <div className='h-screen overflow-auto grid  grid-cols-1 md:grid-cols-2 gap-3 p-4'>
+        <div className='grid  grid-cols-1 md:grid-cols-2 gap-3 p-4'>
             <div className='flex items-center justify-center xs:px-2 sm:px-4 py-4'>
                 <img src="/LoginSide2.png" alt="Signupbg" className='w-full max-h-[600px] h-full object-cover rounded-lg' />
             </div>
@@ -60,8 +60,8 @@ const Signup = () => {
                 <div className='flex items-center justify-center mb-8'>
                     <img src="/logo.png" alt="productLogo" className='w-32' />
                 </div>
-                <Typography variant='h5' sx={{ mb: 1, fontWeight: "medium",fontFamily: "Lato, sans-serif"}}>Sign Up</Typography>
-                <Typography variant='h6' sx={{ fontWeight:"normal",fontFamily: "Poppins, sans-serif"  }} className='text-muted-foreground'>Enter details to create your account</Typography>
+                <Typography variant='h5' sx={{ mb: 1, fontWeight: "medium", fontFamily: "Lato, sans-serif" }}>Sign Up</Typography>
+                <Typography variant='h6' sx={{ fontWeight: "normal", fontFamily: "Poppins, sans-serif" }} className='text-muted-foreground'>Enter details to create your account</Typography>
                 <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 mt-8 rounded-md ">
                     <div className="grid grid-cols-1 gap-4">
                         <FormInput
@@ -138,7 +138,7 @@ const Signup = () => {
                             {isLoading ? "Creating..." : "Sign Up"}
                         </FormButton>
 
-                        <h4 className='text-center mt-4'>Already Registered? <Link to="/" className='text-primary underline'>Login</Link></h4>
+                        <h4 className='text-center mt-4'>Already Registered? <Link to="/login" className='text-primary underline'>Login</Link></h4>
                     </div>
                 </form>
             </div>

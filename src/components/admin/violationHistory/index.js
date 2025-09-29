@@ -314,7 +314,7 @@ const ViolationHistory = () => {
 
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
                 <DialogTitle className="flex justify-between items-center">
-                    <span>
+                    <span className='text-md font-semibold md:text-2xl'>
                         {violationType?.title} Evidence{" "}
                         {evidenceValue?.length > 0 &&
                             `(${currentEvidenceIndex + 1} / ${evidenceValue.length})`}
