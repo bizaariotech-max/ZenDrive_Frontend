@@ -1,30 +1,25 @@
+
 import { Route, Routes } from "react-router-dom";
 import AdminRoutes from "./routes/AdminRoutes";
-import Errorpage from "./pages/admin/ErrorPage";
 import UserRoutes from "./routes/UserRoutes";
+import WebsiteRoutes from "./routes/WebsiteRoutes";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import WebsiteLayout from "./layouts/WebsiteLayout";
-import WebsiteRoutes from "./routes/WebsiteRoutes";
+
 function App() {
   return (
-    <>
-      <WebsiteLayout>
-        <Routes>
-          <Route path="/*" element={<WebsiteRoutes />} />
-        </Routes>
-      </WebsiteLayout>
-      <Routes>
+    <Routes>
+      {/* Auth routes - no WebsiteLayout */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
+      {/* Website routes */}
+      <Route path="/*" element={<WebsiteRoutes />} />
 
-        {/* Admin Dashboard */}
-        <Route path="/admin/*" element={<AdminRoutes />} />
-        <Route path="/dashboard/*" element={<UserRoutes />} />
-        {/* <Route path="*" element={<Errorpage />} /> */}
-
-      </Routes>
-    </>
-
+      {/* Dashboards */}
+      <Route path="/admin/*" element={<AdminRoutes />} />
+      <Route path="/dashboard/*" element={<UserRoutes />} />
+    </Routes>
   );
 }
 
