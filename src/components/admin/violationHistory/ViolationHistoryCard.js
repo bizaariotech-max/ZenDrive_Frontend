@@ -2,10 +2,10 @@ import React from 'react'
 
 const ViolationHistoryCard = ({ icon, title, count, onKnowMore }) => {
   return (
-    <div><div className="rounded-lg p-6 shadow-md border-gray-300 bg-white transition-colors">
+    <div><div className="rounded-lg p-6 shadow-md border-gray-300 min-w-64 bg-white transition-colors">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center">{icon}</div>
+          <div className=""><img src={icon} alt={title} /></div>
           <div>
             <h3 className="font-semibold  text-lg">{title}</h3>
             <p className="text-sm font-normal   mt-1">{count.toLocaleString()}</p>
