@@ -103,16 +103,16 @@ const ViolationHistory = () => {
                 return paginationModel.page * paginationModel.pageSize + (rowIndex % paginationModel.pageSize) + 1;
             },
         },
-        { field: 'dateTimeStamp', headerName: 'Date/Time', flex: 1, headerClassName: "health-table-header-style", renderCell: (params) => <span>{__formatDate(params.row?.dateTimeStamp) || "N/A"}</span>, },
+        { field: 'dateTimeStamp', headerName: 'Date/Time', minWidth: 170, headerClassName: "health-table-header-style", renderCell: (params) => <span>{__formatDate(params.row?.dateTimeStamp) || "N/A"}</span>, },
         {
-            field: 'Evidence', headerName: 'Evidence', minWidth: 170, flex: 1, headerClassName: "health-table-header-style", renderCell: (params) => (
+            field: 'Evidence', headerName: 'Evidence', minWidth: 170, headerClassName: "health-table-header-style", renderCell: (params) => (
                 <Button variant='contained' size='small' className="cursor-pointer" sx={{ color: "white", bgcolor: "var(--primary)" }} onClick={() => {
                     setEvidenceValue(params.row.videoUrl)
                     setOpen(true);
                 }} >View Evidence</Button>
             ),
         },
-        { field: 'address', headerName: 'Location', flex: 1, headerClassName: "health-table-header-style", renderCell: (params) => <span>{params.row?.address || "N/A"}</span>, },
+        { field: 'address', headerName: 'Location',minWidth: 170,flex:1,  headerClassName: "health-table-header-style", renderCell: (params) => <span>{params.row?.address || "N/A"}</span>, },
     ]
 
     const handleKnowMore = (violationType) => {
@@ -153,8 +153,8 @@ const ViolationHistory = () => {
             } else {
                 setViolationHistoryData((prevData) => ({
                     ...prevData,
-                    evidenceList: res?.data?.data || [], // backend should send rows for datagrid
-                    totalCount: res?.data?.totalDocuments || 0,   // total count for pagination
+                    evidenceList: res?.data?.data || [],
+                    totalCount: res?.data?.totalDocuments || 0,
                 }));
             }
             setLoading(false);
@@ -280,8 +280,8 @@ const ViolationHistory = () => {
                     </div>
                 </div>
 
-                <div className="flex justify-between mb-6">
-                    <div className='flex items-end gap-2'>
+                <div className="flex justify-between flex-col md:flex-row mb-6">
+                    <div className='flex md:items-end flex-col md:flex-row gap-2'>
                         <FormInput label="From" type="date" name={"fromDate"} value={formData?.fromDate ? formData.fromDate.split("T")[0] : ""} onChange={handleChange} />
                         <FormInput label="To" type="date" name={"toDate"} value={formData?.toDate ? formData.toDate.split("T")[0] : ""} onChange={handleChange} />
                         <button className='bg-primary text-white px-4 py-2 rounded-lg ' onClick={()=>{
