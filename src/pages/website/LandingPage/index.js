@@ -10,6 +10,8 @@ import { RealTimeDashobard } from '../../../components/website/LandingPage/RealT
 import ZandriveSafeIntro from '../../../components/website/LandingPage/ZandriveSafeIntro'
 import LeadersMessageRoadSafety from '../../../components/website/LandingPage/LeadersMessageRoadSafety'
 import RoadSafetyProduct from '../../../components/website/LandingPage/RoadSafetyProduct'
+import OurSuperheroes from '../../../components/website/LandingPage/OurSuperheroes'
+import TakeTheLife from '../../../components/website/LandingPage/TakeTheLife'
 
 const LandingPage = () => {
   return (
@@ -17,6 +19,8 @@ const LandingPage = () => {
       <Banner />
       <RoadAccidents />
       <GoodSamaritanSection />
+      <OurSuperheroes />
+      <TakeTheLife />
       <RoadSafetyService />
       <SchoolRideSafetyBanner />
       <RealTimeDashobard />

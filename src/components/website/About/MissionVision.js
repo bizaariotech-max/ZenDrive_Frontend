@@ -38,7 +38,7 @@ const MissionVision = () => {
               </p>
             </div>
 
-            <div className="xl:absolute  bg-white p-6 sm:p-8 rounded-xl shadow-lg xl:left-[40%] xl:bottom-[-6%] ">
+            <div className="xl:absolute  bg-white p-6 sm:p-8 rounded-xl mt-4 lg:mt-0 theme-shadow xl:left-[40%] xl:bottom-[-6%] ">
               <h3 className="text-2xl sm:text-3xl font-semibold text-primary mb-4">
                 Our Vision
               </h3>

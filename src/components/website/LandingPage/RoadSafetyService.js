@@ -2,6 +2,7 @@ import React from 'react';
 import img1 from '../../../assets/images/website/feet-owners.png';
 import img2 from '../../../assets/images/website/img2.png';
 import img3 from '../../../assets/images/website/img3.png';
+import roadSafetyBg from "../../../assets/images/website/roadsafetyServiceBg.png";
 
 
 export default function RoadSafetyService() {
@@ -19,8 +20,8 @@ export default function RoadSafetyService() {
         </div>
 
         {/* Main Fleet Owners Section */}
-        <div className="bg-gray-100 rounded-lg p-8 lg:p-9 mb-8 relative overflow-hidden items-end bg-contain bg-no-repeat bg-right"
-        // style={{ backgroundImage: `url(${img1})` }}
+        <div className="rounded-lg p-8 lg:p-9 mb-8 relative overflow-hidden items-end bg-cover bg-no-repeat bg-right  bg-gray-200"
+          style={{ backgroundImage: `url(${roadSafetyBg})` }}
         >
           <div className="grid lg:grid-cols-3 grid-cols-1 gap-8 lg:gap-12 items-center">
             <div className="z-10 relative lg:col-span-2">
@@ -42,25 +43,25 @@ export default function RoadSafetyService() {
         {/* Bottom Two Sections */}
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left Section - Fleet/Schools */}
-          <div className="bg-gray-100 rounded-lg p-6 lg:p-8 relative overflow-hidden min-h-[300px]">
+          <div className="bg-gray-100 rounded-lg p-6 lg:p-8 relative  min-h-[300px]" style={{ backgroundImage: `url(${roadSafetyBg})` }}>
             <div className="relative z-10">
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
-                Message for Schools/<br />
-                Educational Institutions
+                Message for Parents/Spouses
               </h3>
               <p className="text-sm sm:text-lg text-gray-700 leading-relaxed mb-6">
-                Ensure student safety by monitoring school transport drivers and maintaining vehicles to the highest standards.
+               There is no harm in monitoring how your sons, daughters, husbands, or wives are driving. Get a report and help them become a <b>ROAD CHAMPION</b> by encouraging safe driving habits.
               </p>
+              {/* SUV/Jeep illustration */}
+              <div className="absolute -bottom-28 sm:-bottom-44 lg:-bottom-36 right-0 flex justify-end -z-20">
+                <img src={img2} alt="Fleet Owners" className="max-w-[240px] h-auto" />
+              </div>
             </div>
 
-            {/* SUV/Jeep illustration */}
-            <div className="absolute bottom-0 right-0 flex justify-end">
-              <img src={img2} alt="Fleet Owners" className="max-w-[240px] h-auto" />
-            </div>
+
           </div>
 
           {/* Right Section - Corporate */}
-          <div className="bg-gray-100 rounded-lg p-6 lg:p-8 relative overflow-hidden min-h-[300px] " >
+          <div className="bg-gray-100 rounded-lg p-6 lg:p-8 relative min-h-[300px]" style={{ backgroundImage: `url(${roadSafetyBg})` }}>
             <div className="relative z-10">
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
                 Message for Corporate Offices/<br />
@@ -69,12 +70,12 @@ export default function RoadSafetyService() {
               <p className="text-sm sm:text-lg text-gray-700 leading-relaxed mb-6">
                 Keep an eye on how your employees drive. Raise their awareness about safe driving and help them become a <span className="font-semibold">ROAD CHAMPION</span>.
               </p>
+              {/* Luxury Car illustration */}
+              <div className="absolute -bottom-32 -right-6 lg:-right-8 flex justify-end z-20">
+                <img src={img3} alt="Fleet Owners" className="max-w-[240px] h-auto" />
+              </div>
             </div>
 
-            {/* Luxury Car illustration */}
-            <div className="absolute bottom-0 right-0 flex justify-end">
-              <img src={img3} alt="Fleet Owners" className="max-w-[240px] h-auto" />
-            </div>
           </div>
         </div>
       </div>
