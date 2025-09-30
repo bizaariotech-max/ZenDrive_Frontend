@@ -6,9 +6,9 @@ const IntroZandrive = () => {
   return (
     <section className="space-top">
       <div className="container">
-        <div className="grid md:grid-cols-5 grid-cols-1 md:gap-4">
+        <div className="grid  grid-cols-1 lg:grid-cols-3 md:gap-4">
           {/* Left Content */}
-          <div className="col-span-3">
+          <div className="col-span-1 lg:col-span-2">
             <h2 className="text-2xl md:text-4xl font-semibold text-primary mb-4">
               Introducing ZANDRIVE SAFE
             </h2>
@@ -35,7 +35,7 @@ const IntroZandrive = () => {
           </div>
 
           {/* Right Image */}
-          <div className="md:col-span-2 overflow-hidden rounded-lg hidden lg:flex lg:justify-end mt-4 md:mt-0">
+          <div className="col-span-1 overflow-hidden rounded-lg hidden lg:flex lg:justify-end mt-4 md:mt-0">
             <img
               src={image1}
               alt="Zandrive Safe Dashboard"

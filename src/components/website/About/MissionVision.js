@@ -14,7 +14,7 @@ const MissionVision = () => {
               <img
                 src={image1}
                 alt="Modern car dashboard with digital display showing speed and vehicle information"
-                className="max-w-full h-auto object-cover"
+                className="w-full h-auto object-cover"
               />
             </div>
           </div>
@@ -26,13 +26,13 @@ const MissionVision = () => {
               <h2 className="text-3xl sm:text-4xl lg:text-4xl font-semibold text-primary mb-6">
                 Our Mission/Vision
               </h2>
-<div className="block lg:hidden relative rounded-xl overflow-hidden mb-4">
-              <img
-                src={image1}
-                alt="Modern car dashboard with digital display showing speed and vehicle information"
-                className="max-w-full h-auto object-cover"
-              />
-            </div>
+              <div className="block lg:hidden relative rounded-xl overflow-hidden mb-4">
+                <img
+                  src={image1}
+                  alt="Modern car dashboard with digital display showing speed and vehicle information"
+                  className="w-full h-auto object-cover"
+                />
+              </div>
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
                 Our mission is to create safer roads and save lives by promoting responsible driving, raising awareness, and leveraging technology to prevent accidents. We are committed to reducing fatalities through continuous education, regular fitness checks for drivers, and quick emergency response. By working hand in hand with communities, government bodies, and organizations, we strive to build a culture where safety and discipline on the road become a shared responsibility.
               </p>
