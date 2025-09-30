@@ -63,7 +63,7 @@ const Banner = () => {
             <div key={banner.id}>
               <div className={` item w-full h-[90vh] relative `} style={{ backgroundImage: `url(${banner.img})` }}>
                 <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
-                <div className="absolute inset-0 flex flex-col justify-center px-6 md:px-16 lg:px-24 text-white">
+                <div className="absolute inset-0 flex flex-col justify-start md:justify-center pt-10 px-6 md:px-16 lg:px-24 text-white">
                   <div className="max-w-2xl">
                     <h1 className="text-3xl md:text-6xl font-bold leading-tight">
                       Healthy Driver, Safe Journey

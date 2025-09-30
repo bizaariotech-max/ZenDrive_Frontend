@@ -1,51 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
-import cmImage from '../../../assets/images/website/cm-image.png'
+import React, { useState, useEffect } from 'react';
 import leader2 from '../../../assets/images/website/cm-image.png'
 import leader1 from '../../../assets/images/website/leader2.png'
 import leader3 from '../../../assets/images/website/leader3.png'
 import audio1 from '../../../assets/videos/audio.mp3'
-import Carousel from "react-multi-carousel";
 import LeadersMessage from '../../../UI/LeadersMessage';
-import LeadersMessage2 from '../../../UI/LeadersMessage2';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Audio control icons
-const PlayIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <polygon points="5,3 19,12 5,21" />
-  </svg>
-);
-
-const PauseIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <rect x="6" y="4" width="4" height="16" />
-    <rect x="14" y="4" width="4" height="16" />
-  </svg>
-);
-
-const VolumeIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" />
-    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
-  </svg>
-);
-
-const MoreIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <circle cx="12" cy="12" r="2" />
-    <circle cx="12" cy="4" r="2" />
-    <circle cx="12" cy="20" r="2" />
-  </svg>
-);
 
 export default function LeadersMessageRoadSafety() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(1232); // 20:32 in seconds
-  const [activeSlide, setActiveSlide] = useState(0);
-  const audioRef = useRef(null);
 
   const settings = {
     dots: true,
@@ -58,26 +25,6 @@ export default function LeadersMessageRoadSafety() {
     autoplaySpeed: 4000,
     pauseOnHover: true,
     arrows: false,
-  };
-  // Format time display
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  // Toggle play/pause
-  const togglePlayPause = () => {
-    setIsPlaying(!isPlaying);
-    // In a real implementation, you'd control actual audio playback here
-  };
-
-  // Progress bar click handler
-  const handleProgressClick = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const newTime = (clickX / rect.width) * duration;
-    setCurrentTime(newTime);
   };
 
   // Simulate audio progress (for demo purposes)
@@ -97,28 +44,6 @@ export default function LeadersMessageRoadSafety() {
     return () => clearInterval(interval);
   }, [isPlaying, duration]);
 
-  const progress = (currentTime / duration) * 100;
-
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 1
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 1,
-      partialVisibilityGutter: 0
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 767 },
-      items: 1
-    },
-    mobile: {
-      breakpoint: { max: 767, min: 0 },
-      items: 1,
-
-    }
-  };
 
   const roadSafetyMessages = [
     {

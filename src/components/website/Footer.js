@@ -5,6 +5,7 @@ import { MdLocationOn, MdEmail, MdPhone } from 'react-icons/md';
 // Import your logo
 // import logo from '../../../assets/images/logo.png';
 import logo from '../../assets/images/website/footerLogo.png';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -38,9 +39,11 @@ const Footer = () => {
           <div className="space-y-4">
             {/* Logo */}
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-full ">
-                <img src={logo} alt="" />
-              </div>
+              <Link to={"/"}>
+                <div className="w-full ">
+                  <img src={logo} alt="brand_logo" />
+                </div>
+              </Link>
             </div>
 
             {/* Company Description */}
@@ -108,12 +111,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {companyLinks.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link?.href}
                     className="text-sm text-white/90 hover:text-white transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

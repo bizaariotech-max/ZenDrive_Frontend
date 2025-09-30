@@ -51,7 +51,7 @@ export const RealTimeDashobard = () => {
                 return (
                   <div key={item.id}>
 
-                    <img src={item.img} alt="image" className="max-w-full h-[792px] rounded-lg shadow-md" />
+                    <img src={item.img} alt="safe-driving" className="max-w-full max-h-[792px] rounded-lg shadow-md" />
                   </div>
                 )
               })}

@@ -9,10 +9,10 @@ export default function GoodSamaritanSection() {
         {/* Header Section */}
         <div className="mb-8 lg:mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-4xl font-semibold text-[var(--primary)] mb-2">
-            Be a Good Samaritan – Save Lives!
+            Be a Good Samaritan - Save Lives!
           </h2>
           <p className="text-base sm:text-lg text-gray-700">
-            Don't just watch a road accident happen – stop, help, and make a difference. Your timely support can save the life of a victim.
+            Don't just watch a road accident happen - stop, help, and make a difference. Your timely support can save the life of a victim.
           </p>
         </div>
         {/* Main Content Grid */}
@@ -80,13 +80,13 @@ export default function GoodSamaritanSection() {
                 <img src={image} alt="" className='w-full h-auto' />
               </div>
               <div className="absolute bottom-0 left-0 w-full bg-black/60 backdrop-blur-sm border-t border-gray-700 p-4 sm:p-6">
-                <div className="flex items-start space-x-3 text-white items-center">
+                <div className="flex space-x-3 text-white items-center">
                   <div className="w-10 h-10 border border-white/40 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <MdOutlineNotificationsActive size={20} />
                   </div>
                   <div>
                     <p className="font-semibold text-sm sm:text-base leading-tight">
-                      Remember : Every minute counts. Don't wait – act and save a life today!
+                      Remember : Every minute counts. Don't wait - act and save a life today!
                     </p>
                   </div>
                 </div>

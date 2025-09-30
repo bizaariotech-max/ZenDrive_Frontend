@@ -54,8 +54,8 @@ export default function RoadSafetyService() {
             </div>
 
             {/* SUV/Jeep illustration */}
-            <div className="md:absolute bottom-0 right-0">
-              <img src={img2} alt="Fleet Owners" className="w-[240px] h-auto" />
+            <div className="absolute bottom-0 right-0 flex justify-end">
+              <img src={img2} alt="Fleet Owners" className="max-w-[240px] h-auto" />
             </div>
           </div>
 
@@ -72,8 +72,8 @@ export default function RoadSafetyService() {
             </div>
 
             {/* Luxury Car illustration */}
-            <div className="md:absolute bottom-0 right-0">
-              <img src={img3} alt="Fleet Owners" className="w-[240px] h-auto" />
+            <div className="absolute bottom-0 right-0 flex justify-end">
+              <img src={img3} alt="Fleet Owners" className="max-w-[240px] h-auto" />
             </div>
           </div>
         </div>

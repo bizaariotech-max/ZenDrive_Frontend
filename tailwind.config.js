@@ -92,10 +92,16 @@ export default {
             height: "0",
           },
         },
+        growDown: {
+          "0%": { transform: "scaleY(0)" },
+          "80%": { transform: "scaleY(1.1)" },
+          "100%": { transform: "scaleY(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "growDown": "growDown .8s ease-in-out forwards",
       },
     },
   },

@@ -90,7 +90,7 @@ const RoadSafetyProduct = () => {
               >
                 {motorcycleGear.map((item, index) => (
                   <div className="max-w-sm mx-auto" key={index}>
-                    <div className="bg-white rounded-xl  border border-gray-300 border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <div className="bg-white rounded-xl  border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
                       {/* Product Image Container */}
                       <div className="relative bg-gray-50 p-4">
                         <div className="aspect-square relative">
