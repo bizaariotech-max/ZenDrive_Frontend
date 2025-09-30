@@ -11,7 +11,7 @@ const FounderMessage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Column - Founder Image */}
           <div className="relative">
-            <div className="relative  overflow-hidden ">
+            <div className="hidden lg:block relative overflow-hidden">
               <img
                 src={founderImg}
                 alt="Founder in professional attire"
@@ -22,9 +22,16 @@ const FounderMessage = () => {
 
           {/* Right Column - Message Content */}
           <div className="flex flex-col">
-            <h2 className="text-3xl sm:text-4xl lg:text-4xl font-semibold text-primary mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-4xl font-semibold text-primary mb-0 lg:mb-6">
               Founder Message
             </h2>
+             <div className="block lg:hidden relative overflow-hidden my-4">
+              <img
+                src={founderImg}
+                alt="Founder in professional attire"
+                className="w-full h-auto object-cover rounded-lg"
+              />
+            </div>
 
             <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed">
               <p>

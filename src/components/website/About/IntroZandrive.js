@@ -12,6 +12,14 @@ const IntroZandrive = () => {
             <h2 className="text-2xl md:text-4xl font-semibold text-primary mb-4">
               Introducing ZANDRIVE SAFE
             </h2>
+
+            <div className="my-4 block lg:hidden">
+              <img
+              src={image1}
+              alt="Zandrive Safe Dashboard"
+              className="w-full h-auto rounded-lg "
+            />
+            </div>
             <p className="text-[var(--p1)] leading-relaxed text-base md:text-lg ">
               ZEN DRIVE SAFE is a unique initiative performing a 360-degree check
               on the factors causing road accidents: driver’s health and
@@ -27,11 +35,11 @@ const IntroZandrive = () => {
           </div>
 
           {/* Right Image */}
-          <div className="md:col-span-2 overflow-hidden rounded-lg flex lg:justify-end mt-4 md:mt-0">
+          <div className="md:col-span-2 overflow-hidden rounded-lg hidden lg:flex lg:justify-end mt-4 md:mt-0">
             <img
               src={image1}
               alt="Zandrive Safe Dashboard"
-              className="max-w-full h-auto rounded-lg "
+              className="w-full h-auto rounded-lg "
             />
           </div>
         </div>
