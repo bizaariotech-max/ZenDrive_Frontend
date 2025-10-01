@@ -25,7 +25,7 @@ export default function RoadSafetyService() {
         >
           <div className="grid lg:grid-cols-3 grid-cols-1 gap-8 lg:gap-12 items-center">
             <div className="z-10 relative lg:col-span-2">
-              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 mb-6 leading-tight">
+              <h3 className="text-xl lg:text-2xl font-semibold text-gray-900 mb-6 leading-tight">
                 Message for Fleet Owners/<br />
                 Transport Corporations
               </h3>
@@ -45,7 +45,7 @@ export default function RoadSafetyService() {
           {/* Left Section - Fleet/Schools */}
           <div className="bg-gray-100 rounded-lg p-6 lg:p-8 relative  min-h-[300px]" style={{ backgroundImage: `url(${roadSafetyBg})` }}>
             <div className="relative z-10">
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+              <h3 className="text-xl lg:text-2xl font-semibold text-gray-900 mb-4">
                 Message for Parents/Spouses
               </h3>
               <p className="text-sm sm:text-lg text-gray-700 leading-relaxed mb-6">
@@ -63,7 +63,7 @@ export default function RoadSafetyService() {
           {/* Right Section - Corporate */}
           <div className="bg-gray-100 rounded-lg p-6 lg:p-8 relative min-h-[300px]" style={{ backgroundImage: `url(${roadSafetyBg})` }}>
             <div className="relative z-10">
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+              <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
                 Message for Corporate Offices/<br />
                 Organizations
               </h3>

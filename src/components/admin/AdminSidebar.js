@@ -25,7 +25,7 @@ const AdminSidebar = ({ show, toggleDrawer }) => {
       {/* Logo */}
       <div className="flex items-center justify-center pt-14 pb-10">
         <Typography variant="h5" className="font-bold my-4 text-primary-foreground">
-          {show ? <Avatar variant="rounded" alt="brand" src="/logo.png" sx={{ width: 64, height: 64,objectFit: "contain" }}/> : "ZA"}
+          {show ? <Avatar variant="rounded" alt="brand" src="/image 12.png" sx={{ width: 64, height: 64,objectFit: "contain" }}/> : "ZA"}
         </Typography>
       </div>
       <Divider />
