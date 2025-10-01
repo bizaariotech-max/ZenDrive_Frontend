@@ -235,7 +235,7 @@ const Vehicle = () => {
             StationId: row?.StationId?._id || "",
             RegistrationNumber: row?.Vehicle?.RegistrationNumber || "",
             RegistrationAuthority: row?.Vehicle?.RegistrationAuthority || "",
-            VehicleTypeId: row?.Vehicle?.VehicleTypeId?._id || "",
+            VehicalTypeId: row?.Vehicle?.VehicalTypeId?._id || "",
             MakeId: row?.Vehicle?.MakeId?._id || "",
             VehicleModelId: row?.Vehicle?.VehicleModelId?._id || "",
             ManufacturingYear: row?.Vehicle?.ManufacturingYear || "",
