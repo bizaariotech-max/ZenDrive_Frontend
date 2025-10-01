@@ -44,14 +44,16 @@ const Vehicle = () => {
         assetTypeList: [],
         vehicleModelList: [],
         fuelTypeList: [],
-        colorList: []
+        colorList: [],
+        vehicleTypeList: []
     });
     const {
         manufacturerList,
         assetTypeList,
         vehicleModelList,
         fuelTypeList,
-        colorList
+        colorList,
+        vehicleTypeList
     } = dataList
 
     const columns = [
@@ -65,6 +67,7 @@ const Vehicle = () => {
         { field: "StationId", headerName: "Station name", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.StationId?.StationName || "N/A"}</span>, },
         { field: "RegistrationNumber", headerName: "Registration Number", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Vehicle?.RegistrationNumber || "N/A"}</span>, },
         { field: "RegistrationAuthority", headerName: "Registration Authority", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Vehicle?.RegistrationAuthority || "N/A"}</span>, },
+        { field: "VehicalTypeId", headerName: "Vehical Type", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Vehicle?.VehicalTypeId?.lookup_value || "N/A"}</span>, },
         { field: "MakeId", headerName: "Make", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Vehicle?.MakeId?.lookup_value || "N/A"}</span>, },
         { field: "VehicleModelId", headerName: "Vehicle Model", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Vehicle?.VehicleModelId?.lookup_value || "N/A"} - {params.row?.Vehicle?.StationName || "N/A"}</span>, },
         { field: "ManufacturingYear", headerName: "Manufacturing Year", minWidth: 150, headerClassName: "health-table-header-style", flex: 1, renderCell: (params) => <span>{params.row?.Vehicle?.ManufacturingYear || "N/A"}</span>, },
@@ -99,6 +102,7 @@ const Vehicle = () => {
             StationId: "",
             RegistrationNumber: "",
             RegistrationAuthority: "",
+            VehicalTypeId: "",
             MakeId: "",
             VehicleModelId: "",
             ManufacturingYear: "",
@@ -120,6 +124,7 @@ const Vehicle = () => {
                     "Vehicle": {
                         "RegistrationNumber": values?.RegistrationNumber || null,
                         "RegistrationAuthority": values?.RegistrationAuthority || null,
+                        "VehicalTypeId": values?.VehicalTypeId || null,
                         "MakeId": values?.MakeId || null,
                         "VehicleModelId": values?.VehicleModelId || null,
                         "ManufacturingYear": values?.ManufacturingYear || null,
@@ -193,6 +198,7 @@ const Vehicle = () => {
         fetchData(['asset_type'], "assetTypeList", "68cb9812d425cf3422d58d1d");
         fetchData(['manufacturer_type'], "manufacturerList",);
         fetchData(['fuel_type'], "fuelTypeList");
+        fetchData(['vehical_type'], "vehicleTypeList");
         fetchData(['color_type'], "colorList");
         getVehicleList();
         getStationMasterList();
@@ -229,6 +235,7 @@ const Vehicle = () => {
             StationId: row?.StationId?._id || "",
             RegistrationNumber: row?.Vehicle?.RegistrationNumber || "",
             RegistrationAuthority: row?.Vehicle?.RegistrationAuthority || "",
+            VehicleTypeId: row?.Vehicle?.VehicleTypeId?._id || "",
             MakeId: row?.Vehicle?.MakeId?._id || "",
             VehicleModelId: row?.Vehicle?.VehicleModelId?._id || "",
             ManufacturingYear: row?.Vehicle?.ManufacturingYear || "",
@@ -311,6 +318,17 @@ const Vehicle = () => {
                         onChange={formik.handleChange}
                         error={formik.touched?.RegistrationAuthority && formik.errors?.RegistrationAuthority}
                         helperText={formik.touched?.RegistrationAuthority && formik.errors?.RegistrationAuthority}
+                    />
+                    <FormInput
+                        type="select"
+                        label="Vehicle Type"
+                        name="VehicalTypeId"
+                        value={formik.values?.VehicalTypeId}
+                        onChange={formik.handleChange}
+                        placeholder="Select vehicle type"
+                        error={formik.touched?.VehicalTypeId && formik.errors?.VehicalTypeId}
+                        helperText={formik.touched?.VehicalTypeId && formik.errors?.VehicalTypeId}
+                        options={vehicleTypeList?.length > 0 ? vehicleTypeList : []}
                     />
 
                     {/* Make */}
