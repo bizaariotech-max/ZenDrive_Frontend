@@ -4,6 +4,8 @@ import product1 from '../../../assets/images/website/products/p1.png'
 import product2 from '../../../assets/images/website/products/p2.png'
 import product3 from '../../../assets/images/website/products/p3.png'
 import product4 from '../../../assets/images/website/products/p4.png'
+import { Link } from 'react-router-dom';
+import ShopCard from '../../../UI/ShopCard';
 const RoadSafetyProduct = () => {
   const responsive = {
     superLargeDesktop: {
@@ -33,6 +35,7 @@ const RoadSafetyProduct = () => {
       value: "BUROC",
       brand: "Steelbird",
       price: 1724,
+      oldPrice: 1999,
       img: product1
     },
     {
@@ -41,6 +44,7 @@ const RoadSafetyProduct = () => {
       value: "BU724",
       brand: "Steelbird",
       price: 1724,
+      oldPrice: 1999,
       img: product2
     },
     {
@@ -49,6 +53,7 @@ const RoadSafetyProduct = () => {
       value: "BU724",
       brand: "Steelbird",
       price: 1724,
+      oldPrice: 1999,
       img: product3
     },
     {
@@ -57,6 +62,7 @@ const RoadSafetyProduct = () => {
       value: "BU724",
       brand: "Steelbird",
       price: 1724,
+      oldPrice: 1999,
       img: product4
     }
   ];
@@ -89,62 +95,12 @@ const RoadSafetyProduct = () => {
                 className='ps-0 pb-3'
               >
                 {motorcycleGear.map((item, index) => (
-                  <div className="max-w-sm mx-auto" key={index}>
-                    <div className="bg-white rounded-xl  border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                      {/* Product Image Container */}
-                      <div className="relative bg-gray-50 p-4">
-                        <div className="aspect-square relative">
-                          {/* Simulated gloves image with blue and black styling */}
-                          <div className="w-full h-full bg-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden">
-                            {/* Left glove (palm view) */}
+                  <Link to={`/shop/${item.id}`} key={item.id} state={item} >
+                    <div className='flex flex-col'>
 
-                            <img
-                              src={item.img}
-                              alt={item.label}
-                              className="w-full h-full object-cover transition-transform duration-500 transform hover:scale-110"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Product Details */}
-                      <div className="p-6">
-                        {/* Product Title */}
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-tight">
-                          Bike Riding Gloves with Touch Screen Sensitivity at Thumb and Index Finger
-                        </h3>
-
-                        {/* Brand */}
-                        <p className="text-base font-medium text-gray-600 mb-4">
-                          Steelbird
-                        </p>
-
-                        {/* Price Section */}
-                        <div className="flex items-center space-x-3">
-                          <span className="text-2xl font-bold text-gray-900">
-                            ₹1,724
-                          </span>
-                          <span className="text-lg text-gray-400 line-through">
-                            ₹1,724
-                          </span>
-                        </div>
-
-                        {/* Star Rating (placeholder) */}
-                        {/* <div className="flex items-center mt-3 space-x-1">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <svg
-                              key={star}
-                              className="w-4 h-4 text-yellow-400 fill-current"
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                            </svg>
-                          ))}
-                          <span className="text-sm text-gray-500 ml-2">(4.5)</span>
-                        </div> */}
-                      </div>
+                      <ShopCard item={item} />
                     </div>
-                  </div>
+                  </Link>
                 ))}
 
               </Carousel>

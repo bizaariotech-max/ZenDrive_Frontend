@@ -9,6 +9,7 @@ import image from "../../../assets/images/website/superhero-card.png"
 import { FaDroplet } from "react-icons/fa6";
 
 export default function TakeTheLife() {
+  const [formType, setFormType] = React.useState(''); // 'blood' or 'organ'
   // Sample data for donation cards
   const OrgansDonationData = [
     {
@@ -17,15 +18,17 @@ export default function TakeTheLife() {
       description: "  Every two seconds, someone in India needs blood. Over  12,000 people die every day due to blood shortage. Take the pledge to donate blood and be the reason someone survives today.",
       buttonText: "Pledge for Blood Donation",
       icon: <FaDroplet size={28} />,
-      iconBg: "bg-gray-100  text-red-600"
+      iconBg: "bg-gray-100  text-red-600",
+      formTypeValue: 'blood-form'
     },
     {
       id: 2,
       title: "Donate Organs, Give a Second Life",
       description: "Thousands of people die every year waiting for organs. In India,  approximately 5 lakh (500,000) lives are lost annually due to organ shortage. Take the pledge to donate organs and create miracles for those in need.",
-      buttonText: "Pledge for Blood Donation",
+      buttonText: "Pledge for Donate Organs",
       icon: <FaLungs size={28} />,
-      iconBg: "bg-gray-100 text-primary "
+      iconBg: "bg-gray-100 text-primary ",
+      formTypeValue: 'organ-form'
     },
 
   ]
@@ -93,11 +96,15 @@ export default function TakeTheLife() {
             OrgansDonationData.map((item) => (
               <DonationCard
                 key={item.id}
+                id={item.id}
                 title={item.title}
                 description={item.description}
                 buttonText={item.buttonText}
                 icon={item.icon}
                 iconBg={item.iconBg}
+                formTypeValue={item.formTypeValue}
+                // formType={formType}
+                setFormType={setFormType}
               />
             ))
           }
@@ -137,4 +144,3 @@ export default function TakeTheLife() {
     </section>
   );
 }
-
