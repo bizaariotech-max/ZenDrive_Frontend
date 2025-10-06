@@ -103,6 +103,7 @@ const OTPVerificationPopup = ({ isOpen, onClose, phoneNumber,
               key={index}
               ref={inputRefs[index]}
               type="text"
+              inputmode="numeric"
               maxLength="1"
               value={digit}
               onChange={(e) => handleOtpChange(index, e.target.value)}

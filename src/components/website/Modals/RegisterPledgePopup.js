@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { X } from "lucide-react";
 import OTPVerificationPopup from "./OTPVerificationPopup";
 import { useFormik } from "formik";
@@ -51,7 +51,7 @@ const RegisterPledgePopup = ({ isOpen, onClose, itemData, formTypeValue }) => {
     //   alert(`Please enter ${selectedOption === "aadhar" ? "aadhar" : "Mobile"} number correctly`);
     //   return;
     // }
-    
+
     if (selectedOption === "aadhar") {
       if (!/^\d{12}$/.test(formik.values.aadhar)) {
         alert("Please enter a valid 12-digit Aadhaar number");
@@ -96,7 +96,7 @@ const RegisterPledgePopup = ({ isOpen, onClose, itemData, formTypeValue }) => {
           Identity Details
         </h3>
 
-        <div className="flex gap-4 mb-4">
+        <div className="flex flex-wrap gap-4 mb-4">
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="radio"
@@ -136,6 +136,7 @@ const RegisterPledgePopup = ({ isOpen, onClose, itemData, formTypeValue }) => {
               <input
                 name={selectedOption === "aadhar" ? "aadhar" : "mobile"}
                 type="text"
+                inputmode="numeric"
                 onBlur={formik.handleBlur}
                 value={
                   selectedOption === "aadhar"

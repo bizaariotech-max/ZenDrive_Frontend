@@ -46,20 +46,21 @@ const LifeSaverShare = ({ itemId, onClose }) => {
         </p>
 
         {/* Link Copy Section */}
-        <div className="flex items-center border rounded-lg overflow-hidden mb-6">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center border rounded-lg mb-6 overflow-hidden w-full max-w-xl mx-auto">
           <input
             type="text"
             readOnly
             value={link}
-            className="flex-1 px-3 py-2 text-gray-700 focus:outline-none"
+            className="flex-1 px-3 py-2 text-gray-700 focus:outline-none text-sm sm:text-base"
           />
           <button
             onClick={handleCopy}
-            className="bg-primary text-white px-4 py-2 flex items-center gap-2 hover:bg-teal-700"
+            className="bg-primary text-white px-4 py-2 flex justify-center items-center gap-2 text-sm sm:text-base hover:bg-teal-700 transition-all duration-200"
           >
             {copied ? "Copied!" : "Copy Link"}
           </button>
         </div>
+
 
         {/* Social Media Links */}
         <div className="flex justify-center space-x-6 text-gray-600">

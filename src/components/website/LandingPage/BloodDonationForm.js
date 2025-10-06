@@ -34,7 +34,7 @@ const validationSchema = Yup.object({
   date: Yup.date().required('Date is required'),
 });
 
-const InputField = ({ label, name, type = 'text', placeholder = '', formik }) => {
+const InputField = ({ label, name, type = 'text', placeholder = '', formik, inputMode, }) => {
   const hasError = formik.touched[name] && formik.errors[name];
   return (
     <div className="flex flex-col">
@@ -46,6 +46,9 @@ const InputField = ({ label, name, type = 'text', placeholder = '', formik }) =>
         value={formik.values[name]}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
+        inputProps={{
+          inputMode: inputMode,
+        }}
         className={`max-w-full px-3 border rounded-md focus:outline-none  focus:ring-primary ${hasError ? 'border-red-500' : 'border-gray-500 p-0'
           }`}
 
@@ -266,7 +269,7 @@ export default function BloodDonationForm() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <InputField label="Address for correspondence" name="correspondenceAddress" placeholder="Full Address" formik={formik} />
-              <InputField label="Mobile No" name="telephoneNo" placeholder="Mobile No" formik={formik} />
+              <InputField label="Mobile No" inputMode="numeric" name="telephoneNo" placeholder="Mobile No" formik={formik} />
               <InputField label="Email" name="email" type="email" formik={formik} placeholder="Email" />
             </div>
           </div>
@@ -290,7 +293,7 @@ export default function BloodDonationForm() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <InputField label="Enter Your Date Of Birth" name="witness1DateOfBirth" type="date" formik={formik} />
               <InputField label="Enter Your Full Address" name="witness1Address" placeholder="Enter Your Full Address" formik={formik} />
-              <InputField label="Mobile No" name="witness1MobileNo" placeholder="Mobile No" formik={formik} />
+              <InputField label="Mobile No" inputMode="numeric" name="witness1MobileNo" placeholder="Mobile No" formik={formik} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
               <InputField label="Email ID" name="witness1Email" type="email" placeholder="Email" formik={formik} />
@@ -308,7 +311,7 @@ export default function BloodDonationForm() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <InputField label="Enter Your Date Of Birth" name="witness2DateOfBirth" placeholder='DOB' type="date" formik={formik} />
               <InputField label="Enter Your Full Address" name="witness2Address" placeholder="Enter Your Full Address" formik={formik} />
-              <InputField label="Mobile No" name="witness2MobileNo" placeholder="Street" formik={formik} />
+              <InputField label="Mobile No" inputMode="numeric" name="witness2MobileNo" placeholder="Mobile No" formik={formik} />
             </div>
             <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
               <InputField label="Email ID" name="witness2Email" type="email" placeholder="Email" formik={formik} />
